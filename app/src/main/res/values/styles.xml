@@ -4,7 +4,11 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorSecondary</item>
+
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -21,4 +25,19 @@
         <item name="android:textColor">#FF000000</item>
     </style>
 
+    <style name="TitleAppText" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TitleAppText.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppText" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppText.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

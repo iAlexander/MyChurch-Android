@@ -18,8 +18,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                app:titleTextColor="@color/colorPrimaryVeryDark"
+                android:background="@color/colorPrimaryLight"
+                app:titleTextColor="@color/textColorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -35,7 +35,7 @@
                 app:navGraph="@navigation/main"
                 app:layout_constraintBottom_toTopOf="@id/navigationView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
+                android:layout_height="wrap_content"/>
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/navigationView"

@@ -9,20 +9,27 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import com.d2.pcu.App;
+import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.map.Temple;
 import com.d2.pcu.utils.Locator;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+
 public class TempleViewModel extends AndroidViewModel {
 
-    private Temple model = new Temple();
     private Locator locator;
 
+    private Repository repository;
+
     private LiveData<LatLng> location;
+    private LiveData<List<Temple>> templesLiveData = new MutableLiveData<>();
 
     public TempleViewModel(@NonNull Application application) {
         super(application);
 
+        repository = App.getInstance().getRepositoryInstance();
         locator = new Locator(getApplication().getApplicationContext());
     }
 
@@ -37,5 +44,9 @@ public class TempleViewModel extends AndroidViewModel {
 
     LiveData<LatLng> getLocation() {
         return location;
+    }
+
+    public LiveData<List<Temple>> getTemplesLiveData() {
+        return templesLiveData;
     }
 }

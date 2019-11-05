@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#E0E0E0</color>
-    <color name="colorPrimaryDark">#757575</color>
-    <color name="colorPrimaryVeryDark">#000000</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#f7f6f6</color>
+    <color name="colorPrimaryLight">#ffffff</color>
+    <color name="colorPrimaryDark">#c4c3c3</color>
+
+    <color name="colorSecondary">#5e0b15</color>
+    <color name="colorSecondaryLight">#903b3b</color>
+    <color name="colorSecondaryDark">#350000</color>
+
+    <color name="colorAccent">#D79F28</color>
+
+    <color name="textColorPrimary">#FF333333</color>
+    <color name="textColorSecondary">#ffffff</color>
+
+<!--  Colors  -->
+    <color name="white">#FFFFFFFF</color>
+
+
+
+<!--    <color name="primaryColor">#f7f6f6</color>-->
+<!--    <color name="primaryLightColor">#ffffff</color>-->
+<!--    <color name="primaryDarkColor">#c4c3c3</color>-->
+
+<!--    <color name="secondaryColor">#5e0b15</color>-->
+<!--    <color name="secondaryLightColor">#903b3b</color>-->
+<!--    <color name="secondaryDarkColor">#350000</color>-->
+
+<!--    <color name="primaryTextColor">#000000</color>-->
+<!--    <color name="secondaryTextColor">#ffffff</color>-->
+
+<!--   -->
+
+
+<!--    &lt;!&ndash;  Colors  &ndash;&gt;-->
+<!--    <color name="white">#FFFFFFFF</color>-->
 </resources>

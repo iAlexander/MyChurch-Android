@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable
+            name="holder"
+            type="com.d2.pcu.fragments.map.TempleItemViewHolder" />
+
+        <variable
+            name="temple"
+            type="com.d2.pcu.data.model.map.Temple" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/item_map_width"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rounded"
+        android:padding="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_marginStart="@dimen/small"
+        android:layout_marginEnd="@dimen/small">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/item_map_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TitleAppText.Bold"
+            android:text="@{temple.title}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/map_distance_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/item_map_title"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/map_distance"
+            android:layout_marginTop="@dimen/small"
+            android:textAppearance="@style/AppText.Small"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/map_dot_separator_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/map_distance_tv"
+            app:layout_constraintTop_toTopOf="@id/map_distance_tv"
+            app:layout_constraintBottom_toBottomOf="@id/map_distance_tv"
+            android:text="@string/dot"
+            android:layout_marginStart="@dimen/small"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/map_dot_separator_tv"
+            app:layout_constraintTop_toTopOf="@id/map_distance_tv"
+            app:layout_constraintBottom_toBottomOf="@id/map_distance_tv"
+            android:text="@{temple.distance.concat(` `).concat(@string/km)}"
+            android:layout_marginStart="@dimen/small"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/map_more_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/AppText"
+            android:text="@string/more"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/map_distance_tv"
+            android:layout_marginTop="@dimen/small"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/map_more_tv"
+            app:layout_constraintTop_toTopOf="@id/map_more_tv"
+            app:layout_constraintBottom_toBottomOf="@id/map_more_tv"
+            app:srcCompat="@drawable/ic_arrow_forward"
+            android:layout_marginStart="@dimen/small"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
