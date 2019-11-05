@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+~/android-studio/jre/jre/bin/keytool -genkey -v -keystore keystore.jks -alias pcu_release -keyalg RSA -keysize 2048 -validity 10000 -storepass PTJjVsth -keypass UJfFmRMB -dname "CN=Victor D. Djurlyak, OU=Development, O=D2.Digital, L=Kyiv, ST=Kyiv, C=UA"
+~/android-studio/jre/jre/bin/keytool -genkey -v -keystore keystore.jks -alias pcu_debug   -keyalg RSA -keysize 1024 -validity 10000 -storepass PTJjVsth -keypass h5qmEyPC -dname "CN=Victor D. Djurlyak, OU=Development, O=D2.Digital, L=Kyiv, ST=Kyiv, C=UA"
+~/android-studio/jre/jre/bin/keytool -storepass PTJjVsth -list -v -keystore keystore.jks
