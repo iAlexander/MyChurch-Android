@@ -4,6 +4,7 @@ import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 
 import com.d2.pcu.data.model.BaseModel;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
 public class TempleGeo extends BaseModel {
@@ -24,12 +25,15 @@ public class TempleGeo extends BaseModel {
 
     @SerializedName("locality") private String locality;
 
+    private LatLng latLng;
+
     public TempleGeo() {
         this.id = 0;
         this.street = "";
         this.index = "";
         this.lt = 0f;
         this.lg = 0f;
+        this.latLng = new LatLng(lt, lg);
         this.region = "";
         this.district = "";
         this.locality = "";
@@ -77,6 +81,10 @@ public class TempleGeo extends BaseModel {
 
     public void setLg(float lg) {
         this.lg = lg;
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(lt, lg);
     }
 
     @Bindable

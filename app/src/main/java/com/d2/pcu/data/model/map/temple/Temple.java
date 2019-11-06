@@ -10,11 +10,14 @@ import com.d2.pcu.data.model.BaseModel;
 import com.d2.pcu.data.model.map.temple.diocese.Diocese;
 import com.d2.pcu.data.model.map.temple.diocese.DioceseType;
 import com.d2.pcu.data.model.map.temple.workers.Bishop;
+import com.d2.pcu.data.model.map.temple.workers.Presiding;
 import com.d2.pcu.data.model.map.temple.workers.Priest;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
+import com.google.maps.android.clustering.ClusterItem;
 import com.squareup.picasso.Picasso;
 
-public class Temple extends BaseModel {
+public class Temple extends BaseModel implements ClusterItem {
 
     @SerializedName("id") private int id;
 
@@ -29,6 +32,8 @@ public class Temple extends BaseModel {
     @SerializedName("image") private String imageUrl;
 
     @SerializedName("bishop") private Bishop bishop;
+
+    @SerializedName("presiding") private Presiding presiding;
 
     @SerializedName("priest") private Priest priest;
 
@@ -46,6 +51,7 @@ public class Temple extends BaseModel {
         this.imageUrl = "";
         this.history = "";
         this.bishop = new Bishop();
+        this.presiding = new Presiding();
         this.priest = new Priest();
         this.templeGeo = new TempleGeo();
         this.diocese = new Diocese();
@@ -125,6 +131,16 @@ public class Temple extends BaseModel {
     }
 
     @Bindable
+    public Presiding getPresiding() {
+        return presiding;
+    }
+
+    public void setPresiding(Presiding presiding) {
+        this.presiding = presiding;
+        notifyPropertyChanged(BR.presiding);
+    }
+
+    @Bindable
     public Priest getPriest() {
         return priest;
     }
@@ -162,5 +178,20 @@ public class Temple extends BaseModel {
     public void setDioceseType(DioceseType dioceseType) {
         this.dioceseType = dioceseType;
         notifyPropertyChanged(BR.dioceseType);
+    }
+
+    @Override
+    public LatLng getPosition() {
+        return templeGeo.getLatLng();
+    }
+
+    @Override
+    public String getTitle() {
+        return name;
+    }
+
+    @Override
+    public String getSnippet() {
+        return name;
     }
 }

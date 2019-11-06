@@ -86,4 +86,5 @@ dependencies {
 
 //    Custom dependencies
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
+    implementation 'com.google.maps.android:android-maps-utils:0.6.2'
 }

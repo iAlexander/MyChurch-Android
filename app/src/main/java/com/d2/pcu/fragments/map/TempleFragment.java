@@ -22,12 +22,17 @@ import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.databinding.TempleFragmentBinding;
 import com.d2.pcu.fragments.BaseFragment;
+import com.d2.pcu.utils.CustomClusterRenderer;
 import com.d2.pcu.utils.MockCreator;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.List;
 
@@ -123,12 +128,41 @@ public class TempleFragment extends BaseFragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        viewModel.getLocation().observe(getViewLifecycleOwner(), new Observer<LatLng>() {
+        ClusterManager<Temple> clusterManager = new ClusterManager<Temple>(getContext().getApplicationContext(), googleMap);
+
+        // TODO: 2019-11-06 remove MOCK
+        for (Temple temple : MockCreator.getTemplesMock()) {
+            clusterManager.addItem(temple);
+
+        }
+
+        final CustomClusterRenderer renderer = new CustomClusterRenderer(getContext(), googleMap, clusterManager);
+        clusterManager.setRenderer(renderer);
+
+        clusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Temple>() {
             @Override
-            public void onChanged(LatLng latLng) {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f));
+            public boolean onClusterClick(Cluster<Temple> cluster) {
+                return false;
             }
         });
+
+        clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Temple>() {
+            @Override
+            public boolean onClusterItemClick(Temple temple) {
+                return false;
+            }
+        });
+
+        googleMap.setOnMarkerClickListener(clusterManager);
+        googleMap.setOnCameraIdleListener(clusterManager);
+
+
+//        viewModel.getLocation().observe(getViewLifecycleOwner(), new Observer<LatLng>() {
+//            @Override
+//            public void onChanged(LatLng latLng) {
+//                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f));
+//            }
+//        });
 
     }
 }
