@@ -13,16 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.d2.pcu.R;
-import com.d2.pcu.data.model.map.Temple;
+import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.databinding.TempleFragmentBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.utils.MockCreator;
@@ -31,9 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 public class TempleFragment extends BaseFragment implements OnMapReadyCallback {

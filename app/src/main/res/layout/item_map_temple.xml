@@ -12,7 +12,7 @@
 
         <variable
             name="temple"
-            type="com.d2.pcu.data.model.map.Temple" />
+            type="com.d2.pcu.data.model.map.temple.Temple" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TitleAppText.Bold"
-            android:text="@{temple.title}"
+            android:text="@{temple.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -60,7 +60,7 @@
             app:layout_constraintStart_toEndOf="@id/map_dot_separator_tv"
             app:layout_constraintTop_toTopOf="@id/map_distance_tv"
             app:layout_constraintBottom_toBottomOf="@id/map_distance_tv"
-            android:text="@{temple.distance.concat(` `).concat(@string/km)}"
+            android:text="to do"
             android:layout_marginStart="@dimen/small"/>
 
         <androidx.appcompat.widget.AppCompatTextView

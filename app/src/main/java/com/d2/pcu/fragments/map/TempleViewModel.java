@@ -11,7 +11,7 @@ import androidx.lifecycle.Transformations;
 
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
-import com.d2.pcu.data.model.map.Temple;
+import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.utils.Locator;
 import com.google.android.gms.maps.model.LatLng;
 

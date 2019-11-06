@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.d2.pcu.R;
-import com.d2.pcu.data.model.map.Temple;
+import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.databinding.ItemMapTempleBinding;
 
 import java.util.ArrayList;
