@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-public class TempleViewModel extends AndroidViewModel {
+public class MapViewModel extends AndroidViewModel {
 
     private Locator locator;
 
@@ -26,7 +26,7 @@ public class TempleViewModel extends AndroidViewModel {
     private LiveData<LatLng> location;
     private LiveData<List<Temple>> templesLiveData = new MutableLiveData<>();
 
-    public TempleViewModel(@NonNull Application application) {
+    public MapViewModel(@NonNull Application application) {
         super(application);
 
         repository = App.getInstance().getRepositoryInstance();

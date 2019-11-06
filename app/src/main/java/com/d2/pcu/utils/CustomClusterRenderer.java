@@ -3,8 +3,11 @@ package com.d2.pcu.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 
 import com.d2.pcu.R;
@@ -32,8 +35,7 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<Temple> {
 
     @Override
     protected void onBeforeClusterItemRendered(Temple item, MarkerOptions markerOptions) {
-        final BitmapDescriptor markerDescriptor =
-                BitmapDescriptorFactory.fromResource(R.mipmap.map_pin_image);
+        final BitmapDescriptor markerDescriptor = bitmapDescriptorFromVector(R.drawable.map_pin);
 
         markerOptions.icon(markerDescriptor).snippet(item.getName());
     }
@@ -53,5 +55,19 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<Temple> {
     @Override
     protected boolean shouldRenderAsCluster(Cluster<Temple> cluster) {
         return cluster.getSize() > 1;
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(@DrawableRes int vectorDrawableResourceId) {
+        Drawable background = ContextCompat.getDrawable(context, R.drawable.map_pin);
+        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
+
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId);
+        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
+
+        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        background.draw(canvas);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }

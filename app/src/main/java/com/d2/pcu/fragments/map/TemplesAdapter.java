@@ -14,7 +14,7 @@ import com.d2.pcu.databinding.ItemMapTempleBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TempleAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
+public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
 
     private List<Temple> temples = new ArrayList<>();
 

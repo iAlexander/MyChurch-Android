@@ -14,7 +14,7 @@ import android.view.MenuItem;
 
 import com.d2.pcu.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnBackButtonClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -47,5 +47,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onBackButtonPressed() {
+        navController.popBackStack();
     }
 }

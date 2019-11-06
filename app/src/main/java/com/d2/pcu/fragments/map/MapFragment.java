@@ -20,42 +20,38 @@ import android.view.ViewGroup;
 
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.Temple;
-import com.d2.pcu.databinding.TempleFragmentBinding;
+import com.d2.pcu.databinding.MapFragmentBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.utils.CustomClusterRenderer;
 import com.d2.pcu.utils.MockCreator;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.List;
 
-public class TempleFragment extends BaseFragment implements OnMapReadyCallback {
+public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
-    private static final String TAG = TempleFragment.class.getSimpleName();
+    private static final String TAG = MapFragment.class.getSimpleName();
 
-    private TempleFragmentBinding binding;
-    private TempleViewModel viewModel;
+    private MapFragmentBinding binding;
+    private MapViewModel viewModel;
 
-    private TempleAdapter adapter;
+    private TemplesAdapter adapter;
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private static final int REQUEST_CODE = 201;
 
-    public static TempleFragment newInstance() {
-        return new TempleFragment();
+    public static MapFragment newInstance() {
+        return new MapFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.temple_fragment, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.map_fragment, container, false);
 
         return binding.getRoot();
     }
@@ -75,8 +71,8 @@ public class TempleFragment extends BaseFragment implements OnMapReadyCallback {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(this).get(TempleViewModel.class);
-        adapter = new TempleAdapter();
+        viewModel = ViewModelProviders.of(this).get(MapViewModel.class);
+        adapter = new TemplesAdapter();
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setModel(viewModel);
