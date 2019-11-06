@@ -27,16 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        setSupportActionBar(binding.toolbar);
-
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(binding.navigationView, navController);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.templeFragment,
-                R.id.calendarFragment,
-                R.id.newsFragment,
-                R.id.moreFragment).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
     }
 
     @Override
