@@ -18,6 +18,12 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
 
     private List<Temple> temples = new ArrayList<>();
 
+    private OnTempleClickListener onTempleClickListener;
+
+    TemplesAdapter(OnTempleClickListener onTempleClickListener) {
+        this.onTempleClickListener = onTempleClickListener;
+    }
+
     void setTemples(List<Temple> temples) {
         this.temples.clear();
         this.temples.addAll(temples);
@@ -31,7 +37,7 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
 
         ItemMapTempleBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_map_temple, parent, false);
 
-        return new TempleItemViewHolder(binding);
+        return new TempleItemViewHolder(binding, onTempleClickListener);
     }
 
     @Override

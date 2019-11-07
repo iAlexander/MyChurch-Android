@@ -12,5 +12,7 @@
 <!--  Colors  -->
     <color name="white">#FFFFFFFF</color>
     <color name="app_yellow">#D79F28</color>
+    <color name="green">#219654</color>
+    <color name="red">#b21225</color>
 
 </resources>

@@ -15,4 +15,21 @@
 <!--  Map  -->
     <string name="map_distance">Distance</string>
     <string name="map_more">More</string>
+    <string name="map_search_hint">Search…</string>
+
+    <!--  Temple  -->
+    <string name="temple_contacts">Contacts</string>
+    <string name="temple_history_descr">History and description</string>
+    <string name="temple_open">Open now</string>
+    <string name="temple_close">Close now</string>
+    <string name="temple_close_schedule_time">Closing at %1$s</string>
+    <string name="temple_schedule_service">Serving schedule</string>
+    <string name="temple_week_days">mon-fr</string>
+    <string name="temple_weekend_days">st-sun</string>
+    <string name="temple_holidays">holidays</string>
+    <string name="temple_get_directions">Get directions</string>
+    <string name="temple_church_holiday">Holiday of temple:</string>
+    <string name="temple_prior">Prior:</string>
+    <string name="temple_charity">Charity:</string>
+    <string name="temple_phone">Phone:</string>
 </resources>

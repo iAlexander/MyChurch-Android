@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.d2.pcu.MainActivity">
 
-    <item android:id="@+id/templeFragment"
+    <item android:id="@+id/mapFragment"
         android:icon="@drawable/ic_map"
         android:orderInCategory="100"
         android:title="@string/map"

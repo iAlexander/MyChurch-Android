@@ -2,6 +2,7 @@ package com.d2.pcu.fragments.calendar;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,4 +36,19 @@ public class CalendarFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 }

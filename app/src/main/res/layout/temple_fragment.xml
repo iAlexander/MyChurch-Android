@@ -14,31 +14,31 @@
             type="com.d2.pcu.data.model.map.temple.Temple" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.map.temple.TempleFragment">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/temple_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimaryLight"
+                android:background="@color/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:titleTextColor="@color/textColorPrimary">
+                app:titleTextColor="@color/textColorPrimary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:padding="@dimen/small"
-                    android:src="@drawable/ic_arrow_back" />
+                    android:src="@drawable/ic_arrow_back"
+                    android:onClick="@{model::onBackButtonPressed}"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -52,18 +52,23 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/temple_tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:tabTextColor="@color/textColorPrimary"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/temple_toolbar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        </com.google.android.material.appbar.AppBarLayout>
+
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/temple_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_anchor="@id/temple_tabs"
-            app:layout_anchorGravity="bottom" />
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/temple_tabs"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

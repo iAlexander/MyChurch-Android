@@ -1,6 +1,7 @@
 package com.d2.pcu.fragments.map;
 
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 public class MapViewModel extends AndroidViewModel {
+
+    private static final String TAG = MapViewModel.class.getSimpleName();
 
     private Locator locator;
 
@@ -46,7 +49,8 @@ public class MapViewModel extends AndroidViewModel {
         return location;
     }
 
-    public LiveData<List<Temple>> getTemplesLiveData() {
+    LiveData<List<Temple>> getTemplesLiveData() {
         return templesLiveData;
     }
+
 }

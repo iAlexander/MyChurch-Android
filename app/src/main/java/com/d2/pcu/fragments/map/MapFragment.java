@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -22,11 +23,14 @@ import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.databinding.MapFragmentBinding;
 import com.d2.pcu.fragments.BaseFragment;
+import com.d2.pcu.listeners.OnMoreTempleInfoClickListener;
+import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.CustomClusterRenderer;
 import com.d2.pcu.utils.MockCreator;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.gson.Gson;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
@@ -40,6 +44,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     private MapViewModel viewModel;
 
     private TemplesAdapter adapter;
+    
+    private OnMoreTempleInfoClickListener onMoreTempleInfoClickListener;
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private static final int REQUEST_CODE = 201;
@@ -57,22 +63,24 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_container);
-
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-        }
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(MapViewModel.class);
-        adapter = new TemplesAdapter();
+        adapter = new TemplesAdapter(new OnTempleClickListener() {
+            @Override
+            public void onMoreTempleInfoClick(Temple temple) {
+                String serializedTemple = new Gson().toJson(temple);
+                
+                if (onMoreTempleInfoClickListener != null) {
+                    if (temple.getDioceseType().getType().equals("Monastir")) {
+                        onMoreTempleInfoClickListener.onTempleInfoClick(serializedTemple, Constants.TEMPLE_TYPE_CATHEDRAL);
+                    } else {
+                        onMoreTempleInfoClickListener.onTempleInfoClick(serializedTemple, Constants.TEMPLE_TYPE_CHURCH);
+                    }
+                }
+            }
+        });
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setModel(viewModel);
@@ -94,8 +102,17 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
                 adapter.setTemples(temples);
             }
         });
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_container);
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
     }
 
     @Override
@@ -160,5 +177,17 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 //            }
 //        });
 
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        onMoreTempleInfoClickListener = (OnMoreTempleInfoClickListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onMoreTempleInfoClickListener = null;
     }
 }
