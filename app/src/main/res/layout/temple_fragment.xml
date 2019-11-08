@@ -19,8 +19,6 @@
         android:layout_height="match_parent"
         tools:context=".fragments.map.temple.TempleFragment">
 
-
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/temple_toolbar"
                 android:layout_width="match_parent"

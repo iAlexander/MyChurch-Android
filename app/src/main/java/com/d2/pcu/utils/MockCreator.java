@@ -90,36 +90,8 @@ public class MockCreator {
         lavra.setDioceseType(dioceseType);
         //
 
-        Temple temple = new Temple();
-        TempleGeo templeGeo1 = new TempleGeo();
-        templeGeo1.setLg(51.43897f);
-        templeGeo1.setLt(29.5359428f);
-        temple.setTempleGeo(templeGeo1);
 
-        Temple temple1 = new Temple();
-        TempleGeo templeGeo2 = new TempleGeo();
-        templeGeo2.setLg(52f);
-        templeGeo2.setLt(28f);
-        temple1.setTempleGeo(templeGeo2);
 
-        Temple temple2 = new Temple();
-        TempleGeo templeGeo3 = new TempleGeo();
-        templeGeo3.setLg(53f);
-        templeGeo3.setLt(27f);
-        temple2.setTempleGeo(templeGeo3);
-
-        Temple temple3 = new Temple();
-        TempleGeo templeGeo4 = new TempleGeo();
-        templeGeo4.setLg(54f);
-        templeGeo4.setLt(26f);
-        temple3.setTempleGeo(templeGeo4);
-
-        Temple temple4 = new Temple();
-        TempleGeo templeGeo5 = new TempleGeo();
-        templeGeo5.setLg(55f);
-        templeGeo5.setLt(27f);
-        temple.setTempleGeo(templeGeo5);
-
-        return Arrays.asList(sofiChurche, lavra, temple1, temple2, temple3, temple4);
+        return Arrays.asList(sofiChurche, lavra);
     }
 }

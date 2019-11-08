@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity implements OnBackButtonClick
     public void onTempleInfoClick(String serializedTemple, int type) {
         if (type == Constants.TEMPLE_TYPE_CATHEDRAL) {
             MapFragmentDirections.ActionMapFragmentToTempleFragment action = MapFragmentDirections.actionMapFragmentToTempleFragment(serializedTemple);
-
             navController.navigate(action);
         } else {
-            // TODO: 2019-11-07
+            MapFragmentDirections.ActionMapFragmentToTempleContactsFragment action = MapFragmentDirections.actionMapFragmentToTempleContactsFragment(serializedTemple);
+            navController.navigate(action);
         }
     }
 }

@@ -64,7 +64,7 @@ public class TempleFragment extends BaseFragment {
         binding.setModel(viewModel);
         binding.setTemple(temple);
 
-        binding.templeViewpager.setAdapter(new TempleViewPagerAdapter(temple));
+        binding.templeViewpager.setAdapter(new TempleViewPagerAdapter(getContext(), temple));
 
         new TabLayoutMediator(binding.templeTabs, binding.templeViewpager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

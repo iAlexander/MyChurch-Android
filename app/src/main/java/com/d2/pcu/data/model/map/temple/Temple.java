@@ -37,7 +37,7 @@ public class Temple extends BaseModel implements ClusterItem {
 
     @SerializedName("priest") private Priest priest;
 
-    @SerializedName("churchGeo") private TempleGeo templeGeo;
+    @SerializedName("churchgeo") private TempleGeo templeGeo;
 
     @SerializedName("diocese") private Diocese diocese;
 

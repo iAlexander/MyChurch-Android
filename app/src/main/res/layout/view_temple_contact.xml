@@ -8,65 +8,30 @@
             type="com.d2.pcu.data.model.map.temple.Temple" />
 
         <variable
-            name="model"
-            type="com.d2.pcu.fragments.map.temple.temple_views.TempleContactsViewModel" />
+            name="holder"
+            type="com.d2.pcu.fragments.map.temple.temple_views.temple_viewholders.TempleContactsViewHolder" />
     </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/default_padding"
+        android:paddingEnd="@dimen/default_padding"
+        >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:paddingBottom="@dimen/nested_margin_from_bot_nav">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/temple_contacts_toolbar"
-            android:layout_width="match_parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/temple_contacts_photo_rv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/colorPrimary"
-            android:elevation="@dimen/small">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:padding="@dimen/small"
-                android:src="@drawable/ic_arrow_back"
-                android:onClick="@{model::onBackButtonPressed}"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@{temple.dioceseType.type}"
-                android:textAppearance="@style/TitleAppText.Bold" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/temple_contacts_toolbar"
-            android:paddingStart="@dimen/default_padding"
-            android:paddingEnd="@dimen/default_padding"
-            android:paddingBottom="@dimen/default_margin_from_bot_nav">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/temple_contacts_photo_rv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="@dimen/small"/>
+            android:layout_marginTop="@dimen/small"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/temple_contacts_title_tv"
@@ -74,10 +39,10 @@
             android:layout_height="wrap_content"
             android:text="@{temple.name}"
             android:textAppearance="@style/TitleAppText"
-            android:layout_marginTop="@dimen/small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/temple_contacts_photo_rv" />
+            app:layout_constraintTop_toBottomOf="@id/temple_contacts_photo_rv"
+            android:layout_marginTop="@dimen/small"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/temple_contacts_diocese_tv"
@@ -216,8 +181,8 @@
             android:layout_marginTop="@dimen/default_margin"
             android:background="@drawable/bg_button"
             android:text="@string/temple_get_directions"
-            android:onClick="@{model::onGetDirectionsClick}"
-            app:layout_constraintTop_toBottomOf="@id/temple_contacts_address_tv" />
+            app:layout_constraintTop_toBottomOf="@id/temple_contacts_address_tv"
+            android:onClick="@{holder::onGetDirectionsClick}"/>
 
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -301,9 +266,7 @@
             app:layout_constraintStart_toStartOf="@id/temple_contact_temple_holiday_date_tv"
             app:layout_constraintTop_toTopOf="@id/temple_contact_phone_tv" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </layout>
