@@ -67,11 +67,13 @@ public class NetLoader implements LifecycleObserver {
         Log.i(TAG, "Created");
     }
 
-    void getBaseTemplesInfo(final double lt, final double lg, final int radius, final OnHTTPResult result) {
-        handler.post(() -> api.getBaseTemplesInfo(lt, lg, radius).enqueue(new Callback<BaseTempleResponse>() {
+    void getBaseTemplesInfo(final double lt, final double lg, final OnHTTPResult result) {
+        handler.post(() -> api.getBaseTemplesInfo(lt, lg).enqueue(new Callback<BaseTempleResponse>() {
             @Override
             public void onResponse(@NonNull Call<BaseTempleResponse> call, @NonNull Response<BaseTempleResponse> response) {
                 int resCode = response.code();
+
+                Log.i(TAG, "getBaseTemplesInfo -> onResponseCode: " + resCode);
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());

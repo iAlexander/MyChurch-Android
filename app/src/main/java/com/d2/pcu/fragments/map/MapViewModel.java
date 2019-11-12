@@ -61,7 +61,7 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     void loadData() {
-        repository.getBaseTemplesInfo(location.getValue(), 2000);
+        repository.getBaseTemplesInfo(location.getValue());
     }
 
     LiveData<LatLng> getLocation() {

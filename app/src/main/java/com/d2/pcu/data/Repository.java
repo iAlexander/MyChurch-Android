@@ -73,8 +73,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         return channels;
     }
 
-    public void getBaseTemplesInfo(final LatLng location, int radius) {
-        netLoader.getBaseTemplesInfo(location.latitude, location.longitude, radius, new OnHTTPResult() {
+    public void getBaseTemplesInfo(final LatLng location) {
+        netLoader.getBaseTemplesInfo(location.latitude, location.longitude, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
                 Log.i(TAG, "getBaseTemplesInfo -> onSuccess ");

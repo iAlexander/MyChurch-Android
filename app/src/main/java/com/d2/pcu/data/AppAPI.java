@@ -8,6 +8,6 @@ import retrofit2.http.Query;
 
 public interface AppAPI {
 
-    @GET("temple")
-    Call<BaseTempleResponse> getBaseTemplesInfo(@Query("lt") double lt, @Query("lg") double lg, @Query("radius") int radius);
+    @GET("temple/list")
+    Call<BaseTempleResponse> getBaseTemplesInfo(@Query("lt") double lt, @Query("lg") double lg);
 }
