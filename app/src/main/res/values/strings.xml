@@ -6,18 +6,21 @@
     <string name="map">Map</string>
     <string name="calendar">Calendar</string>
     <string name="news">News</string>
+    <string name="prayers">Prayers</string>
+    <string name="profile">Profile</string>
+
     <string name="more">More</string>
 
-<!--  Symbols  -->
+    <!--  Symbols  -->
     <string name="dot">\u00b7</string>
     <string name="km"> km</string>
 
-<!--  Map  -->
+    <!--  Map  -->
     <string name="map_distance">Distance</string>
     <string name="map_more">More</string>
     <string name="map_search_hint">Search…</string>
 
-    <!--  Temple  -->
+        <!--  Temple  -->
     <string name="temple_contacts">Contacts</string>
     <string name="temple_history_descr">History and description</string>
     <string name="temple_open">Open now</string>
@@ -32,4 +35,9 @@
     <string name="temple_prior">Prior:</string>
     <string name="temple_charity">Charity:</string>
     <string name="temple_phone">Phone:</string>
+    
+    <!--  Pray  -->
+    <string name="pray_evening">Evening</string>
+    <string name="pray_morning">Morning</string>
+    <string name="pray_favorite">Favorite</string>
 </resources>
