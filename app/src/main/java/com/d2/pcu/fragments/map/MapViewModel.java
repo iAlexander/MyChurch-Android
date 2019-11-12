@@ -12,10 +12,12 @@ import androidx.lifecycle.Transformations;
 
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
-import com.d2.pcu.data.model.map.temple.Temple;
+import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.utils.Locator;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MapViewModel extends AndroidViewModel {
@@ -27,29 +29,46 @@ public class MapViewModel extends AndroidViewModel {
     private Repository repository;
 
     private LiveData<LatLng> location;
-    private LiveData<List<Temple>> templesLiveData = new MutableLiveData<>();
+    private LiveData<List<BaseTemple>> templesLiveData = new MutableLiveData<>();
 
     public MapViewModel(@NonNull Application application) {
         super(application);
 
         repository = App.getInstance().getRepositoryInstance();
         locator = new Locator(getApplication().getApplicationContext());
-    }
 
-    void loadData() {
         location = Transformations.switchMap(locator.getCurrentLocation(), new Function<LatLng, LiveData<LatLng>>() {
             @Override
             public LiveData<LatLng> apply(LatLng input) {
                 return new MutableLiveData<>(input);
             }
         });
+
+        templesLiveData = Transformations.switchMap(repository.getTransport().getBaseTemplesChannel(), new Function<List<BaseTemple>, LiveData<List<BaseTemple>>>() {
+            @Override
+            public LiveData<List<BaseTemple>> apply(List<BaseTemple> input) {
+
+                Collections.sort(input, new Comparator<BaseTemple>() {
+                    @Override
+                    public int compare(BaseTemple o1, BaseTemple o2) {
+                        return Double.compare(o1.getDistance(), o2.getDistance());
+                    }
+                });
+
+                return new MutableLiveData<>(input);
+            }
+        });
+    }
+
+    void loadData() {
+        repository.getBaseTemplesInfo(location.getValue(), 2000);
     }
 
     LiveData<LatLng> getLocation() {
         return location;
     }
 
-    LiveData<List<Temple>> getTemplesLiveData() {
+    LiveData<List<BaseTemple>> getTemplesLiveData() {
         return templesLiveData;
     }
 

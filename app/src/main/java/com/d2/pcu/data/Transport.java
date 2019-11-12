@@ -2,14 +2,19 @@ package com.d2.pcu.data;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
-import com.d2.pcu.data.responses.map.TempleResponse;
+import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.more.MoreResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 
+import java.util.List;
+
 public class Transport {
 
-    private MutableLiveData<TempleResponse> templesChannel = new MutableLiveData<>();
+    private MutableLiveData<List<BaseTemple>> baseTemplesChannel = new MutableLiveData<>();
+
+    private MutableLiveData<BaseTempleResponse> templesChannel = new MutableLiveData<>();
 
     private MutableLiveData<CalendarResponse> calendarChannel = new MutableLiveData<>();
 
@@ -17,7 +22,11 @@ public class Transport {
 
     private MutableLiveData<MoreResponse> moreChannel = new MutableLiveData<>();
 
-    public MutableLiveData<TempleResponse> getTemplesChannel() {
+    public MutableLiveData<List<BaseTemple>> getBaseTemplesChannel() {
+        return baseTemplesChannel;
+    }
+
+    public MutableLiveData<BaseTempleResponse> getTemplesChannel() {
         return templesChannel;
     }
 

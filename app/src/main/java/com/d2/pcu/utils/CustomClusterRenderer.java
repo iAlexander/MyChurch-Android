@@ -11,6 +11,7 @@ import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 
 import com.d2.pcu.R;
+import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -21,12 +22,12 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
-public class CustomClusterRenderer extends DefaultClusterRenderer<Temple> {
+public class CustomClusterRenderer extends DefaultClusterRenderer<BaseTemple> {
 
     private final Context context;
     private final IconGenerator iconGenerator;
 
-    public CustomClusterRenderer(Context context, GoogleMap map, ClusterManager<Temple> clusterManager) {
+    public CustomClusterRenderer(Context context, GoogleMap map, ClusterManager<BaseTemple> clusterManager) {
         super(context, map, clusterManager);
 
         this.context = context;
@@ -34,7 +35,7 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<Temple> {
     }
 
     @Override
-    protected void onBeforeClusterItemRendered(Temple item, MarkerOptions markerOptions) {
+    protected void onBeforeClusterItemRendered(BaseTemple item, MarkerOptions markerOptions) {
         final BitmapDescriptor markerDescriptor = bitmapDescriptorFromVector(R.drawable.map_pin);
 
         markerOptions.icon(markerDescriptor).snippet(item.getName());
@@ -42,7 +43,7 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<Temple> {
 
 
     @Override
-    protected void onBeforeClusterRendered(Cluster<Temple> cluster, MarkerOptions markerOptions) {
+    protected void onBeforeClusterRendered(Cluster<BaseTemple> cluster, MarkerOptions markerOptions) {
         iconGenerator.setBackground(ContextCompat.getDrawable(context, R.drawable.map_pin_group));
 
         iconGenerator.setTextAppearance(R.style.TitleAppText);
@@ -53,7 +54,7 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<Temple> {
     }
 
     @Override
-    protected boolean shouldRenderAsCluster(Cluster<Temple> cluster) {
+    protected boolean shouldRenderAsCluster(Cluster<BaseTemple> cluster) {
         return cluster.getSize() > 1;
     }
 

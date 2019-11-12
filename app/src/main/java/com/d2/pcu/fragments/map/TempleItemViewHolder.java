@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.databinding.ItemMapTempleBinding;
 
@@ -13,7 +14,7 @@ public class TempleItemViewHolder extends RecyclerView.ViewHolder {
 
     private OnTempleClickListener onTempleClickListener;
 
-    private Temple temple;
+    private BaseTemple temple;
 
     TempleItemViewHolder(ItemMapTempleBinding binding, OnTempleClickListener onTempleClickListener) {
         super(binding.getRoot());
@@ -23,7 +24,7 @@ public class TempleItemViewHolder extends RecyclerView.ViewHolder {
         this.onTempleClickListener = onTempleClickListener;
     }
 
-    void bind(Temple temple) {
+    void bind(BaseTemple temple) {
         binding.setTemple(temple);
         this.temple = temple;
     }

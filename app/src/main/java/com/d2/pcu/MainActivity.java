@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements OnBackButtonClick
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(binding.navigationView, navController);
 
+        getLifecycle().addObserver(App.getInstance().getRepositoryInstance());
+
     }
 
     @Override

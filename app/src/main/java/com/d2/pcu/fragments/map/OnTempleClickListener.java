@@ -1,8 +1,8 @@
 package com.d2.pcu.fragments.map;
 
-import com.d2.pcu.data.model.map.temple.Temple;
+import com.d2.pcu.data.model.map.temple.BaseTemple;
 
 public interface OnTempleClickListener {
 
-    void onMoreTempleInfoClick(Temple temple);
+    void onMoreTempleInfoClick(BaseTemple temple);
 }

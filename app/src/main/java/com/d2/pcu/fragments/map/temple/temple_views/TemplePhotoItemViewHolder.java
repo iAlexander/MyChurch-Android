@@ -1,5 +1,7 @@
 package com.d2.pcu.fragments.map.temple.temple_views;
 
+import android.view.View;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.d2.pcu.databinding.ItemTemplePhotoBinding;
@@ -15,6 +17,8 @@ public class TemplePhotoItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(String url) {
-        Picasso.get().load(url).into(binding.itemIv);
+        if (url != null && !url.isEmpty()) {
+            Picasso.get().load(url).into(binding.itemIv);
+        }
     }
 }

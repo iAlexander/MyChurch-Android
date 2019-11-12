@@ -10,7 +10,7 @@
 
 <!--  Symbols  -->
     <string name="dot">\u00b7</string>
-    <string name="km">km</string>
+    <string name="km"> km</string>
 
 <!--  Map  -->
     <string name="map_distance">Distance</string>
