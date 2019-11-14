@@ -16,6 +16,7 @@
     <string name="map_distance">Distance</string>
     <string name="map_more">More</string>
     <string name="map_search_hint">Search…</string>
+    <string name="map_my_location">My location</string>
 
     <!--  Temple  -->
     <string name="temple_contacts">Contacts</string>

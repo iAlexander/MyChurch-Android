@@ -1,7 +1,6 @@
 package com.d2.pcu.fragments.map;
 
 import android.app.Application;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
@@ -13,6 +12,7 @@ import androidx.lifecycle.Transformations;
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
+import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.utils.Locator;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -29,7 +29,9 @@ public class MapViewModel extends AndroidViewModel {
     private Repository repository;
 
     private LiveData<LatLng> location;
-    private LiveData<List<BaseTemple>> templesLiveData = new MutableLiveData<>();
+    private LiveData<List<BaseTemple>> baseTemplesLiveData;
+
+    private LiveData<List<Temple>> templesLiveData;
 
     public MapViewModel(@NonNull Application application) {
         super(application);
@@ -44,7 +46,7 @@ public class MapViewModel extends AndroidViewModel {
             }
         });
 
-        templesLiveData = Transformations.switchMap(repository.getTransport().getBaseTemplesChannel(), new Function<List<BaseTemple>, LiveData<List<BaseTemple>>>() {
+        baseTemplesLiveData = Transformations.switchMap(repository.getTransport().getBaseTemplesChannel(), new Function<List<BaseTemple>, LiveData<List<BaseTemple>>>() {
             @Override
             public LiveData<List<BaseTemple>> apply(List<BaseTemple> input) {
 
@@ -58,6 +60,13 @@ public class MapViewModel extends AndroidViewModel {
                 return new MutableLiveData<>(input);
             }
         });
+
+        templesLiveData = Transformations.switchMap(repository.getTransport().getTemplesChannel(), new Function<List<Temple>, LiveData<List<Temple>>>() {
+            @Override
+            public LiveData<List<Temple>> apply(List<Temple> input) {
+                return new MutableLiveData<>(input);
+            }
+        });
     }
 
     void loadData() {
@@ -68,8 +77,16 @@ public class MapViewModel extends AndroidViewModel {
         return location;
     }
 
-    LiveData<List<BaseTemple>> getTemplesLiveData() {
+    LiveData<List<BaseTemple>> getBaseTemplesLiveData() {
+        return baseTemplesLiveData;
+    }
+
+    LiveData<List<Temple>> getTemplesLiveData() {
         return templesLiveData;
+    }
+
+    void getTemplesByNameQuery(String query) {
+        repository.getTemplesByName(query);
     }
 
 }

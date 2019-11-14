@@ -12,6 +12,7 @@ import androidx.lifecycle.OnLifecycleEvent;
 
 import com.d2.pcu.data.responses.OnMasterResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
+import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.ui.error.HTTPException;
 import com.d2.pcu.ui.error.OnError;
 import com.d2.pcu.ui.error.OnHTTPResult;
@@ -85,6 +86,28 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             public void onFail(Throwable ex) {
                 if (onError != null) {
                     Log.i(TAG, "getBaseTemplesInfo -> onFail !!!");
+                    if (ex instanceof HTTPException) {
+//                        onError.onError(context.getString(R.string.phone_not_found), Constants.ERROR_TYPE_WRONG_PHONE_NUMBER);
+                    } else {
+//                        onError.onError(context.getString(R.string.network_error), Constants.ERROR_TYPE_NO_CONNECTION);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getTemplesByName(String query) {
+        netLoader.getTemplesByName(query, new OnHTTPResult() {
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+                Log.i(TAG, "getTemplesByName -> onFail !!!");
+                channels.getTemplesChannel().postValue(((TempleResponse) response).getTemples());
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                if (onError != null) {
+                    Log.i(TAG, "getTemplesByName -> onFail !!!");
                     if (ex instanceof HTTPException) {
 //                        onError.onError(context.getString(R.string.phone_not_found), Constants.ERROR_TYPE_WRONG_PHONE_NUMBER);
                     } else {

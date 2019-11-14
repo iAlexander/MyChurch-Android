@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
+import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.ui.error.HTTPCode;
 import com.d2.pcu.ui.error.HTTPException;
 import com.d2.pcu.ui.error.OnHTTPResult;
@@ -68,7 +69,7 @@ public class NetLoader implements LifecycleObserver {
     }
 
     void getBaseTemplesInfo(final double lt, final double lg, final OnHTTPResult result) {
-        handler.post(() -> api.getBaseTemplesInfo(lt, lg).enqueue(new Callback<BaseTempleResponse>() {
+        handler.post(() -> api.getBaseTemplesInfo(lt, lg, 5000).enqueue(new Callback<BaseTempleResponse>() {
             @Override
             public void onResponse(@NonNull Call<BaseTempleResponse> call, @NonNull Response<BaseTempleResponse> response) {
                 int resCode = response.code();
@@ -87,5 +88,32 @@ public class NetLoader implements LifecycleObserver {
                 result.onFail(t);
             }
         }));
+    }
+
+    void getTemplesByName(final String query, final OnHTTPResult result) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                api.getTempleByName(query).enqueue(new Callback<TempleResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<TempleResponse> call, @NonNull Response<TempleResponse> response) {
+                        int resCode = response.code();
+
+                        Log.i(TAG, "getBaseTemplesInfo -> onResponseCode: " + resCode);
+
+                        if (resCode >= 200 && resCode < 300) {
+                            result.onSuccess(response.body());
+                        } else {
+                            onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TempleResponse> call, @NonNull Throwable t) {
+                        result.onFail(t);
+                    }
+                });
+            }
+        });
     }
 }
