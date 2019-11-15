@@ -10,16 +10,18 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.d2.pcu.databinding.ActivityMainBinding;
 import com.d2.pcu.fragments.map.MapFragment;
 import com.d2.pcu.fragments.map.MapFragmentDirections;
 import com.d2.pcu.fragments.map.temple.TempleFragment;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
+import com.d2.pcu.listeners.OnLoadingEnableListener;
 import com.d2.pcu.listeners.OnMoreTempleInfoClickListener;
 import com.d2.pcu.utils.Constants;
 
-public class MainActivity extends AppCompatActivity implements OnBackButtonClickListener, OnMoreTempleInfoClickListener {
+public class MainActivity extends AppCompatActivity implements OnBackButtonClickListener, OnMoreTempleInfoClickListener, OnLoadingEnableListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -70,5 +72,10 @@ public class MainActivity extends AppCompatActivity implements OnBackButtonClick
             MapFragmentDirections.ActionMapFragmentToTempleContactsFragment action = MapFragmentDirections.actionMapFragmentToTempleContactsFragment(serializedTemple);
             navController.navigate(action);
         }
+    }
+
+    @Override
+    public void enableLoading(boolean enable) {
+        binding.loadingOverlayView.setVisibility(enable ? View.VISIBLE : View.GONE);
     }
 }

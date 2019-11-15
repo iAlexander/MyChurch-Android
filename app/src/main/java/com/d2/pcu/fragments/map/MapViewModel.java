@@ -12,10 +12,11 @@ import androidx.lifecycle.Transformations;
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
-import com.d2.pcu.data.model.map.temple.Temple;
+import com.d2.pcu.listeners.OnLoadingEnableListener;
 import com.d2.pcu.utils.Locator;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -31,7 +32,7 @@ public class MapViewModel extends AndroidViewModel {
     private LiveData<LatLng> location;
     private LiveData<List<BaseTemple>> baseTemplesLiveData;
 
-    private LiveData<List<Temple>> templesLiveData;
+    private OnLoadingEnableListener onLoadingEnableListener;
 
     public MapViewModel(@NonNull Application application) {
         super(application);
@@ -60,13 +61,22 @@ public class MapViewModel extends AndroidViewModel {
                 return new MutableLiveData<>(input);
             }
         });
+    }
 
-        templesLiveData = Transformations.switchMap(repository.getTransport().getTemplesChannel(), new Function<List<Temple>, LiveData<List<Temple>>>() {
-            @Override
-            public LiveData<List<Temple>> apply(List<Temple> input) {
-                return new MutableLiveData<>(input);
-            }
-        });
+    public void setOnLoadingEnableListener(OnLoadingEnableListener onLoadingEnableListener) {
+        this.onLoadingEnableListener = onLoadingEnableListener;
+    }
+
+    void enableLoading() {
+        if (onLoadingEnableListener != null) {
+            onLoadingEnableListener.enableLoading(true);
+        }
+    }
+
+    void disableLoading() {
+        if (onLoadingEnableListener != null) {
+            onLoadingEnableListener.enableLoading(false);
+        }
     }
 
     void loadData() {
@@ -81,12 +91,32 @@ public class MapViewModel extends AndroidViewModel {
         return baseTemplesLiveData;
     }
 
-    LiveData<List<Temple>> getTemplesLiveData() {
-        return templesLiveData;
+
+    List<TempleSuggestion> getBaseTemplesByName(String query) {
+
+        List<TempleSuggestion> templeSuggestions = new ArrayList<>();
+
+        if (baseTemplesLiveData != null) {
+
+            for (BaseTemple temple : baseTemplesLiveData.getValue()) {
+                if (temple.getName().contains(query) || temple.getName().toLowerCase().contains(query)) {
+                    templeSuggestions.add(new TempleSuggestion(temple.getName(), temple.getId()));
+                }
+            }
+
+        }
+
+        return templeSuggestions;
     }
 
-    void getTemplesByNameQuery(String query) {
-        repository.getTemplesByName(query);
+    BaseTemple getBaseTempleById(int id) {
+        for (BaseTemple temple : baseTemplesLiveData.getValue()) {
+            if (temple.getId() == id) {
+                return temple;
+            }
+        }
+
+        return null;
     }
 
 }

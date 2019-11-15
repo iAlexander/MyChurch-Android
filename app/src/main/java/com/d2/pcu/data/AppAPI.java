@@ -1,7 +1,7 @@
 package com.d2.pcu.data;
 
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
-import com.d2.pcu.data.responses.map.TempleResponse;
+import com.d2.pcu.data.responses.map.TemplesResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -17,7 +17,7 @@ public interface AppAPI {
     );
 
     @GET("temple")
-    Call<TempleResponse> getTempleByName(
-            @Query("name") String name
+    Call<TemplesResponse> getTempleById(
+            @Query("id") int id
     );
 }

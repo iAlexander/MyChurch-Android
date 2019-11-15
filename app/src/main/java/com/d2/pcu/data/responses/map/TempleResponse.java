@@ -4,17 +4,23 @@ import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.data.responses.OnMasterResponse;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class TempleResponse extends OnMasterResponse {
 
-    @SerializedName("data") private List<Temple> temples;
+    @SerializedName("data")
+    private Temple temple;
 
-    public List<Temple> getTemples() {
-        return temples;
+    public Temple getTemple() {
+        return temple;
     }
 
-    public void setTemples(List<Temple> temples) {
-        this.temples = temples;
+    public void setTemple(Temple temple) {
+        this.temple = temple;
+    }
+
+    @Override
+    public String toString() {
+        return "TempleResponse{" +
+                "temple=" + temple +
+                '}';
     }
 }

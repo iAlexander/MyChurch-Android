@@ -17,17 +17,19 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
-import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.databinding.MapFragmentBinding;
 import com.d2.pcu.fragments.BaseFragment;
+import com.d2.pcu.listeners.OnLoadingEnableListener;
 import com.d2.pcu.listeners.OnMoreTempleInfoClickListener;
 import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.CustomClusterRenderer;
@@ -53,6 +55,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
     private OnMoreTempleInfoClickListener onMoreTempleInfoClickListener;
 
+    private OnLoadingEnableListener onLoadingEnableListener;
+
     private ClusterManager<BaseTemple> clusterManager;
 
     private GoogleMap googleMap;
@@ -77,6 +81,9 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(MapViewModel.class);
+        viewModel.setOnLoadingEnableListener(onLoadingEnableListener);
+        viewModel.enableLoading();
+
         adapter = new TemplesAdapter(
                 new OnTempleClickListener() {
                     @Override
@@ -96,28 +103,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setModel(viewModel);
-        binding.mapFloatingSearchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
-            @Override
-            public void onActionMenuItemSelected(MenuItem item) {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(viewModel.getLocation().getValue(), 11f));
-            }
-        });
-        binding.mapFloatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
-            @Override
-            public void onSearchTextChanged(String oldQuery, String newQuery) {
-                if (!newQuery.isEmpty()) {
-                    viewModel.getTemplesByNameQuery(newQuery);
-                }
-            }
-        });
 
-        viewModel.getTemplesLiveData().observe(getViewLifecycleOwner(), new Observer<List<Temple>>() {
-            @Override
-            public void onChanged(List<Temple> temples) {
-
-            }
-        });
-
+        configureSearchView();
         settingTempleRecyclerView();
 
 
@@ -138,6 +125,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
                     clusterManager.clearItems();
                     clusterManager.addItems(temples);
                 }
+                viewModel.disableLoading();
             }
         });
     }
@@ -240,6 +228,47 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
         });
     }
 
+    private void configureSearchView() {
+        binding.mapFloatingSearchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
+            @Override
+            public void onActionMenuItemSelected(MenuItem item) {
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(viewModel.getLocation().getValue(), 11f));
+            }
+        });
+        binding.mapFloatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+            @Override
+            public void onSearchTextChanged(String oldQuery, String newQuery) {
+                if (newQuery.length() < 3) {
+                    return;
+                }
+
+                binding.mapFloatingSearchView.showProgress();
+                binding.mapFloatingSearchView.swapSuggestions(viewModel.getBaseTemplesByName(newQuery));
+                binding.mapFloatingSearchView.hideProgress();
+            }
+        });
+
+        binding.mapFloatingSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
+            @Override
+            public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
+
+                TempleSuggestion templeSuggestion = (TempleSuggestion) searchSuggestion;
+
+                BaseTemple baseTemple = viewModel.getBaseTempleById(templeSuggestion.getId());
+
+                adapter.scrollToItem(viewModel.getBaseTempleById(templeSuggestion.getId()));
+                moveCameraToLocation(baseTemple.getLatLng());
+                binding.mapFloatingSearchView.clearSearchFocus();
+                binding.mapFloatingSearchView.clearQuery();
+            }
+
+            @Override
+            public void onSearchAction(String currentQuery) {
+                // ignore
+            }
+        });
+    }
+
     private void moveCameraToLocation(LatLng latLng) {
         if (googleMap != null) {
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14f));
@@ -250,11 +279,13 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onMoreTempleInfoClickListener = (OnMoreTempleInfoClickListener) context;
+        onLoadingEnableListener = (OnLoadingEnableListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         onMoreTempleInfoClickListener = null;
+        onLoadingEnableListener = null;
     }
 }
