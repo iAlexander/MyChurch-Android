@@ -17,9 +17,11 @@ import com.d2.pcu.fragments.map.MapFragmentDirections;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingEnableListener;
 import com.d2.pcu.listeners.OnMoreTempleInfoClickListener;
+import com.d2.pcu.ui.error.OnError;
+import com.d2.pcu.ui.error.fragments.ErrorFragment;
 import com.d2.pcu.utils.Constants;
 
-public class MainActivity extends AppCompatActivity implements OnBackButtonClickListener, OnMoreTempleInfoClickListener, OnLoadingEnableListener {
+public class MainActivity extends AppCompatActivity implements OnError, OnBackButtonClickListener, OnMoreTempleInfoClickListener, OnLoadingEnableListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements OnBackButtonClick
         NavigationUI.setupWithNavController(binding.navigationView, navController);
 
         getLifecycle().addObserver(App.getInstance().getRepositoryInstance());
+        App.getInstance().getRepositoryInstance().setOnErrorListener(this);
 
     }
 
@@ -75,5 +78,11 @@ public class MainActivity extends AppCompatActivity implements OnBackButtonClick
     @Override
     public void enableLoading(boolean enable) {
         binding.loadingOverlayView.setVisibility(enable ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onError(int errorType) {
+        ErrorFragment errorFragment = ErrorFragment.newInstance(errorType);
+        errorFragment.show(getSupportFragmentManager(), Constants.ERROR_FRAGMENT_TAG);
     }
 }

@@ -8,4 +8,9 @@ public class Constants {
     public static final int TEMPLE_TYPE_CATHEDRAL = 1;
     public static final int TEMPLE_TYPE_CHURCH = 2;
     public static final String SIMPLE_CHURCH = "Типовий";
+
+//    ERRORS
+    public static final String ERROR_FRAGMENT_TAG = "errorFragment";
+    public static final int ERROR_TYPE_NO_CONNECTION = 1;
+    public static final int ERROR_TYPE_SERVER_ERROR = 2;
 }
