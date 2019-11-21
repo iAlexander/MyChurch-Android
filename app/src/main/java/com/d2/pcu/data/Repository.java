@@ -10,7 +10,14 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import com.d2.pcu.data.responses.OnMasterResponse;
+import com.d2.pcu.data.responses.map.BaseTempleResponse;
+import com.d2.pcu.data.responses.map.TempleResponse;
+import com.d2.pcu.data.responses.map.TemplesResponse;
+import com.d2.pcu.ui.error.HTTPException;
 import com.d2.pcu.ui.error.OnError;
+import com.d2.pcu.ui.error.OnHTTPResult;
+import com.google.android.gms.maps.model.LatLng;
 
 public class Repository implements LifecycleObserver, LifecycleOwner {
 
@@ -66,5 +73,49 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
     public Transport getTransport() {
         return channels;
+    }
+
+    public void getBaseTemplesInfo(final LatLng location) {
+        netLoader.getBaseTemplesInfo(location.latitude, location.longitude, new OnHTTPResult() {
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+                Log.i(TAG, "getBaseTemplesInfo -> onSuccess ");
+                channels.getBaseTemplesChannel().postValue(((BaseTempleResponse) response).getBaseTemples());
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                if (onError != null) {
+                    Log.i(TAG, "getBaseTemplesInfo -> onFail !!!");
+                    if (ex instanceof HTTPException) {
+//                        onError.onError(context.getString(R.string.phone_not_found), Constants.ERROR_TYPE_WRONG_PHONE_NUMBER);
+                    } else {
+//                        onError.onError(context.getString(R.string.network_error), Constants.ERROR_TYPE_NO_CONNECTION);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getTempleById(int id) {
+        netLoader.getTempleById(id, new OnHTTPResult() {
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+                Log.i(TAG, "getTempleById -> onFail !!!");
+                channels.getTempleChannel().postValue(((TempleResponse) response).getTemple());
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                if (onError != null) {
+                    Log.i(TAG, "getTempleById -> onFail !!!");
+                    if (ex instanceof HTTPException) {
+//                        onError.onError(context.getString(R.string.phone_not_found), Constants.ERROR_TYPE_WRONG_PHONE_NUMBER);
+                    } else {
+//                        onError.onError(context.getString(R.string.network_error), Constants.ERROR_TYPE_NO_CONNECTION);
+                    }
+                }
+            }
+        });
     }
 }

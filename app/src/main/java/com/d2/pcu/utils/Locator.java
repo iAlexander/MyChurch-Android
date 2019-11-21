@@ -31,11 +31,12 @@ public class Locator {
                 Location location = result.getResult();
 
                 LatLng current; {
-                    if (location != null) {
-                        current = new LatLng(location.getLatitude(), location.getLongitude());
-                    } else {
-                        current = new LatLng(0.0, 0.0);
-                    }
+//                    if (location != null) {
+//                        current = new LatLng(location.getLatitude(), location.getLongitude());
+//                    } else {
+//                        current = new LatLng(0.0, 0.0);
+//                    }
+                    current = new LatLng(50.4902564, 30.481516);
                 }
 
                 currentLocation.setValue(current);

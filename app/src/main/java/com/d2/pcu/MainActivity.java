@@ -5,16 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.d2.pcu.databinding.ActivityMainBinding;
+import com.d2.pcu.fragments.map.MapFragment;
+import com.d2.pcu.fragments.map.MapFragmentDirections;
+import com.d2.pcu.fragments.map.temple.TempleFragment;
+import com.d2.pcu.listeners.OnBackButtonClickListener;
+import com.d2.pcu.listeners.OnLoadingEnableListener;
+import com.d2.pcu.listeners.OnMoreTempleInfoClickListener;
+import com.d2.pcu.utils.Constants;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnBackButtonClickListener, OnMoreTempleInfoClickListener, OnLoadingEnableListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -27,16 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        setSupportActionBar(binding.toolbar);
-
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(binding.navigationView, navController);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.templeFragment,
-                R.id.calendarFragment,
-                R.id.newsFragment,
-                R.id.moreFragment).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        getLifecycle().addObserver(App.getInstance().getRepositoryInstance());
+
     }
 
     @Override
@@ -54,5 +56,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onBackButtonPressed() {
+        navController.popBackStack();
+    }
+
+    @Override
+    public void onTempleInfoClick(String serializedTemple, int type) {
+        if (type == Constants.TEMPLE_TYPE_CATHEDRAL) {
+            MapFragmentDirections.ActionMapFragmentToTempleFragment action = MapFragmentDirections.actionMapFragmentToTempleFragment(serializedTemple);
+            navController.navigate(action);
+        } else {
+            MapFragmentDirections.ActionMapFragmentToTempleContactsFragment action = MapFragmentDirections.actionMapFragmentToTempleContactsFragment(serializedTemple);
+            navController.navigate(action);
+        }
+    }
+
+    @Override
+    public void enableLoading(boolean enable) {
+        binding.loadingOverlayView.setVisibility(enable ? View.VISIBLE : View.GONE);
     }
 }
