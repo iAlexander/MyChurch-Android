@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="holder"
+            type="com.d2.pcu.fragments.pray.pray_views.PrayBaseViewHolder" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_padding">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/pray_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TitleAppText.Bold"
+            android:text="dsadsa"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/pray_favorite_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_star_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/pray_title_tv"
+            app:layout_constraintBottom_toBottomOf="@id/pray_title_tv"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="12dp"
+            app:srcCompat="@drawable/ic_volume"
+            app:layout_constraintEnd_toStartOf="@id/pray_favorite_iv"
+            app:layout_constraintTop_toTopOf="@id/pray_favorite_iv"
+            app:layout_constraintBottom_toBottomOf="@id/pray_favorite_iv"
+            android:layout_marginEnd="@dimen/default_margin"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/AppText"
+            app:layout_constraintTop_toBottomOf="@id/pray_title_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:maxLines="2"
+            android:layout_marginTop="@dimen/small"
+            android:text="dsadsaddadsadsadsadsadsadsadsadsadsadsadsadsdsadsadsads dsa dsa"
+            android:ellipsize="end"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -13,9 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.d2.pcu.databinding.ActivityMainBinding;
-import com.d2.pcu.fragments.map.MapFragment;
 import com.d2.pcu.fragments.map.MapFragmentDirections;
-import com.d2.pcu.fragments.map.temple.TempleFragment;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingEnableListener;
 import com.d2.pcu.listeners.OnMoreTempleInfoClickListener;
