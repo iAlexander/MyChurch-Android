@@ -25,15 +25,12 @@ public class TempleGeo extends BaseModel {
 
     @SerializedName("locality") private String locality;
 
-    private LatLng latLng;
-
     public TempleGeo() {
         this.id = 0;
         this.street = "";
         this.index = "";
         this.lt = 0f;
         this.lg = 0f;
-        this.latLng = new LatLng(lt, lg);
         this.region = "";
         this.district = "";
         this.locality = "";
