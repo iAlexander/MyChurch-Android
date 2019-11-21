@@ -64,4 +64,12 @@
             android:name="serializedTemple"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/errorFragment"
+        android:name="com.d2.pcu.ui.error.fragments.ErrorFragment"
+        android:label="ErrorFragment" >
+        <argument
+            android:name="errorType"
+            app:argType="integer" />
+    </fragment>
 </navigation>
