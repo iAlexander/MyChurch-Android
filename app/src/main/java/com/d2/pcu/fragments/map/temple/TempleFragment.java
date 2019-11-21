@@ -1,6 +1,7 @@
 package com.d2.pcu.fragments.map.temple;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -18,6 +19,7 @@ import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.fragments.BaseFragment;
+import com.d2.pcu.listeners.OnLoadingEnableListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
@@ -30,6 +32,7 @@ public class TempleFragment extends BaseFragment {
     private TempleFragmentBinding binding;
 
     private OnBackButtonClickListener onBackButtonClickListener;
+    private OnLoadingEnableListener onLoadingEnableListener;
 
     private Temple temple;
 
@@ -59,11 +62,29 @@ public class TempleFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(TempleViewModel.class);
         viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
+        viewModel.setOnLoadingEnableListener(onLoadingEnableListener);
+
+        viewModel.enableLoading();
+        viewModel.loadTempleInfoById(temple.getId());
+
+        viewModel.getTempleLiveData().observe(getViewLifecycleOwner(), new Observer<Temple>() {
+            @Override
+            public void onChanged(Temple temple) {
+                TempleFragment.this.temple = temple;
+
+                binding.setTemple(temple);
+                setDataToList();
+                viewModel.disableLoading();
+            }
+        });
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setModel(viewModel);
-        binding.setTemple(temple);
 
+
+    }
+
+    private void setDataToList() {
         binding.templeViewpager.setAdapter(new TempleViewPagerAdapter(getContext(), temple));
 
         new TabLayoutMediator(binding.templeTabs, binding.templeViewpager, new TabLayoutMediator.TabConfigurationStrategy() {
@@ -86,11 +107,13 @@ public class TempleFragment extends BaseFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onBackButtonClickListener = (OnBackButtonClickListener) context;
+        onLoadingEnableListener = (OnLoadingEnableListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         onBackButtonClickListener = null;
+        onLoadingEnableListener = null;
     }
 }

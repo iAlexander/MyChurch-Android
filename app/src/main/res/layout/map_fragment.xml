@@ -26,6 +26,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/templates_list_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <com.arlib.floatingsearchview.FloatingSearchView
             android:id="@+id/map_floating_search_view"
             android:layout_width="match_parent"
@@ -38,15 +46,8 @@
             app:floatingSearch_searchBarMarginRight="@dimen/small"
             app:floatingSearch_suggestionsListAnimDuration="250"
             app:floatingSearch_searchHint="@string/map_search_hint"
+            app:floatingSearch_menu="@menu/menu_map"
             />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/templates_list_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

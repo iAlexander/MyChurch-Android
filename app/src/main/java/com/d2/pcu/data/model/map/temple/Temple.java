@@ -2,6 +2,7 @@ package com.d2.pcu.data.model.map.temple;
 
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.library.baseAdapters.BR;
@@ -23,13 +24,21 @@ public class Temple extends BaseModel implements ClusterItem {
 
     @SerializedName("name") private String name;
 
-    @SerializedName("phone") private String phone;
+    @SerializedName("phone")
+    @Nullable
+    private String phone;
 
-    @SerializedName("site") private String site;
+    @SerializedName("site")
+    @Nullable
+    private String site;
 
-    @SerializedName("history") private String history;
+    @SerializedName("history")
+    @Nullable
+    private String history;
 
-    @SerializedName("image") private String imageUrl;
+    @SerializedName("image")
+    @Nullable
+    private String imageUrl;
 
     @SerializedName("bishop") private Bishop bishop;
 
@@ -42,6 +51,8 @@ public class Temple extends BaseModel implements ClusterItem {
     @SerializedName("diocese") private Diocese diocese;
 
     @SerializedName("dioceseType") private DioceseType dioceseType;
+
+    @SerializedName("workSchedule") private WorkSchedule workSchedule;
 
     public Temple() {
         this.id = 0;
@@ -56,6 +67,7 @@ public class Temple extends BaseModel implements ClusterItem {
         this.templeGeo = new TempleGeo();
         this.diocese = new Diocese();
         this.dioceseType = new DioceseType();
+        this.workSchedule = new WorkSchedule();
     }
 
     public int getId() {
@@ -193,5 +205,32 @@ public class Temple extends BaseModel implements ClusterItem {
     @Override
     public String getSnippet() {
         return name;
+    }
+
+    public WorkSchedule getWorkSchedule() {
+        return workSchedule;
+    }
+
+    public void setWorkSchedule(WorkSchedule workSchedule) {
+        this.workSchedule = workSchedule;
+    }
+
+    @Override
+    public String toString() {
+        return "Temple{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", site='" + site + '\'' +
+                ", history='" + history + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", bishop=" + bishop +
+                ", presiding=" + presiding +
+                ", priest=" + priest +
+                ", templeGeo=" + templeGeo +
+                ", diocese=" + diocese +
+                ", dioceseType=" + dioceseType +
+                ", workSchedule=" + workSchedule +
+                '}';
     }
 }

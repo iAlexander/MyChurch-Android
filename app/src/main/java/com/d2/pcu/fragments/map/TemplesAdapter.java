@@ -13,6 +13,7 @@ import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.databinding.ItemMapTempleBinding;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,13 +26,10 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
 
     private OnTempleClickListener onTempleClickListener;
 
-    private OnItemScrollListener onItemScrollListener;
-
     private RecyclerView recyclerView;
 
-    TemplesAdapter(OnTempleClickListener onTempleClickListener, OnItemScrollListener onItemScrollListener) {
+    TemplesAdapter(OnTempleClickListener onTempleClickListener) {
         this.onTempleClickListener = onTempleClickListener;
-        this.onItemScrollListener = onItemScrollListener;
     }
 
     void setTemples(List<BaseTemple> temples) {
@@ -53,10 +51,6 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TempleItemViewHolder holder, int position) {
         holder.bind(temples.get(position));
-
-        if (position > 0) {
-            onItemScrollListener.onItemStop(temples.get(position - 1).getLatLng());
-        }
     }
 
     @Override
@@ -76,7 +70,7 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
         this.recyclerView = recyclerView;
     }
 
-    public void scrollToItem(BaseTemple baseTemple) {
+    void scrollToItem(BaseTemple baseTemple) {
 
         for (int i = 0; i < temples.size(); i++) {
             if (baseTemple.equals(temples.get(i))) {
@@ -84,5 +78,9 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
                 break;
             }
         }
+    }
+
+    LatLng onItemScroll(int position) {
+        return temples.get(position).getLatLng();
     }
 }

@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
+import com.d2.pcu.data.responses.map.TemplesResponse;
 import com.d2.pcu.ui.error.HTTPCode;
 import com.d2.pcu.ui.error.HTTPException;
 import com.d2.pcu.ui.error.OnHTTPResult;
@@ -67,11 +68,13 @@ public class NetLoader implements LifecycleObserver {
         Log.i(TAG, "Created");
     }
 
-    void getBaseTemplesInfo(final double lt, final double lg, final int radius, final OnHTTPResult result) {
-        handler.post(() -> api.getBaseTemplesInfo(lt, lg, radius).enqueue(new Callback<BaseTempleResponse>() {
+    void getBaseTemplesInfo(final double lt, final double lg, final OnHTTPResult result) {
+        handler.post(() -> api.getBaseTemplesInfo(lt, lg, 5000).enqueue(new Callback<BaseTempleResponse>() {
             @Override
             public void onResponse(@NonNull Call<BaseTempleResponse> call, @NonNull Response<BaseTempleResponse> response) {
                 int resCode = response.code();
+
+                Log.i(TAG, "getBaseTemplesInfo -> onResponseCode: " + resCode);
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
@@ -85,5 +88,33 @@ public class NetLoader implements LifecycleObserver {
                 result.onFail(t);
             }
         }));
+    }
+
+    void getTempleById(final int id, final OnHTTPResult result) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                api.getTempleById(id).enqueue(new Callback<TemplesResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<TemplesResponse> call, @NonNull Response<TemplesResponse> response) {
+                        int resCode = response.code();
+
+                        Log.i(TAG, "getTempleById -> onResponseCode: " + resCode);
+
+                        if (resCode >= 200 && resCode < 300) {
+                            result.onSuccess(response.body());
+                        } else {
+                            onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TemplesResponse> call, @NonNull Throwable t) {
+                        Log.i(TAG, "getTempleById -> onFailure ! ");
+                        result.onFail(t);
+                    }
+                });
+            }
+        });
     }
 }
