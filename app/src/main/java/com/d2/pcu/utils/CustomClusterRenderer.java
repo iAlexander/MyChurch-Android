@@ -2,17 +2,14 @@ package com.d2.pcu.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
-import com.d2.pcu.data.model.map.temple.Temple;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -46,7 +43,7 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<BaseTemple> {
     protected void onBeforeClusterRendered(Cluster<BaseTemple> cluster, MarkerOptions markerOptions) {
         iconGenerator.setBackground(ContextCompat.getDrawable(context, R.drawable.map_pin_group));
 
-        iconGenerator.setTextAppearance(R.style.TitleAppText);
+        iconGenerator.setTextAppearance(R.style.TitleAppTextBlack);
 
         final Bitmap icon = iconGenerator.makeIcon(String.valueOf(cluster.getSize()));
 

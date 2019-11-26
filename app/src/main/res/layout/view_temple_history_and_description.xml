@@ -11,7 +11,7 @@
             android:id="@+id/temple_title_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TitleAppText"
+            android:textAppearance="@style/TitleAppTextBlack"
             android:text="dsadsad"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:text="@string/prayers"
-                android:textAppearance="@style/TitleAppText.Bold" />
+                android:textAppearance="@style/TitleAppTextBlack.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"

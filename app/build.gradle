@@ -51,6 +51,7 @@ android {
 }
 
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -76,9 +77,9 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-rc01'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
-    implementation 'com.google.android.material:material:1.2.0-alpha01'
+    implementation 'com.google.android.material:material:1.2.0-alpha02'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
@@ -88,4 +89,6 @@ dependencies {
 //    Custom dependencies
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
     implementation 'com.google.maps.android:android-maps-utils:0.6.2'
+
+    implementation 'com.applandeo:material-calendar-view:1.7.0'
 }

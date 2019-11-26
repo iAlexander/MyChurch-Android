@@ -1,6 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ic_map_active" android:state_checked="true" />
-    <item android:drawable="@drawable/ic_map_normal" android:state_checked="false" />
-    <item android:drawable="@drawable/ic_map_normal" />
-</selector>
+<vector android:height="24dp" android:viewportHeight="18"
+    android:viewportWidth="18" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <clip-path android:pathData="M0,0h18v18h-18z M 0,0"/>
+        <path android:fillColor="#00000000"
+            android:pathData="M11.1998,6.3001C11.1998,7.5151 10.2148,8.5001 8.9998,8.5001C7.7848,8.5001 6.7998,7.5151 6.7998,6.3001C6.7998,5.0851 7.7848,4.1001 8.9998,4.1001C10.2148,4.1001 11.1998,5.0851 11.1998,6.3001Z"
+            android:strokeColor="#8792A1" android:strokeWidth="1"/>
+        <path android:fillColor="#00000000"
+            android:pathData="M14.8019,5.4431C15.0392,8.1884 13.6562,11.2183 12.0894,13.6155C11.3134,14.803 10.5084,15.8106 9.8731,16.5181C9.555,16.8724 9.2839,17.1465 9.0842,17.3281C9.0563,17.3535 9.0304,17.3765 9.0065,17.3972C8.9825,17.3754 8.9565,17.3511 8.9285,17.3243C8.7305,17.1354 8.4622,16.851 8.147,16.4848C7.5178,15.7537 6.7202,14.7175 5.9486,13.5101C4.3889,11.0694 3.006,8.038 3.1986,5.4369C3.4385,2.1984 6.4601,0.5 9,0.5C10.4828,0.5 11.8656,0.927 12.9052,1.7475C13.9365,2.5614 14.6584,3.7834 14.8019,5.4431Z"
+            android:strokeColor="#8792A1" android:strokeWidth="1"/>
+    </group>
+</vector>

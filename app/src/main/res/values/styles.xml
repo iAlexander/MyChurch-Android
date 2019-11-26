@@ -26,19 +26,28 @@
     </style>
 
     <style name="toolbarStyle">
-        <item name="android:textColor">#FF000000</item>
+        <item name="android:background">@drawable/bg_app_color_gradient_blue</item>
     </style>
 
-    <style name="TitleAppText" parent="TextAppearance.AppCompat">
+    <style name="TitleAppTextBlack" parent="TextAppearance.AppCompat">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
-    <style name="TitleAppText.Bold.MapItem">
+    <style name="TitleAppTextWhite" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TitleAppTextBlack.Bold.MapItem">
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="TitleAppText.Bold">
+    <style name="TitleAppTextBlack.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TitleAppTextWhite.Bold">
         <item name="android:textStyle">bold</item>
     </style>
 

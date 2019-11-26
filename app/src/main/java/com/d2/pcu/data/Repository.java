@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.d2.pcu.data.responses.OnMasterResponse;
+import com.d2.pcu.data.responses.calendar.CalendarResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.map.TemplesResponse;
@@ -102,7 +103,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getTempleById(id, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getTempleById -> onFail !!!");
+                Log.i(TAG, "getTempleById -> onSuccess ");
                 channels.getTempleChannel().postValue(((TempleResponse) response).getTemple());
             }
 
@@ -110,6 +111,27 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             public void onFail(Throwable ex) {
                 if (onError != null) {
                     Log.i(TAG, "getTempleById -> onFail !!!");
+                    if (ex instanceof HTTPException) {
+                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
+                    } else {
+                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getCalendar() {
+        netLoader.getCalendarInfo(new OnHTTPResult() {
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+                channels.getCalendarChannel().postValue(((CalendarResponse)response).getCalendarItems());
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                if (onError != null) {
+                    Log.i(TAG, "getCalendar -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {

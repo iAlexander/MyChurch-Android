@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements OnError, OnBackBu
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(binding.navigationView, navController);
 
+        binding.navigationView.setItemIconTintList(null);
+
         getLifecycle().addObserver(App.getInstance().getRepositoryInstance());
         App.getInstance().getRepositoryInstance().setOnErrorListener(this);
 

@@ -32,7 +32,7 @@
             android:id="@+id/item_map_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TitleAppText.Bold.MapItem"
+            android:textAppearance="@style/TitleAppTextBlack.Bold.MapItem"
             android:text="@{temple.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

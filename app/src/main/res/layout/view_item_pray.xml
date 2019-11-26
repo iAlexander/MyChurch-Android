@@ -18,7 +18,7 @@
             android:id="@+id/pray_title_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TitleAppText.Bold"
+            android:textAppearance="@style/TitleAppTextBlack.Bold"
             android:text="dsadsa"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

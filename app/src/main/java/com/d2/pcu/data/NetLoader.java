@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import com.d2.pcu.data.responses.calendar.CalendarResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TemplesResponse;
 import com.d2.pcu.ui.error.HTTPCode;
@@ -21,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.HttpException;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -115,6 +117,31 @@ public class NetLoader implements LifecycleObserver {
                     }
                 });
             }
+        });
+    }
+
+    void getCalendarInfo(final OnHTTPResult result) {
+        handler.post(() -> {
+            api.getCalendarInfo().enqueue(new Callback<CalendarResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<CalendarResponse> call, @NonNull Response<CalendarResponse> response) {
+                    int resCode = response.code();
+
+                    Log.i(TAG, "getCalendarInfo -> onResponse: " + resCode);
+
+                    if (resCode >= 200 && resCode < 300) {
+                        result.onSuccess(response.body());
+                    } else {
+                        onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CalendarResponse> call, Throwable t) {
+                    Log.i(TAG, "getCalendarInfo -> onFailure: " + t.getMessage());
+                    result.onFail(t);
+                }
+            });
         });
     }
 }
