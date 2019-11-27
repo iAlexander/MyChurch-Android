@@ -19,7 +19,7 @@ import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.databinding.FragmentTempleContactsBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
-import com.d2.pcu.listeners.OnLoadingEnableListener;
+import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.google.gson.Gson;
 
 import java.util.Arrays;
@@ -30,7 +30,7 @@ public class TempleContactsFragment extends BaseFragment {
     private TempleContactsViewModel viewModel;
 
     private OnBackButtonClickListener onBackButtonClickListener;
-    private OnLoadingEnableListener onLoadingEnableListener;
+    private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
     private Temple temple;
 
@@ -69,7 +69,7 @@ public class TempleContactsFragment extends BaseFragment {
 
         viewModel = ViewModelProviders.of(this).get(TempleContactsViewModel.class);
         viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
-        viewModel.setOnLoadingEnableListener(onLoadingEnableListener);
+        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
         viewModel.enableLoading();
         viewModel.loadTempleInfoById(temple.getId());
 
@@ -98,13 +98,13 @@ public class TempleContactsFragment extends BaseFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onBackButtonClickListener = (OnBackButtonClickListener) context;
-        onLoadingEnableListener = (OnLoadingEnableListener) context;
+        onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         onBackButtonClickListener = null;
-        onLoadingEnableListener = null;
+        onLoadingStateChangedListener = null;
     }
 }

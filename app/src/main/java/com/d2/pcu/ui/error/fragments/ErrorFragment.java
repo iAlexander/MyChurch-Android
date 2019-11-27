@@ -12,7 +12,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentErrorBinding;
-import com.d2.pcu.listeners.OnLoadingEnableListener;
+import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.utils.Constants;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -22,7 +22,7 @@ public class ErrorFragment extends BottomSheetDialogFragment {
 
     private FragmentErrorBinding binding;
 
-    private OnLoadingEnableListener onLoadingEnableListener;
+    private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
     private int errorType;
 
@@ -76,8 +76,8 @@ public class ErrorFragment extends BottomSheetDialogFragment {
             }
         }
 
-        if (onLoadingEnableListener != null) {
-            onLoadingEnableListener.enableLoading(false);
+        if (onLoadingStateChangedListener != null) {
+            onLoadingStateChangedListener.enableLoading(false);
         }
         binding.errorApplyBtn.setOnClickListener(btnView -> ErrorFragment.this.dismiss());
     }
@@ -85,12 +85,12 @@ public class ErrorFragment extends BottomSheetDialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        onLoadingEnableListener = (OnLoadingEnableListener) context;
+        onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        onLoadingEnableListener = null;
+        onLoadingStateChangedListener = null;
     }
 }

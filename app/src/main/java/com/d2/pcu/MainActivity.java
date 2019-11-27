@@ -13,15 +13,19 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.d2.pcu.databinding.ActivityMainBinding;
+import com.d2.pcu.fragments.calendar.CalendarFragmentDirections;
+import com.d2.pcu.fragments.calendar.OnCalendarEventItemClickListener;
 import com.d2.pcu.fragments.map.MapFragmentDirections;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
-import com.d2.pcu.listeners.OnLoadingEnableListener;
+import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.listeners.OnMoreTempleInfoClickListener;
 import com.d2.pcu.ui.error.OnError;
 import com.d2.pcu.ui.error.fragments.ErrorFragment;
 import com.d2.pcu.utils.Constants;
 
-public class MainActivity extends AppCompatActivity implements OnError, OnBackButtonClickListener, OnMoreTempleInfoClickListener, OnLoadingEnableListener {
+public class MainActivity extends AppCompatActivity implements OnError,
+        OnBackButtonClickListener, OnMoreTempleInfoClickListener,
+        OnLoadingStateChangedListener, OnCalendarEventItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -86,5 +90,11 @@ public class MainActivity extends AppCompatActivity implements OnError, OnBackBu
     public void onError(int errorType) {
         ErrorFragment errorFragment = ErrorFragment.newInstance(errorType);
         errorFragment.show(getSupportFragmentManager(), Constants.ERROR_FRAGMENT_TAG);
+    }
+
+    @Override
+    public void onEventItemClick(String serializedEvent) {
+        CalendarFragmentDirections.ActionCalendarFragmentToFragmentCalendarEvent action = CalendarFragmentDirections.actionCalendarFragmentToFragmentCalendarEvent(serializedEvent);
+        navController.navigate(action);
     }
 }

@@ -12,7 +12,7 @@ import androidx.lifecycle.Transformations;
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
-import com.d2.pcu.listeners.OnLoadingEnableListener;
+import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.utils.Locator;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -32,7 +32,7 @@ public class MapViewModel extends AndroidViewModel {
     private LiveData<LatLng> location;
     private LiveData<List<BaseTemple>> baseTemplesLiveData;
 
-    private OnLoadingEnableListener onLoadingEnableListener;
+    private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
     public MapViewModel(@NonNull Application application) {
         super(application);
@@ -63,19 +63,19 @@ public class MapViewModel extends AndroidViewModel {
         });
     }
 
-    public void setOnLoadingEnableListener(OnLoadingEnableListener onLoadingEnableListener) {
-        this.onLoadingEnableListener = onLoadingEnableListener;
+    public void setOnLoadingStateChangedListener(OnLoadingStateChangedListener onLoadingStateChangedListener) {
+        this.onLoadingStateChangedListener = onLoadingStateChangedListener;
     }
 
     void enableLoading() {
-        if (onLoadingEnableListener != null) {
-            onLoadingEnableListener.enableLoading(true);
+        if (onLoadingStateChangedListener != null) {
+            onLoadingStateChangedListener.enableLoading(true);
         }
     }
 
     void disableLoading() {
-        if (onLoadingEnableListener != null) {
-            onLoadingEnableListener.enableLoading(false);
+        if (onLoadingStateChangedListener != null) {
+            onLoadingStateChangedListener.enableLoading(false);
         }
     }
 

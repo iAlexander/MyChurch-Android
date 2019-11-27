@@ -16,6 +16,8 @@ public class CalendarItem extends BaseModel {
 
     @SerializedName("name") private String name;
 
+    @SerializedName("color") private String color;
+
     public int getId() {
         return id;
     }
@@ -44,12 +46,21 @@ public class CalendarItem extends BaseModel {
         notifyPropertyChanged(BR.name);
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     @Override
     public String toString() {
         return "CalendarItem{" +
                 "id=" + id +
                 ", holidayDate=" + holidayDate +
                 ", name='" + name + '\'' +
+                ", color='" + color + '\'' +
                 '}';
     }
 }

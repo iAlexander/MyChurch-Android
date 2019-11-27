@@ -1,6 +1,5 @@
-package com.d2.pcu.fragments.map.temple.temple_views;
+package com.d2.pcu.fragments.calendar.event;
 
-import android.util.Log;
 import android.view.View;
 
 import androidx.arch.core.util.Function;
@@ -11,29 +10,28 @@ import androidx.lifecycle.ViewModel;
 
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
-import com.d2.pcu.data.model.map.temple.Temple;
+import com.d2.pcu.data.model.calendar.CalendarItem;
+import com.d2.pcu.data.model.calendar.Event;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 
-public class TempleContactsViewModel extends ViewModel {
-
-
-    private static final String TAG = TempleContactsViewModel.class.getSimpleName();
-
-    private OnBackButtonClickListener onBackButtonClickListener;
-
-    private OnLoadingStateChangedListener onLoadingStateChangedListener;
+public class CalendarEventViewModel extends ViewModel {
 
     private Repository repository;
 
-    private LiveData<Temple> templeLiveData;
+    private OnBackButtonClickListener onBackButtonClickListener;
+    private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
-    public TempleContactsViewModel() {
+    private LiveData<Event> eventLiveData;
+
+    private CalendarItem calendarItem;
+
+    public CalendarEventViewModel() {
         repository = App.getInstance().getRepositoryInstance();
 
-        templeLiveData = Transformations.switchMap(repository.getTransport().getTempleChannel(), new Function<Temple, LiveData<Temple>>() {
+        eventLiveData = Transformations.switchMap(repository.getTransport().getEventChannel(), new Function<Event, LiveData<Event>>() {
             @Override
-            public LiveData<Temple> apply(Temple input) {
+            public LiveData<Event> apply(Event input) {
                 return new MutableLiveData<>(input);
             }
         });
@@ -43,16 +41,18 @@ public class TempleContactsViewModel extends ViewModel {
         this.onBackButtonClickListener = onBackButtonClickListener;
     }
 
-    void setOnLoadingStateChangedListener(OnLoadingStateChangedListener onLoadingStateChangedListener) {
+    public void setOnLoadingStateChangedListener(OnLoadingStateChangedListener onLoadingStateChangedListener) {
         this.onLoadingStateChangedListener = onLoadingStateChangedListener;
     }
 
-    void loadTempleInfoById(int id) {
-        repository.getTempleById(id);
+    void loadEventData() {
+        if (calendarItem != null) {
+            repository.getEventInfo(calendarItem.getId());
+        }
     }
 
-    public LiveData<Temple> getTempleLiveData() {
-        return templeLiveData;
+    LiveData<Event> getEventLiveData() {
+        return eventLiveData;
     }
 
     void enableLoading() {
@@ -67,15 +67,13 @@ public class TempleContactsViewModel extends ViewModel {
         }
     }
 
-    public void onBackButtonPressed(View view) {
+    void setCalendarItem(CalendarItem calendarItem) {
+        this.calendarItem = calendarItem;
+    }
+
+    public void onBackPressed(View view) {
         if (onBackButtonClickListener != null) {
             onBackButtonClickListener.onBackButtonPressed();
         }
     }
-
-    public void onGetDirectionsClick(View view) {
-        Log.d(TAG, "onGetDirectionsClick: ");
-    }
-
-    // TODO: 2019-11-15 MAKE ONE ABSTRACT VIEW HOLDER
 }

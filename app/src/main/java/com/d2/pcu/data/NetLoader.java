@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
+import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TemplesResponse;
 import com.d2.pcu.ui.error.HTTPCode;
@@ -143,5 +144,28 @@ public class NetLoader implements LifecycleObserver {
                 }
             });
         });
+    }
+
+    void getEventInfo(final int id, final OnHTTPResult result) {
+        handler.post(() -> api.getEventInfo(id).enqueue(new Callback<EventResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<EventResponse> call, @NonNull Response<EventResponse> response) {
+                int resCode = response.code();
+
+                Log.i(TAG, "getEventInfo -> onResponse: " + resCode);
+
+                if (resCode >= 200 && resCode < 300) {
+                    result.onSuccess(response.body());
+                } else {
+                    onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EventResponse> call, @NonNull Throwable t) {
+                Log.i(TAG, "getEventInfo -> onFailure: " + t.getMessage());
+                result.onFail(t);
+            }
+        }));
     }
 }

@@ -12,13 +12,13 @@ import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
-import com.d2.pcu.listeners.OnLoadingEnableListener;
+import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 
 public class TempleViewModel extends ViewModel {
 
     private OnBackButtonClickListener onBackButtonClickListener;
 
-    private OnLoadingEnableListener onLoadingEnableListener;
+    private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
     private Repository repository;
 
@@ -39,8 +39,8 @@ public class TempleViewModel extends ViewModel {
         this.onBackButtonClickListener = onBackButtonClickListener;
     }
 
-    void setOnLoadingEnableListener(OnLoadingEnableListener onLoadingEnableListener) {
-        this.onLoadingEnableListener = onLoadingEnableListener;
+    void setOnLoadingStateChangedListener(OnLoadingStateChangedListener onLoadingStateChangedListener) {
+        this.onLoadingStateChangedListener = onLoadingStateChangedListener;
     }
 
     void loadTempleInfoById(int id) {
@@ -52,14 +52,14 @@ public class TempleViewModel extends ViewModel {
     }
 
     void enableLoading() {
-        if (onLoadingEnableListener != null) {
-            onLoadingEnableListener.enableLoading(true);
+        if (onLoadingStateChangedListener != null) {
+            onLoadingStateChangedListener.enableLoading(true);
         }
     }
 
     void disableLoading() {
-        if (onLoadingEnableListener != null) {
-            onLoadingEnableListener.enableLoading(false);
+        if (onLoadingStateChangedListener != null) {
+            onLoadingStateChangedListener.enableLoading(false);
         }
     }
 

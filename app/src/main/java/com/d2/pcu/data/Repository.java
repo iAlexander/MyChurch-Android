@@ -10,8 +10,10 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import com.d2.pcu.data.model.calendar.Event;
 import com.d2.pcu.data.responses.OnMasterResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
+import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.map.TemplesResponse;
@@ -132,6 +134,27 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             public void onFail(Throwable ex) {
                 if (onError != null) {
                     Log.i(TAG, "getCalendar -> onFail !!!");
+                    if (ex instanceof HTTPException) {
+                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
+                    } else {
+                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getEventInfo(final int id) {
+        netLoader.getEventInfo(id, new OnHTTPResult() {
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+                channels.getEventChannel().postValue(((EventResponse) response).getEvent());
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                if (onError != null) {
+                    Log.i(TAG, "getEventInfo -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {

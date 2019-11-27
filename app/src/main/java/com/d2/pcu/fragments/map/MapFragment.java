@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,7 @@ import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.databinding.MapFragmentBinding;
 import com.d2.pcu.fragments.BaseFragment;
-import com.d2.pcu.listeners.OnLoadingEnableListener;
+import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.listeners.OnMoreTempleInfoClickListener;
 import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.CustomClusterRenderer;
@@ -55,7 +54,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
     private OnMoreTempleInfoClickListener onMoreTempleInfoClickListener;
 
-    private OnLoadingEnableListener onLoadingEnableListener;
+    private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
     private ClusterManager<BaseTemple> clusterManager;
 
@@ -81,7 +80,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(MapViewModel.class);
-        viewModel.setOnLoadingEnableListener(onLoadingEnableListener);
+        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
         viewModel.enableLoading();
 
         adapter = new TemplesAdapter(
@@ -279,13 +278,13 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onMoreTempleInfoClickListener = (OnMoreTempleInfoClickListener) context;
-        onLoadingEnableListener = (OnLoadingEnableListener) context;
+        onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         onMoreTempleInfoClickListener = null;
-        onLoadingEnableListener = null;
+        onLoadingStateChangedListener = null;
     }
 }

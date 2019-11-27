@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -52,6 +56,31 @@
             app:type="one_day_picker"
             app:todayLabelColor="@color/colorAccent"/>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/calendar_date_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TitleAppTextBlack.Bold"
+            app:layout_constraintTop_toBottomOf="@id/calendar_cv"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/default_margin"
+            android:text="Date text"
+            android:layout_marginTop="@dimen/default_margin"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calendar_day_events_rv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/calendar_date_title_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:padding="@dimen/default_padding"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </layout>

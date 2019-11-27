@@ -1,6 +1,7 @@
 package com.d2.pcu.data;
 
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
+import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TemplesResponse;
 
@@ -24,4 +25,9 @@ public interface AppAPI {
 
     @GET("calendar")
     Call<CalendarResponse> getCalendarInfo();
+
+    @GET("calendar/{id}")
+    Call<EventResponse> getEventInfo(
+            @Query("id") int id
+    );
 }

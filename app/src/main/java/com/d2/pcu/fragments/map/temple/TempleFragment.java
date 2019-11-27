@@ -19,7 +19,7 @@ import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.fragments.BaseFragment;
-import com.d2.pcu.listeners.OnLoadingEnableListener;
+import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
@@ -32,7 +32,7 @@ public class TempleFragment extends BaseFragment {
     private TempleFragmentBinding binding;
 
     private OnBackButtonClickListener onBackButtonClickListener;
-    private OnLoadingEnableListener onLoadingEnableListener;
+    private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
     private Temple temple;
 
@@ -62,7 +62,7 @@ public class TempleFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(TempleViewModel.class);
         viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
-        viewModel.setOnLoadingEnableListener(onLoadingEnableListener);
+        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
 
         viewModel.enableLoading();
         viewModel.loadTempleInfoById(temple.getId());
@@ -107,13 +107,13 @@ public class TempleFragment extends BaseFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onBackButtonClickListener = (OnBackButtonClickListener) context;
-        onLoadingEnableListener = (OnLoadingEnableListener) context;
+        onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         onBackButtonClickListener = null;
-        onLoadingEnableListener = null;
+        onLoadingStateChangedListener = null;
     }
 }

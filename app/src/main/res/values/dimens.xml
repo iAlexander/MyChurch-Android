@@ -6,7 +6,7 @@
 
     <dimen name="default_padding">16dp</dimen>
     <dimen name="default_margin">16dp</dimen>
-    <dimen name="default_margin_from_bot_nav">80dp</dimen>
+    <dimen name="default_margin_from_bot_nav">60dp</dimen>
     <dimen name="nested_margin_from_bot_nav">128dp</dimen>
 
     <dimen name="item_map_corners">3dp</dimen>
