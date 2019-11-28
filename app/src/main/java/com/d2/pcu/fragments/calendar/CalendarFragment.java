@@ -76,7 +76,11 @@ public class CalendarFragment extends Fragment {
         viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
         viewModel.enableLoading();
 
-        if (viewModel.getAssembledCalendarMap() == null) {
+//        if (viewModel.getAssembledCalendarMap() == null) {
+//            viewModel.loadCalendar();
+//        }
+
+        if (viewModel.getAssembledItemsArray() == null) {
             viewModel.loadCalendar();
         }
 
@@ -107,7 +111,8 @@ public class CalendarFragment extends Fragment {
                 calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
                 DateUtils.setMidnight(calendar);
 
-                List<CalendarItem> items = viewModel.getAssembledCalendarMap().get(calendar.getTimeInMillis());
+
+                List<CalendarItem> items = viewModel.getAssembledItemsArray().get(calendar.getTimeInMillis());
                 if (items != null) {
                     adapter.setDayEvents(items);
                 }

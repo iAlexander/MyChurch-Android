@@ -1,5 +1,7 @@
 package com.d2.pcu.fragments.calendar;
 
+import android.util.LongSparseArray;
+
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -22,7 +24,8 @@ public class CalendarViewModel extends ViewModel {
 
     private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
-    private HashMap<Long, List<CalendarItem>> assembledCalendarMap = null;
+
+    private LongSparseArray<List<CalendarItem>> assembledItemsArray = null;
 
     public CalendarViewModel() {
         repository = App.getInstance().getRepositoryInstance();
@@ -57,21 +60,22 @@ public class CalendarViewModel extends ViewModel {
 
     void assembleCalendarMap() {
         List<CalendarItem> calendarItems = calendarItemsLiveData.getValue();
-        assembledCalendarMap = new HashMap<>();
+
+        assembledItemsArray = new LongSparseArray<>();
 
         for (CalendarItem item : calendarItems) {
-            if (assembledCalendarMap.get(item.getHolidayDate().getTime()) == null) {
+            if (assembledItemsArray.get(item.getHolidayDate().getTime()) == null) {
                 List<CalendarItem> newItems = new ArrayList<>();
                 newItems.add(item);
-                assembledCalendarMap.put(item.getHolidayDate().getTime(), newItems);
+                assembledItemsArray.put(item.getHolidayDate().getTime(), newItems);
             } else {
-                assembledCalendarMap.get(item.getHolidayDate().getTime()).add(item);
+                assembledItemsArray.get(item.getHolidayDate().getTime()).add(item);
             }
         }
     }
 
-    public HashMap<Long, List<CalendarItem>> getAssembledCalendarMap() {
-        return assembledCalendarMap;
+    public LongSparseArray<List<CalendarItem>> getAssembledItemsArray() {
+        return assembledItemsArray;
     }
 
     LiveData<List<CalendarItem>> getCalendarItemsLiveData() {
