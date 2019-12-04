@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="holder"
+            type="com.d2.pcu.fragments.calendar.DayEventsViewHolder" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rounded"
+        android:elevation="@dimen/small"
+        android:onClick="@{holder::onItemClick}"
+        >
+
+        <View
+            android:id="@+id/calendar_event_paragraph_v"
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/small"
+            android:layout_marginBottom="@dimen/small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/calendar_event_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TitleAppTextBlack.Bold"
+            android:text="Введення у храм Пресвятої Богородиці"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:padding="@dimen/default_padding"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/calendar_event_iv"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/calendar_event_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/calendar_event_title_tv"
+            app:layout_constraintBottom_toBottomOf="@id/calendar_event_title_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_arrow_forward"
+            android:padding="@dimen/default_padding"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

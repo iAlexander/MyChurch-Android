@@ -5,6 +5,10 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -17,8 +21,58 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="toolbarStyle">
-        <item name="android:textColor">#FF000000</item>
+    <style name="AppButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/bg_button</item>
     </style>
 
+    <style name="toolbarStyle">
+        <item name="android:background">@drawable/bg_app_color_gradient_blue</item>
+    </style>
+
+    <style name="TitleAppTextBlack" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="TitleAppTextWhite" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TitleAppTextBlack.Bold.MapItem">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TitleAppTextBlack.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TitleAppTextWhite.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppText" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="AppText.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="AppText.Small.Green">
+        <item name="android:textColor">@color/green</item>
+    </style>
+
+    <style name="AppText.Small.Red">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="AppText.Small.AccentColor">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="AppText.Small.AccentColor.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

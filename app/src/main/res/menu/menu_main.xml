@@ -3,26 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.d2.pcu.MainActivity">
 
-    <item android:id="@+id/templeFragment"
-        android:icon="@drawable/ic_map"
+    <item android:id="@+id/mapFragment"
+        android:icon="@drawable/selector_map"
         android:orderInCategory="100"
         android:title="@string/map"
         app:showAsAction="always"/>
 
     <item android:id="@+id/calendarFragment"
-        android:icon="@drawable/ic_calendar"
+        android:icon="@drawable/selector_calendar"
         android:orderInCategory="100"
         android:title="@string/calendar"
         app:showAsAction="always"/>
 
     <item android:id="@+id/newsFragment"
-        android:icon="@drawable/ic_news"
+        android:icon="@drawable/ic_news_selector"
         android:orderInCategory="100"
         android:title="@string/news"
         app:showAsAction="always"/>
-    <item android:id="@+id/moreFragment"
-        android:icon="@drawable/ic_more"
+
+    <item android:id="@+id/prayFragment"
+        android:icon="@drawable/selecter_prayers"
         android:orderInCategory="100"
-        android:title="@string/more"
+        android:title="@string/prayers"
         app:showAsAction="always" />
+
+    <item android:id="@+id/profileFragment"
+        android:icon="@drawable/selector_profile"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:title="@string/profile"/>
 </menu>

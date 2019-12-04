@@ -3,31 +3,86 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    app:startDestination="@id/templeFragment">
+    app:startDestination="@id/mapFragment">
 
     <fragment
-        android:id="@+id/templeFragment"
-        android:name="com.d2.pcu.fragments.map.TempleFragment"
+        android:id="@+id/mapFragment"
+        android:name="com.d2.pcu.fragments.map.MapFragment"
         android:label="@string/map"
-        tools:layout="@layout/temple_fragment" />
+        tools:layout="@layout/map_fragment" >
+        <action
+            android:id="@+id/action_mapFragment_to_templeFragment"
+            app:destination="@id/templeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_mapFragment_to_templeContactsFragment"
+            app:destination="@id/templeContactsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.d2.pcu.fragments.calendar.CalendarFragment"
         android:label="@string/calendar"
-        tools:layout="@layout/calendar_fragment" />
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_fragmentCalendarEvent"
+            app:destination="@id/fragmentCalendarEvent" />
+    </fragment>
     <fragment
         android:id="@+id/newsFragment"
         android:name="com.d2.pcu.fragments.news.NewsFragment"
         android:label="@string/news"
         tools:layout="@layout/news_fragment" />
     <fragment
-        android:id="@+id/moreFragment"
-        android:name="com.d2.pcu.fragments.more.MoreFragment"
-        android:label="@string/more"
+        android:id="@+id/prayFragment"
+        android:name="com.d2.pcu.fragments.pray.PrayFragment"
+        android:label="@string/prayers"
         tools:layout="@layout/more_fragment" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.d2.pcu.fragments.profile.ProfileFragment"
         android:label="profile_fragment"
         tools:layout="@layout/profile_fragment" />
+    <fragment
+        android:id="@+id/templeFragment"
+        android:name="com.d2.pcu.fragments.map.temple.TempleFragment"
+        android:label="temple_fragment"
+        tools:layout="@layout/temple_fragment" >
+        <argument
+            android:name="serializedTemple"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/templeContactsFragment"
+        android:name="com.d2.pcu.fragments.map.temple.temple_views.TempleContactsFragment"
+        android:label="fragment_temple_contacts"
+        tools:layout="@layout/fragment_temple_contacts" >
+        <argument
+            android:name="serializedTemple"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/errorFragment"
+        android:name="com.d2.pcu.ui.error.fragments.ErrorFragment"
+        android:label="ErrorFragment" >
+        <argument
+            android:name="errorType"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCalendarEvent"
+        android:name="com.d2.pcu.fragments.calendar.event.FragmentCalendarEvent"
+        android:label="fragment_calendar_event"
+        tools:layout="@layout/fragment_calendar_event" >
+        <argument
+            android:name="serializedEvent"
+            app:argType="string" />
+    </fragment>
 </navigation>
