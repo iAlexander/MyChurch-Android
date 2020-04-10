@@ -381,9 +381,9 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
                 for (Pray pray : prays) {
                     if (pray.getType().equals(Constants.PRAY_EVENING)) {
-                        morningList.add(pray);
-                    } else {
                         eveningList.add(pray);
+                    } else {
+                        morningList.add(pray);
                     }
                 }
 
