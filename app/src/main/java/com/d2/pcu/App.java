@@ -28,6 +28,8 @@ import com.yariksoffice.lingver.Lingver;
 import java.io.File;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 public class App extends Application {
 
     private static final String TAG = App.class.getSimpleName();
@@ -53,6 +55,8 @@ public class App extends Application {
         instance = this;
         repository = new Repository(this);
         database = Room.databaseBuilder(this, AppDatabase.class, "pcu_database").build();
+
+        Timber.plant(new Timber.DebugTree());
 
         downloadDirectory = new File(getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "prays");
 

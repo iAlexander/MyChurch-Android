@@ -40,7 +40,7 @@ public class CalendarItem extends BaseModel {
         conceived = "";
         color = "";
         fasting = 0;
-        priority = -1;
+        priority = 0;
     }
 
     public int getId() {
@@ -129,5 +129,14 @@ public class CalendarItem extends BaseModel {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public String toString() {
+        return "CalendarItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", priority=" + priority +
+                '}';
     }
 }
