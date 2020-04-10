@@ -76,7 +76,7 @@ public class FragmentCalendarEvent extends BaseFragment {
             Drawable wrapped = DrawableCompat.wrap(getResources().getDrawable(R.drawable.paragraph));
             try {
                 DrawableCompat.setTint(wrapped, Color.parseColor(calendarItem.getColor()));
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException|StringIndexOutOfBoundsException e) {
                 DrawableCompat.setTint(wrapped, Color.BLACK);
             }
 

@@ -30,7 +30,7 @@ public class DayEventsViewHolder extends RecyclerView.ViewHolder {
         try {
             binding.calendarEventIv.setColorFilter(Color.parseColor(calendarItem.getColor()));
             binding.calendarEventParagraphV.setBackgroundColor(Color.parseColor(calendarItem.getColor()));
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException|StringIndexOutOfBoundsException e) {
             binding.calendarEventIv.setColorFilter(Color.BLACK);
             binding.calendarEventParagraphV.setBackgroundColor(Color.BLACK);
         }

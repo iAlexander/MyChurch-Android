@@ -6,17 +6,17 @@ import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
 
 import com.applandeo.materialcalendarview.EventDay;
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.calendar.CalendarItem;
 import com.d2.pcu.fragments.BaseViewModel;
-import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class CalendarViewModel extends BaseViewModel {
 
@@ -43,12 +43,11 @@ public class CalendarViewModel extends BaseViewModel {
 
     void assembleCalendarEventsArray() {
         List<CalendarItem> calendarItems = calendarItemsLiveData.getValue();
-
         assembledItemsArray = new LongSparseArray<>();
-
+        List<CalendarItem> newItems;
         for (CalendarItem item : calendarItems) {
             if (assembledItemsArray.get(item.getDateNewStyle().getTime()) == null) {
-                List<CalendarItem> newItems = new ArrayList<>();
+                newItems = new ArrayList<>();
                 newItems.add(item);
                 assembledItemsArray.put(item.getDateNewStyle().getTime(), newItems);
             } else {

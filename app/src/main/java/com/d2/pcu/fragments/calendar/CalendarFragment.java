@@ -1,17 +1,20 @@
 package com.d2.pcu.fragments.calendar;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
@@ -27,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
+
+import timber.log.Timber;
 
 public class CalendarFragment extends Fragment {
 
@@ -132,8 +137,8 @@ public class CalendarFragment extends Fragment {
         setEvents(binding.calendarCv.getFirstSelectedDate());
     }
 
-    private void setEvents(Calendar calendarSource) {
-        Calendar source = calendarSource;
+    private void setEvents(Calendar source) {
+//        Calendar source1 = source;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(source.get(Calendar.YEAR), source.get(Calendar.MONTH), source.get(Calendar.DATE));
@@ -141,13 +146,14 @@ public class CalendarFragment extends Fragment {
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         DateUtils.setMidnight(calendar);
 
-        List<CalendarItem> items = viewModel.getAssembledItemsArray().get(calendar.getTimeInMillis());
-        if (items != null) {
+        List<CalendarItem> items = viewModel.getAssembledItemsArray().get(source.getTimeInMillis());
+        Timber.e(" list calendar items: %s", items!=null?items.size():0);
+//        if (items != null) {
             adapter.setDayEvents(items);
-        } else {
-            // TODO: 2019-12-13 Refactoring
-            adapter.setDayEvents(new ArrayList<>());
-        }
+//        } else {
+//            // TODO: 2019-12-13 Refactoring
+//            adapter.setDayEvents(new ArrayList<>());
+//        }
 
         binding.calendarDateTitleTv.setText(DateFormatter.getDayAndMonth(calendar.getTime()));
     }
