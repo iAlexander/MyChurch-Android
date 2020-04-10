@@ -1,5 +1,12 @@
 package com.d2.pcu;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -9,30 +16,18 @@ import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.profile.UserState;
 import com.d2.pcu.databinding.ActivityMainBinding;
+import com.d2.pcu.fragments.cabinet.OnCabinetButtonsClickListener;
+import com.d2.pcu.fragments.cabinet.donate.OnDonatesClickListener;
+import com.d2.pcu.fragments.cabinet.support.OnChatClickListener;
+import com.d2.pcu.fragments.cabinet.user_profile.OnEditProfileDataClickListener;
 import com.d2.pcu.fragments.cabinet.user_profile.ProfileMenuViewModel;
 import com.d2.pcu.fragments.calendar.CalendarFragmentDirections;
 import com.d2.pcu.fragments.calendar.OnCalendarEventItemClickListener;
 import com.d2.pcu.fragments.map.MapFragmentDirections;
 import com.d2.pcu.fragments.news.vertical.NewsFragmentDirections;
-import com.d2.pcu.fragments.cabinet.OnCabinetButtonsClickListener;
-import com.d2.pcu.fragments.cabinet.donate.OnDonatesClickListener;
-import com.d2.pcu.fragments.cabinet.support.OnChatClickListener;
-import com.d2.pcu.fragments.cabinet.user_profile.OnEditProfileDataClickListener;
 import com.d2.pcu.listeners.InfoDialogListener;
 import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
 import com.d2.pcu.listeners.OnAdditionalFuncNewsListener;
@@ -253,22 +248,22 @@ public class MainActivity extends AppCompatActivity implements OnError,
         Intent intent = new Intent(Intent.ACTION_VIEW);
 
         switch (serviceId) {
-            case R.id.donates_monobank_btn : {
+            case R.id.donates_monobank_btn: {
                 String url = "https://send.monobank.ua/9Y5rJTCoDD";
                 intent.setData(Uri.parse(url));
 
                 startActivity(intent);
                 break;
             }
-            case R.id.donates_privat24_btn : {
+            case R.id.donates_privat24_btn: {
                 Toast.makeText(getApplicationContext(), "Privat24 click", Toast.LENGTH_SHORT).show();
                 break;
             }
-            case R.id.donates_portmone_btn : {
+            case R.id.donates_portmone_btn: {
                 Toast.makeText(getApplicationContext(), "Portmone click", Toast.LENGTH_SHORT).show();
                 break;
             }
-            case R.id.donate_paypal_btn : {
+            case R.id.donate_paypal_btn: {
                 Toast.makeText(getApplicationContext(), "PayPall click", Toast.LENGTH_SHORT).show();
                 break;
             }
@@ -280,19 +275,19 @@ public class MainActivity extends AppCompatActivity implements OnError,
         Intent intent = new Intent(Intent.ACTION_VIEW);
 
         switch (chatId) {
-            case R.id.telegram_btn : {
+            case R.id.telegram_btn: {
                 intent.setData(Uri.parse("https://t.me/vera_pravoslavna"));
                 startActivity(intent);
                 break;
             }
-            case R.id.viber_btn : {
+            case R.id.viber_btn: {
                 Toast.makeText(getApplicationContext(), "Viber click", Toast.LENGTH_SHORT).show();
 
 //                intent.setData(Uri.parse(""));
 //                startActivity(intent);
                 break;
             }
-            case R.id.messenger_btn : {
+            case R.id.messenger_btn: {
                 Toast.makeText(getApplicationContext(), "Messenger click", Toast.LENGTH_SHORT).show();
 
 //                intent.setData(Uri.parse(""));

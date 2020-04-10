@@ -11,4 +11,5 @@
 
     <dimen name="item_map_corners">6dp</dimen>
     <dimen name="item_map_width">320dp</dimen>
+    <dimen name="pcu_default_elevation">4dp</dimen>
 </resources>

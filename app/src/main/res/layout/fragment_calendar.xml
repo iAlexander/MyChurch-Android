@@ -19,6 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/bg_app_color_gradient_blue"
             app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:elevation="@dimen/pcu_default_elevation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">

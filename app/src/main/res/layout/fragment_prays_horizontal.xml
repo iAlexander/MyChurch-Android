@@ -21,6 +21,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/prayers_item_toolbar"
             android:layout_width="match_parent"
+            android:elevation="@dimen/pcu_default_elevation"
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/bg_app_color_gradient_blue"
             app:layout_constraintEnd_toEndOf="parent"

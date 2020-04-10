@@ -26,6 +26,7 @@
             android:id="@+id/calendar_event_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:elevation="@dimen/pcu_default_elevation"
             android:background="@drawable/bg_app_color_gradient_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

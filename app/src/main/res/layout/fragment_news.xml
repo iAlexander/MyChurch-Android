@@ -10,6 +10,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/news_toolbar"
+            android:elevation="@dimen/pcu_default_elevation"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/bg_app_color_gradient_blue"

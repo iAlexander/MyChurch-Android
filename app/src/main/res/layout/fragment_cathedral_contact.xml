@@ -26,6 +26,7 @@
                 android:background="@drawable/bg_app_color_gradient_blue"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:titleTextColor="@color/textColorPrimary"
+                android:elevation="@dimen/pcu_default_elevation"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -62,6 +63,7 @@
                 android:layout_height="wrap_content"
                 app:tabTextAppearance="@style/TabTextAppearance"
                 app:tabSelectedTextColor="@color/colorAccent"
+                android:elevation="@dimen/pcu_default_elevation"
                 android:background="@color/colorPrimary"
                 app:layout_constraintTop_toBottomOf="@id/temple_toolbar"
                 app:layout_constraintStart_toStartOf="parent"
