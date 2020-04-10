@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="model"
+            type="com.d2.pcu.login.sign_up.UserProfileViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".fragments.cabinet.CabinetFragment">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/support_chats_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:background="@drawable/bg_app_color_gradient_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:layout_marginEnd="@dimen/small"
+                android:onClick="@{model::onBackPressed}"
+                android:padding="@dimen/default_margin"
+                app:srcCompat="@drawable/ic_arrow_back_white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:padding="@dimen/default_margin"
+                android:textAppearance="@style/TitleAppTextWhite.Bold"
+                android:text="@string/profile"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="@dimen/small"
+                android:padding="@dimen/default_margin"
+                app:srcCompat="@drawable/ic_notifications_none" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/default_padding">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/name_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/cherneche_name"
+                    android:textAppearance="@style/AppText.Small" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/user_name_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TitleAppTextBlack"
+                    android:backgroundTint="@color/colorPrimaryDark"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/surname_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/surname"
+                    android:textAppearance="@style/AppText.Small" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/user_surname_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TitleAppTextBlack"
+                    android:backgroundTint="@color/colorPrimaryDark"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/san_title_tv_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:textAppearance="@style/AppText.Small"
+                    android:text="@string/benefice"/>
+
+                <com.d2.pcu.ui.view.DialogSelector
+                    android:id="@+id/san_selector_d"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/birthday_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/birthdate"
+                    android:textAppearance="@style/AppText.Small" />
+
+                <DatePicker
+                    android:id="@+id/user_profile_birthday_cv"
+                    android:theme="@style/NumberPickerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"
+                    android:spinnersShown="true"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tazoimenstvo_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/namesake_date"
+                    android:textAppearance="@style/AppText.Small" />
+
+                <DatePicker
+                    android:id="@+id/user_profile_tazoimenstvo_cv"
+                    android:theme="@style/NumberPickerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"
+                    android:spinnersShown="true" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/phone_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/phone_number"
+                    android:textAppearance="@style/AppText.Small" />
+
+                <com.d2.pcu.login.phone_checker.PrefixEditText
+                    android:id="@+id/user_phone_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TitleAppTextBlack"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:inputType="phone"
+                    android:maxLength="9"
+                    android:tag="+380"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/email_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/email"
+                    android:textAppearance="@style/AppText.Small" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/user_email_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TitleAppTextBlack"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:inputType="textEmailAddress"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/san_title_duhovenstov_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:textAppearance="@style/AppText.Small"
+                    android:text="@string/benefice"
+                    android:visibility="gone"/>
+
+                <com.d2.pcu.ui.view.DialogSelector
+                    android:id="@+id/san_selector_duhovenstov_d"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small"
+                    android:visibility="gone"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/status_title_duhovenstov_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:textAppearance="@style/AppText.Small"
+                    android:text="@string/status"
+                    android:visibility="gone"/>
+
+                <com.d2.pcu.ui.view.DialogSelector
+                    android:id="@+id/status_selector_viryanin_d"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small"
+                    android:visibility="gone"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/eparhia_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/diocese"
+                    android:textAppearance="@style/AppText.Small" />
+
+                <com.d2.pcu.ui.view.DialogSelector
+                    android:id="@+id/eparhia_selector_d"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/temple_name"
+                    android:textAppearance="@style/AppText.Small" />
+
+                <com.d2.pcu.ui.view.DialogSelector
+                    android:id="@+id/church_selector_d"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/eparhia_believer_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/diocese"
+                    android:textAppearance="@style/AppText.Small" />
+
+                <com.d2.pcu.ui.view.DialogSelector
+                    android:id="@+id/eparhia_believer_selector_d"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/AppButton"
+                    android:text="@string/profile_save"
+                    android:textAllCaps="false"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:onClick="@{model::onSaveClick}"/>
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</layout>

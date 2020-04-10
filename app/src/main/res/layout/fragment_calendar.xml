@@ -64,7 +64,6 @@
             app:layout_constraintTop_toBottomOf="@id/calendar_cv"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/default_margin"
-            android:text="Date text"
             android:layout_marginTop="@dimen/default_margin"/>
 
         <androidx.recyclerview.widget.RecyclerView

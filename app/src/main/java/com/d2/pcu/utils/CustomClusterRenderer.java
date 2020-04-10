@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
@@ -13,6 +14,7 @@ import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
@@ -43,7 +45,7 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<BaseTemple> {
     protected void onBeforeClusterRendered(Cluster<BaseTemple> cluster, MarkerOptions markerOptions) {
         iconGenerator.setBackground(ContextCompat.getDrawable(context, R.drawable.map_pin_group));
 
-        iconGenerator.setTextAppearance(R.style.TitleAppTextBlack);
+        iconGenerator.setTextAppearance(R.style.TitleAppTextWhite);
 
         final Bitmap icon = iconGenerator.makeIcon(String.valueOf(cluster.getSize()));
 
@@ -52,15 +54,16 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<BaseTemple> {
 
     @Override
     protected boolean shouldRenderAsCluster(Cluster<BaseTemple> cluster) {
-        return cluster.getSize() > 1;
+        return cluster.getSize() > 10;
     }
 
-    private BitmapDescriptor bitmapDescriptorFromVector(@DrawableRes int vectorDrawableResourceId) {
-        Drawable background = ContextCompat.getDrawable(context, R.drawable.map_pin);
+    public BitmapDescriptor bitmapDescriptorFromVector(@DrawableRes int vectorDrawableResourceId) {
+//        Drawable background = ContextCompat.getDrawable(context, R.drawable.map_pin);
+        Drawable background = ContextCompat.getDrawable(context, vectorDrawableResourceId);
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
 
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId);
-        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
+        vectorDrawable.setBounds(50, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
 
         Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);

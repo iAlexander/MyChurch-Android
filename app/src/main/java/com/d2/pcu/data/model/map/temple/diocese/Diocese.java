@@ -13,7 +13,7 @@ public class Diocese extends BaseModel {
     @SerializedName("name") private String name;
 
     public Diocese() {
-        this.id = 0;
+        this.id = -1;
         this.name = "";
     }
 

@@ -27,8 +27,13 @@ public class DayEventsViewHolder extends RecyclerView.ViewHolder {
     void bind(CalendarItem calendarItem) {
         this.calendarItem = calendarItem;
 
-        binding.calendarEventIv.setColorFilter(Color.parseColor(calendarItem.getColor()));
-        binding.calendarEventParagraphV.setBackgroundColor(Color.parseColor(calendarItem.getColor()));
+        try {
+            binding.calendarEventIv.setColorFilter(Color.parseColor(calendarItem.getColor()));
+            binding.calendarEventParagraphV.setBackgroundColor(Color.parseColor(calendarItem.getColor()));
+        } catch (NumberFormatException e) {
+            binding.calendarEventIv.setColorFilter(Color.BLACK);
+            binding.calendarEventParagraphV.setBackgroundColor(Color.BLACK);
+        }
         binding.calendarEventTitleTv.setText(calendarItem.getName());
     }
 

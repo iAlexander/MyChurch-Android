@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':Custom-Material-Calendar-View'
 rootProject.name='pcu'

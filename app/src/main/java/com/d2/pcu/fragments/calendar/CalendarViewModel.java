@@ -8,24 +8,23 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.applandeo.materialcalendarview.EventDay;
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.calendar.CalendarItem;
+import com.d2.pcu.fragments.BaseViewModel;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class CalendarViewModel extends ViewModel {
+public class CalendarViewModel extends BaseViewModel {
 
     private Repository repository;
     private LiveData<List<CalendarItem>> calendarItemsLiveData;
 
-    private OnLoadingStateChangedListener onLoadingStateChangedListener;
-
-
     private LongSparseArray<List<CalendarItem>> assembledItemsArray = null;
+    private List<EventDay> eventDays;
 
     public CalendarViewModel() {
         repository = App.getInstance().getRepositoryInstance();
@@ -42,43 +41,39 @@ public class CalendarViewModel extends ViewModel {
         repository.getCalendar();
     }
 
-    void setOnLoadingStateChangedListener(OnLoadingStateChangedListener onLoadingStateChangedListener) {
-        this.onLoadingStateChangedListener = onLoadingStateChangedListener;
-    }
-
-    void enableLoading() {
-        if (onLoadingStateChangedListener != null) {
-            onLoadingStateChangedListener.enableLoading(true);
-        }
-    }
-
-    void disableLoading() {
-        if (onLoadingStateChangedListener != null) {
-            onLoadingStateChangedListener.enableLoading(false);
-        }
-    }
-
-    void assembleCalendarMap() {
+    void assembleCalendarEventsArray() {
         List<CalendarItem> calendarItems = calendarItemsLiveData.getValue();
 
         assembledItemsArray = new LongSparseArray<>();
 
         for (CalendarItem item : calendarItems) {
-            if (assembledItemsArray.get(item.getHolidayDate().getTime()) == null) {
+            if (assembledItemsArray.get(item.getDateNewStyle().getTime()) == null) {
                 List<CalendarItem> newItems = new ArrayList<>();
                 newItems.add(item);
-                assembledItemsArray.put(item.getHolidayDate().getTime(), newItems);
+                assembledItemsArray.put(item.getDateNewStyle().getTime(), newItems);
             } else {
-                assembledItemsArray.get(item.getHolidayDate().getTime()).add(item);
+                assembledItemsArray.get(item.getDateNewStyle().getTime()).add(item);
             }
         }
     }
 
-    public LongSparseArray<List<CalendarItem>> getAssembledItemsArray() {
+    LongSparseArray<List<CalendarItem>> getAssembledItemsArray() {
         return assembledItemsArray;
     }
 
     LiveData<List<CalendarItem>> getCalendarItemsLiveData() {
         return calendarItemsLiveData;
+    }
+
+    void setEventDays(List<EventDay> eventDays) {
+        this.eventDays = eventDays;
+    }
+
+    List<EventDay> getEventDays() {
+        return eventDays;
+    }
+
+    String getUTCTimeZone() {
+        return "UTC";
     }
 }

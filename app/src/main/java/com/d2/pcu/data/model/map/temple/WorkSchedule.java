@@ -6,7 +6,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class WorkSchedule {
 
-    @SerializedName("id") private int id;
+    @SerializedName("id")
+    private int id;
 
     @SerializedName("day")
     @Nullable

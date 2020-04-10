@@ -7,19 +7,28 @@ import com.google.maps.android.clustering.ClusterItem;
 
 import java.util.Objects;
 
-public class BaseTemple extends BaseModel implements ClusterItem{
+public class BaseTemple extends BaseModel implements ClusterItem {
 
-    @SerializedName("id") private int id;
+    @SerializedName("id")
+    private int id;
 
-    @SerializedName("name") private String name;
+    @SerializedName("name")
+    private String name;
 
-    @SerializedName("distance") private double distance;
+    @SerializedName("distance")
+    private double distance;
 
-    @SerializedName("lt") private double lt;
+    @SerializedName("lt")
+    private double lt;
 
-    @SerializedName("lg") private double lg;
+    @SerializedName("lg")
+    private double lg;
 
-    @SerializedName("type") private String type;
+    @SerializedName("type")
+    private String type;
+
+    @SerializedName("location")
+    private String location;
 
     public BaseTemple() {
         id = 0;
@@ -28,6 +37,7 @@ public class BaseTemple extends BaseModel implements ClusterItem{
         lt = 0;
         lg = 0;
         type = "";
+        location = "";
     }
 
     public int getId() {
@@ -82,6 +92,14 @@ public class BaseTemple extends BaseModel implements ClusterItem{
         this.type = type;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     @Override
     public LatLng getPosition() {
         return new LatLng(lt, lg);
@@ -105,6 +123,8 @@ public class BaseTemple extends BaseModel implements ClusterItem{
                 ", distance=" + distance +
                 ", lt=" + lt +
                 ", lg=" + lg +
+                ", type='" + type + '\'' +
+                ", location='" + location + '\'' +
                 '}';
     }
 
@@ -118,11 +138,12 @@ public class BaseTemple extends BaseModel implements ClusterItem{
                 Double.compare(that.lt, lt) == 0 &&
                 Double.compare(that.lg, lg) == 0 &&
                 name.equals(that.name) &&
-                Objects.equals(type, that.type);
+                type.equals(that.type) &&
+                location.equals(that.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, distance, lt, lg, type);
+        return Objects.hash(id, name, distance, lt, lg, type, location);
     }
 }

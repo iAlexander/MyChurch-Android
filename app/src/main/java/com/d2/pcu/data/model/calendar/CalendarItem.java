@@ -1,8 +1,5 @@
 package com.d2.pcu.data.model.calendar;
 
-import androidx.databinding.Bindable;
-import androidx.databinding.library.baseAdapters.BR;
-
 import com.d2.pcu.data.model.BaseModel;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,13 +7,41 @@ import java.util.Date;
 
 public class CalendarItem extends BaseModel {
 
-    @SerializedName("id") private int id;
+    private int id;
 
-    @SerializedName("date") private Date holidayDate;
+    private Group group;
 
-    @SerializedName("name") private String name;
+    private IconImage iconImage;
 
-    @SerializedName("color") private String color;
+    private Date dateOldStyle;
+
+    private Date dateNewStyle;
+
+    private String name;
+
+    private String describe;
+
+    private String conceived;
+
+    private String color;
+
+    private int fasting;
+
+    private int priority;
+
+    public CalendarItem() {
+        id = -1;
+        group = new Group();
+        iconImage = new IconImage();
+        dateNewStyle = new Date();
+        dateOldStyle = new Date();
+        name = "";
+        describe = "";
+        conceived = "";
+        color = "";
+        fasting = 0;
+        priority = -1;
+    }
 
     public int getId() {
         return id;
@@ -26,24 +51,60 @@ public class CalendarItem extends BaseModel {
         this.id = id;
     }
 
-    @Bindable
-    public Date getHolidayDate() {
-        return holidayDate;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setHolidayDate(Date holidayDate) {
-        this.holidayDate = holidayDate;
-        notifyPropertyChanged(BR.holidayDate);
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
-    @Bindable
+    public IconImage getIconImage() {
+        return iconImage;
+    }
+
+    public void setIconImage(IconImage iconImage) {
+        this.iconImage = iconImage;
+    }
+
+    public Date getDateOldStyle() {
+        return dateOldStyle;
+    }
+
+    public void setDateOldStyle(Date dateOldStyle) {
+        this.dateOldStyle = dateOldStyle;
+    }
+
+    public Date getDateNewStyle() {
+        return dateNewStyle;
+    }
+
+    public void setDateNewStyle(Date dateNewStyle) {
+        this.dateNewStyle = dateNewStyle;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-        notifyPropertyChanged(BR.name);
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
+    public String getConceived() {
+        return conceived;
+    }
+
+    public void setConceived(String conceived) {
+        this.conceived = conceived;
     }
 
     public String getColor() {
@@ -54,13 +115,19 @@ public class CalendarItem extends BaseModel {
         this.color = color;
     }
 
-    @Override
-    public String toString() {
-        return "CalendarItem{" +
-                "id=" + id +
-                ", holidayDate=" + holidayDate +
-                ", name='" + name + '\'' +
-                ", color='" + color + '\'' +
-                '}';
+    public int getFasting() {
+        return fasting;
+    }
+
+    public void setFasting(int fasting) {
+        this.fasting = fasting;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

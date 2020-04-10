@@ -14,7 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d2.pcu.databinding.TempleFragmentBinding;
+import com.d2.pcu.databinding.FragmentCathedralContactBinding;
+import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.Temple;
@@ -26,13 +27,12 @@ import com.google.gson.Gson;
 
 public class TempleFragment extends BaseFragment {
 
-    public static final String ARG_TEMPLE = "temple";
-
     private TempleViewModel viewModel;
-    private TempleFragmentBinding binding;
+    private FragmentCathedralContactBinding binding;
 
     private OnBackButtonClickListener onBackButtonClickListener;
     private OnLoadingStateChangedListener onLoadingStateChangedListener;
+    private OnAdditionalFuncMapListener onAdditionalFuncMapListener;
 
     private Temple temple;
 
@@ -52,7 +52,7 @@ public class TempleFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.temple_fragment, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cathedral_contact, container, false);
 
         return binding.getRoot();
     }
@@ -64,28 +64,18 @@ public class TempleFragment extends BaseFragment {
         viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
         viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
 
-        viewModel.enableLoading();
-        viewModel.loadTempleInfoById(temple.getId());
-
-        viewModel.getTempleLiveData().observe(getViewLifecycleOwner(), new Observer<Temple>() {
-            @Override
-            public void onChanged(Temple temple) {
-                TempleFragment.this.temple = temple;
-
-                binding.setTemple(temple);
-                setDataToList();
-                viewModel.disableLoading();
-            }
-        });
+        binding.setTemple(temple);
+        setDataToList();
+        viewModel.disableLoading();
 
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setModel(viewModel);
 
-
+        viewModel.disableLoading();
     }
 
     private void setDataToList() {
-        binding.templeViewpager.setAdapter(new TempleViewPagerAdapter(getContext(), temple));
+        binding.templeViewpager.setAdapter(new TempleViewPagerAdapter(getContext(), temple, onAdditionalFuncMapListener));
 
         new TabLayoutMediator(binding.templeTabs, binding.templeViewpager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -108,6 +98,7 @@ public class TempleFragment extends BaseFragment {
         super.onAttach(context);
         onBackButtonClickListener = (OnBackButtonClickListener) context;
         onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
+        onAdditionalFuncMapListener = (OnAdditionalFuncMapListener) context;
     }
 
     @Override
@@ -115,5 +106,6 @@ public class TempleFragment extends BaseFragment {
         super.onDetach();
         onBackButtonClickListener = null;
         onLoadingStateChangedListener = null;
+        onAdditionalFuncMapListener = null;
     }
 }

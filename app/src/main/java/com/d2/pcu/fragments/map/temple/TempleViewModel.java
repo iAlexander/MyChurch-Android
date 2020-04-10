@@ -11,61 +11,42 @@ import androidx.lifecycle.ViewModel;
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.map.temple.Temple;
+import com.d2.pcu.fragments.BaseViewModel;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 
-public class TempleViewModel extends ViewModel {
+import java.util.Calendar;
+
+public class TempleViewModel extends BaseViewModel {
 
     private OnBackButtonClickListener onBackButtonClickListener;
 
-    private OnLoadingStateChangedListener onLoadingStateChangedListener;
-
     private Repository repository;
 
-    private LiveData<Temple> templeLiveData;
+    private Temple temple;
 
     public TempleViewModel() {
         repository = App.getInstance().getRepositoryInstance();
+    }
 
-        templeLiveData = Transformations.switchMap(repository.getTransport().getTempleChannel(), new Function<Temple, LiveData<Temple>>() {
-            @Override
-            public LiveData<Temple> apply(Temple input) {
-                return new MutableLiveData<>(input);
-            }
-        });
+    public void setTemple(Temple temple) {
+        this.temple = temple;
+    }
+
+    public Temple getTemple() {
+        return temple;
     }
 
     void setOnBackButtonClickListener(OnBackButtonClickListener onBackButtonClickListener) {
         this.onBackButtonClickListener = onBackButtonClickListener;
     }
 
-    void setOnLoadingStateChangedListener(OnLoadingStateChangedListener onLoadingStateChangedListener) {
-        this.onLoadingStateChangedListener = onLoadingStateChangedListener;
-    }
-
-    void loadTempleInfoById(int id) {
-        repository.getTempleById(id);
-    }
-
-    public LiveData<Temple> getTempleLiveData() {
-        return templeLiveData;
-    }
-
-    void enableLoading() {
-        if (onLoadingStateChangedListener != null) {
-            onLoadingStateChangedListener.enableLoading(true);
-        }
-    }
-
-    void disableLoading() {
-        if (onLoadingStateChangedListener != null) {
-            onLoadingStateChangedListener.enableLoading(false);
-        }
-    }
 
     public void onBackButtonPressed(View view) {
         if (onBackButtonClickListener != null) {
             onBackButtonClickListener.onBackButtonPressed();
         }
     }
+
+
 }

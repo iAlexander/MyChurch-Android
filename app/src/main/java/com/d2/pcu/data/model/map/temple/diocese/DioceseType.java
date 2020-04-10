@@ -8,13 +8,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class DioceseType extends BaseModel {
 
-    @SerializedName("id") private int id;
+    @SerializedName("id")
+    private int id;
 
-    @SerializedName("type") private String type;
+    @SerializedName("name")
+    private String name;
 
     public DioceseType() {
         this.id = 0;
-        this.type = "";
+        this.name = "";
     }
 
     public int getId() {
@@ -26,20 +28,19 @@ public class DioceseType extends BaseModel {
     }
 
     @Bindable
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
-        notifyPropertyChanged(BR.type);
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "DioceseType{" +
                 "id=" + id +
-                ", type='" + type + '\'' +
+                ", type='" + name + '\'' +
                 '}';
     }
 }

@@ -18,6 +18,7 @@ import com.d2.pcu.fragments.map.temple.temple_views.TempleHistoryAndDescriptionF
 import com.d2.pcu.fragments.map.temple.temple_views.temple_viewholders.TempleContactsViewHolder;
 import com.d2.pcu.fragments.map.temple.temple_views.temple_viewholders.TempleHistoryAndDescriptionViewHolder;
 import com.d2.pcu.fragments.map.temple.temple_views.temple_viewholders.TempleViewHolder;
+import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,12 +30,17 @@ public class TempleViewPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private Temple temple;
     private Context context;
+    private OnAdditionalFuncMapListener onAdditionalFuncMapListener;
 
-    private List<Fragment> fragments = Arrays.asList(TempleContactsFragment.newInstance(), TempleHistoryAndDescriptionFragment.newInstance());
+    private List<Fragment> fragments = Arrays.asList(
+            TempleContactsFragment.newInstance(), TempleHistoryAndDescriptionFragment.newInstance()
+    );
 
-    TempleViewPagerAdapter(Context context, Temple temple) {
+    TempleViewPagerAdapter(Context context,
+                           Temple temple, OnAdditionalFuncMapListener onAdditionalFuncMapListener) {
         this.context = context;
         this.temple = temple;
+        this.onAdditionalFuncMapListener = onAdditionalFuncMapListener;
     }
 
     @Override
@@ -58,13 +64,13 @@ public class TempleViewPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 ViewTempleContactBinding binding = DataBindingUtil.inflate(inflater, R.layout.view_temple_contact, parent, false);
 
-                holder = new TempleContactsViewHolder(context, binding);
+                holder = new TempleContactsViewHolder(context, binding, onAdditionalFuncMapListener);
                 break;
             }
             case HISTORY_DESCRIPTION : {
                 ViewTempleHistoryAndDescriptionBinding binding = DataBindingUtil.inflate(inflater, R.layout.view_temple_history_and_description, parent, false);
 
-                holder = new TempleHistoryAndDescriptionViewHolder(binding);
+                holder = new TempleHistoryAndDescriptionViewHolder(context, binding);
                 break;
             }
         }

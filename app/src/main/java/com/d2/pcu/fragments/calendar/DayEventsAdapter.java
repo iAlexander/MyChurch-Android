@@ -12,6 +12,8 @@ import com.d2.pcu.data.model.calendar.CalendarItem;
 import com.d2.pcu.databinding.ViewCalendarEventItemBinding;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DayEventsAdapter extends RecyclerView.Adapter<DayEventsViewHolder> {
@@ -26,6 +28,13 @@ public class DayEventsAdapter extends RecyclerView.Adapter<DayEventsViewHolder> 
     }
     
     void setDayEvents(List<CalendarItem> events) {
+        Collections.sort(events, new Comparator<CalendarItem>() {
+            @Override
+            public int compare(CalendarItem o1, CalendarItem o2) {
+                return o2.getPriority() - o1.getPriority();
+            }
+        });
+
         calendarItems.clear();
         calendarItems.addAll(events);
         notifyDataSetChanged();

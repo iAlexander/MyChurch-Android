@@ -5,6 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
+
         <variable
             name="model"
             type="com.d2.pcu.fragments.map.MapViewModel" />
@@ -46,8 +48,19 @@
             app:floatingSearch_searchBarMarginRight="@dimen/small"
             app:floatingSearch_suggestionsListAnimDuration="250"
             app:floatingSearch_searchHint="@string/map_search_hint"
-            app:floatingSearch_menu="@menu/menu_map"
             />
+
+        <ImageButton
+            android:id="@+id/center_my_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_margin="@dimen/medium"
+            android:background="@drawable/bg_circle"
+            android:src="@drawable/ic_my_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/templates_list_rv"
+            android:visibility="@{model.locationPermission ? View.VISIBLE : View.GONE}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

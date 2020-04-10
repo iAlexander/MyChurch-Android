@@ -2,31 +2,76 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:padding="@dimen/default_margin">
+    <data>
+        <import type="android.view.View"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/temple_title_tv"
+        <variable
+            name="temple"
+            type="com.d2.pcu.data.model.map.temple.Temple" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TitleAppTextBlack"
-            android:text="dsadsad"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:padding="@dimen/default_margin">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/temple_diocese_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/AppText.Small"
-            android:text="dsa"
-            app:layout_constraintTop_toBottomOf="@id/temple_title_tv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/small"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/temple_contacts_photo_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small"
+                android:visibility="@{temple.imageUrls.empty ? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/temple_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{temple.name}"
+                android:textAppearance="@style/TitleAppTextBlack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@id/temple_contacts_photo_rv"
+                android:layout_marginTop="@dimen/medium"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/temple_diocese_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small"
+                android:text="@{temple.diocese.name}"
+                android:textAppearance="@style/AppText.Small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/temple_title_tv" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/temple_history_title_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TitleAppTextBlack.Bold"
+                android:text="@string/temple_history_and_description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/temple_diocese_tv"
+                android:layout_marginTop="@dimen/medium"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/temple_history_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/AppText"
+                android:text="@{temple.history == null ? @string/no_data_text : temple.history}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/temple_history_title_history"
+                android:layout_marginTop="@dimen/medium"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </layout>

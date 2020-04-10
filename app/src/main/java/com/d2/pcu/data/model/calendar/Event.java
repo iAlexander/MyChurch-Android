@@ -2,29 +2,53 @@ package com.d2.pcu.data.model.calendar;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Event {
 
-    @SerializedName("id") private int id;
+    @SerializedName("id")
+    private int id;
 
-    @SerializedName("dateOldStyle") private Date oldStyle;
+    @SerializedName("dateOldStyle")
+    private Date oldStyle;
 
-    @SerializedName("dateNewStyle") private Date newStyle;
+    @SerializedName("dateNewStyle")
+    private Date newStyle;
 
-    @SerializedName("name") private String name;
+    @SerializedName("name")
+    private String name;
 
-    @SerializedName("descibe") private String description;
+    @SerializedName("describe")
+    private String description;
 
-    @SerializedName("conceived") private String conceived;
+    @SerializedName("conceived")
+    private String conceived;
+
+    @SerializedName("fasting")
+    private int fasting;
+
+    @SerializedName("icons")
+    private List<String> imageUrls;
 
     public Event() {
-        this.id = 0;
+        this.id = -1;
         this.oldStyle = new Date();
         this.newStyle = new Date();
         this.name = "";
         this.description = "";
         this.conceived = "";
+        this.fasting = -1;
+        this.imageUrls = new ArrayList<>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getOldStyle() {
@@ -67,6 +91,22 @@ public class Event {
         this.conceived = conceived;
     }
 
+    public int getFasting() {
+        return fasting;
+    }
+
+    public void setFasting(int fasting) {
+        this.fasting = fasting;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
     @Override
     public String toString() {
         return "Event{" +
@@ -76,6 +116,8 @@ public class Event {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", conceived='" + conceived + '\'' +
+                ", fasting=" + fasting +
+                ", imageUrls=" + imageUrls +
                 '}';
     }
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "456109909237",
+    "firebase_url": "https://pcu-mobile.firebaseio.com",
+    "project_id": "pcu-mobile",
+    "storage_bucket": "pcu-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456109909237:android:538a5e9889f4a85a4f51bc",
+        "android_client_info": {
+          "package_name": "com.d2.pcu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456109909237-09858ri2ofddj4t2ohfv6m5bqq8c2kar.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC8OgqAgtK6Sqex8GCf7eIJRUPBDWeUB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456109909237-09858ri2ofddj4t2ohfv6m5bqq8c2kar.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

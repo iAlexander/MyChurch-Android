@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="model"
+            type="com.d2.pcu.login.code_checker.CodeViewModel" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".LoginActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/support_chats_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:background="@drawable/bg_app_color_gradient_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:layout_marginEnd="@dimen/small"
+                android:onClick="@{model::onBackPressed}"
+                android:padding="@dimen/default_margin"
+                app:srcCompat="@drawable/ic_arrow_back_white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:padding="@dimen/default_margin"
+                android:text="@string/sign_up"
+                android:textAppearance="@style/TitleAppTextWhite.Bold" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="@dimen/small"
+                android:padding="@dimen/default_margin"
+                app:srcCompat="@drawable/ic_notifications_none" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small"
+            android:max="100"
+            android:progress="70"
+            android:progressTint="#F2BE38"
+            android:scrollbarAlwaysDrawHorizontalTrack="true" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@{@string/login_sms_title(model.phone)}"
+                    android:textAppearance="@style/TitleAppTextBlack.Bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:gravity="center"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvEnterCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="@string/login_code_length"
+                    android:textAppearance="@style/AppText"
+                    app:layout_constraintTop_toBottomOf="@id/tvText" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ilTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvEnterCode">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:inputType="phone"
+                        android:maxLength="4"
+                        android:text="@={model.code}"
+                        android:textAppearance="@style/LoginEditTextStyle" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bApply"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:enabled="false"
+                android:textAllCaps="false"
+                android:onClick="@{model::apply}"
+                android:text="@string/next_btn_text" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bResendSms"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:onClick="@{model::resendCode}"
+                android:text="@string/resend_sms"
+                android:textAllCaps="false"
+                android:visibility="@{model.resendCodeTimer.action ? View.VISIBLE : View.GONE}" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTimerText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:gravity="center_horizontal"
+                android:text="@{@string/login_resend_sms_timer(model.resendCodeTimer.seconds)}"
+                android:textAllCaps="true"
+                android:visibility="@{model.resendCodeTimer.action ? View.GONE : View.VISIBLE}" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

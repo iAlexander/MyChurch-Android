@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
@@ -22,6 +23,7 @@ import com.d2.pcu.R;
 import com.d2.pcu.data.model.calendar.CalendarItem;
 import com.d2.pcu.databinding.FragmentCalendarBinding;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
+import com.d2.pcu.utils.DateFormatter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class CalendarFragment extends Fragment {
+
+    private static final String TAG = CalendarFragment.class.getSimpleName();
 
     private FragmentCalendarBinding binding;
     private CalendarViewModel viewModel;
@@ -72,58 +76,84 @@ public class CalendarFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(this).get(CalendarViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(CalendarViewModel.class);
         viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
-        viewModel.enableLoading();
-
-//        if (viewModel.getAssembledCalendarMap() == null) {
-//            viewModel.loadCalendar();
-//        }
 
         if (viewModel.getAssembledItemsArray() == null) {
-            viewModel.loadCalendar();
+            viewModel.enableLoading();
+            assembleCalendarData();
+        } else {
+            binding.calendarCv.setEvents(viewModel.getEventDays());
+            setCurrentDateInfo();
         }
-
-        viewModel.getCalendarItemsLiveData().observe(getViewLifecycleOwner(), new Observer<List<CalendarItem>>() {
-            @Override
-            public void onChanged(List<CalendarItem> calendarItems) {
-                List<EventDay> events = new ArrayList<>();
-
-                for (CalendarItem item : calendarItems) {
-                    Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-                    calendar.setTime(item.getHolidayDate());
-
-                    events.add(new EventDay(calendar, R.drawable.dot_red));
-                }
-
-                binding.calendarCv.setEvents(events);
-
-                viewModel.assembleCalendarMap();
-
-                viewModel.disableLoading();
-            }
-        });
 
         binding.calendarCv.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
-                Calendar calendar = eventDay.getCalendar();
-                calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-                DateUtils.setMidnight(calendar);
-
-
-                List<CalendarItem> items = viewModel.getAssembledItemsArray().get(calendar.getTimeInMillis());
-                if (items != null) {
-                    adapter.setDayEvents(items);
-                }
+                setEvents(eventDay.getCalendar());
             }
         });
 
         binding.calendarDayEventsRv.setAdapter(adapter);
-
     }
 
+    private void assembleCalendarData() {
+        viewModel.loadCalendar();
 
+        viewModel.getCalendarItemsLiveData().observe(getViewLifecycleOwner(), new Observer<List<CalendarItem>>() {
+            @Override
+            public void onChanged(List<CalendarItem> calendarItems) {
+                assembleCalendarEvents(calendarItems);
+
+                binding.calendarCv.setEvents(viewModel.getEventDays());
+                viewModel.assembleCalendarEventsArray();
+                viewModel.disableLoading();
+                setCurrentDateInfo();
+            }
+        });
+    }
+
+    private void assembleCalendarEvents(List<CalendarItem> calendarItems) {
+        List<EventDay> events = new ArrayList<>();
+
+        for (CalendarItem item : calendarItems) {
+            Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+            DateUtils.setMidnight(calendar);
+            calendar.setTime(item.getDateNewStyle());
+
+            if (item.getPriority() == 1) {
+                events.add(new EventDay(calendar, R.drawable.dot_red));
+            } else {
+                events.add(new EventDay(calendar));
+            }
+        }
+
+        viewModel.setEventDays(events);
+    }
+
+    private void setCurrentDateInfo() {
+        setEvents(binding.calendarCv.getFirstSelectedDate());
+    }
+
+    private void setEvents(Calendar calendarSource) {
+        Calendar source = calendarSource;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(source.get(Calendar.YEAR), source.get(Calendar.MONTH), source.get(Calendar.DATE));
+
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        DateUtils.setMidnight(calendar);
+
+        List<CalendarItem> items = viewModel.getAssembledItemsArray().get(calendar.getTimeInMillis());
+        if (items != null) {
+            adapter.setDayEvents(items);
+        } else {
+            // TODO: 2019-12-13 Refactoring
+            adapter.setDayEvents(new ArrayList<>());
+        }
+
+        binding.calendarDateTitleTv.setText(DateFormatter.getDayAndMonth(calendar.getTime()));
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {

@@ -1,6 +1,6 @@
 package com.d2.pcu.fragments.map;
 
-import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -18,30 +18,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
+import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.databinding.MapFragmentBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
-import com.d2.pcu.listeners.OnMoreTempleInfoClickListener;
 import com.d2.pcu.utils.Constants;
-import com.d2.pcu.utils.CustomClusterRenderer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.google.maps.android.clustering.Cluster;
-import com.google.maps.android.clustering.ClusterManager;
-
-import java.util.List;
 
 public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -50,15 +43,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     private MapFragmentBinding binding;
     private MapViewModel viewModel;
 
-    private TemplesAdapter adapter;
-
-    private OnMoreTempleInfoClickListener onMoreTempleInfoClickListener;
-
     private OnLoadingStateChangedListener onLoadingStateChangedListener;
-
-    private ClusterManager<BaseTemple> clusterManager;
-
-    private GoogleMap googleMap;
+    private OnAdditionalFuncMapListener onAdditionalFuncMapListener;
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private static final int REQUEST_CODE = 201;
@@ -76,63 +62,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        viewModel = ViewModelProviders.of(this).get(MapViewModel.class);
-        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
-        viewModel.enableLoading();
-
-        adapter = new TemplesAdapter(
-                new OnTempleClickListener() {
-                    @Override
-                    public void onMoreTempleInfoClick(BaseTemple temple) {
-                        String serializedTemple = new Gson().toJson(temple);
-
-                        if (onMoreTempleInfoClickListener != null) {
-                            if (temple.getType().equals(Constants.SIMPLE_CHURCH)) {
-                                onMoreTempleInfoClickListener.onTempleInfoClick(serializedTemple, Constants.TEMPLE_TYPE_CHURCH);
-                            } else {
-                                onMoreTempleInfoClickListener.onTempleInfoClick(serializedTemple, Constants.TEMPLE_TYPE_CATHEDRAL);
-
-                            }
-                        }
-                    }
-                });
-
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setModel(viewModel);
-
-        configureSearchView();
-        settingTempleRecyclerView();
-
-
-        if (checkPermission()) {
-            viewModel.getLocation().observe(getViewLifecycleOwner(), new Observer<LatLng>() {
-                @Override
-                public void onChanged(LatLng latLng) {
-                    viewModel.loadData();
-                }
-            });
-        }
-
-        viewModel.getBaseTemplesLiveData().observe(getViewLifecycleOwner(), new Observer<List<BaseTemple>>() {
-            @Override
-            public void onChanged(List<BaseTemple> temples) {
-                adapter.setTemples(temples);
-                if (clusterManager != null) {
-                    clusterManager.clearItems();
-                    clusterManager.addItems(temples);
-                }
-                viewModel.disableLoading();
-            }
-        });
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_container);
 
         if (mapFragment != null) {
@@ -141,73 +72,103 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-            if (checkPermission()) {
-                viewModel.loadData();
+        viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
+        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
+
+        if (viewModel.getAdapter() == null) {
+            viewModel.setAdapter(new TemplesAdapter());
+        }
+
+        viewModel.getAdapter().setOnTempleClickListener(temple -> {
+            viewModel.getFullTemple(temple);
+            viewModel.enableLoading();
+
+            viewModel.getTempleLiveData().observe(getViewLifecycleOwner(), fullTemple -> {
+                String serializedTemple = new Gson().toJson(fullTemple);
+
+                if (onAdditionalFuncMapListener != null) {
+
+                    if (fullTemple.getDioceseType().getName().equals(Constants.CATHEDRAL_CHURCH)) {
+                        onAdditionalFuncMapListener.onTempleInfoClick(serializedTemple, Constants.TEMPLE_TYPE_CATHEDRAL);
+                    } else {
+                        onAdditionalFuncMapListener.onTempleInfoClick(serializedTemple, Constants.TEMPLE_TYPE_CHURCH);
+                    }
+                }
+            });
+        });
+
+        viewModel.getAdapter().setOnGetRouteClickListener(direction -> {
+            if (onAdditionalFuncMapListener != null) {
+                onAdditionalFuncMapListener.getDirectionsOnMap(direction);
             }
+        });
+
+        binding.setLifecycleOwner(this);
+        binding.setModel(viewModel);
+
+        setUpSearchView();
+        setUpTempleRecyclerView();
+
+        if (checkPermission()) {
+            viewModel.locationPermissionGranted();
+        } else {
+            viewModel.locationPermissionDenied();
         }
+
+//        viewModel.getLocation().observe(getViewLifecycleOwner(), new Observer<LatLng>() {
+//            @Override
+//            public void onChanged(LatLng latLng) {
+//                if (viewModel.getGoogleMap() != null) {
+                    //comment this - client want zoom at temple on app start
+//                    viewModel.getGoogleMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
+//                }
+//            }
+//        });
     }
-
-    private boolean checkPermission() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            requestPermissions(PERMISSIONS, REQUEST_CODE);
-            return false;
-        }
-
-        return true;
-    }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.setMyLocationEnabled(true);
-        this.googleMap = googleMap;
+        googleMap.clear();
+//        googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+        viewModel.setGoogleMap(googleMap);
 
-        clusterManager = new ClusterManager<>(getContext().getApplicationContext(), googleMap);
-
-        final CustomClusterRenderer renderer = new CustomClusterRenderer(getContext(), googleMap, clusterManager);
-        clusterManager.setRenderer(renderer);
-
-        clusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<BaseTemple>() {
+        viewModel.getLocationPermission().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
-            public boolean onClusterClick(Cluster<BaseTemple> cluster) {
-                return false;
+            public void onChanged(Boolean granted) {
+                if (granted) {
+                    viewModel.getGoogleMap().setMyLocationEnabled(true);
+
+                    binding.centerMyLocation.setOnClickListener(view -> {
+                                viewModel.getGoogleMap()
+                                        .animateCamera(
+                                                CameraUpdateFactory.newLatLngZoom(
+                                                        viewModel.getLocation().getValue(), 16f)
+                                        );
+                            }
+                    );
+                }
             }
         });
 
-        clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<BaseTemple>() {
-            @Override
-            public boolean onClusterItemClick(BaseTemple temple) {
-
-                adapter.scrollToItem(temple);
-                return true;
+        if (viewModel.getGoogleMap() != null) {
+            if (viewModel.getAdapter().getItemCount() != 0) {
+                viewModel.getGoogleMap().moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                                viewModel.getAdapter().onItemScroll(0).getLatLng(), 16f
+                        )
+                );
             }
-        });
-
-        googleMap.setOnMarkerClickListener(clusterManager);
-        googleMap.setOnCameraIdleListener(clusterManager);
-
-
-        viewModel.getLocation().observe(getViewLifecycleOwner(), new Observer<LatLng>() {
-            @Override
-            public void onChanged(LatLng latLng) {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f));
-            }
-        });
-
+        }
     }
 
-    private void settingTempleRecyclerView() {
-        binding.templatesListRv.setAdapter(adapter);
+    private void setUpTempleRecyclerView() {
+        binding.templatesListRv.setAdapter(viewModel.getAdapter());
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         binding.templatesListRv.setLayoutManager(linearLayoutManager);
-        binding.templatesListRv.setHasFixedSize(true);
 
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(binding.templatesListRv);
@@ -220,20 +181,13 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     View centerView = snapHelper.findSnapView(linearLayoutManager);
                     int position = linearLayoutManager.getPosition(centerView);
-
-                    moveCameraToLocation(adapter.onItemScroll(position));
+                    moveCameraToLocation(viewModel.getAdapter().onItemScroll(position));
                 }
             }
         });
     }
 
-    private void configureSearchView() {
-        binding.mapFloatingSearchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
-            @Override
-            public void onActionMenuItemSelected(MenuItem item) {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(viewModel.getLocation().getValue(), 11f));
-            }
-        });
+    private void setUpSearchView() {
         binding.mapFloatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
             public void onSearchTextChanged(String oldQuery, String newQuery) {
@@ -255,10 +209,12 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
                 BaseTemple baseTemple = viewModel.getBaseTempleById(templeSuggestion.getId());
 
-                adapter.scrollToItem(viewModel.getBaseTempleById(templeSuggestion.getId()));
-                moveCameraToLocation(baseTemple.getLatLng());
-                binding.mapFloatingSearchView.clearSearchFocus();
-                binding.mapFloatingSearchView.clearQuery();
+                if (baseTemple != null) {
+                    viewModel.getAdapter().scrollToItem(viewModel.getBaseTempleById(templeSuggestion.getId()));
+                    moveCameraToLocation(baseTemple);
+                    binding.mapFloatingSearchView.clearSearchFocus();
+                    binding.mapFloatingSearchView.clearQuery();
+                }
             }
 
             @Override
@@ -268,23 +224,58 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
         });
     }
 
-    private void moveCameraToLocation(LatLng latLng) {
-        if (googleMap != null) {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14f));
+    private void moveCameraToLocation(BaseTemple temple) {
+        viewModel.onMarkerStateChange(temple);
+        viewModel.getGoogleMap()
+                .animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(temple.getLatLng(), 16f)
+                );
+    }
+
+    private boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(
+                getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(
+                        getContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(PERMISSIONS, REQUEST_CODE);
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (permissions.length != 0 && grantResults.length != 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if (checkPermission()) {
+                    viewModel.locationPermissionGranted();
+                }
+            }
         }
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        onMoreTempleInfoClickListener = (OnMoreTempleInfoClickListener) context;
         onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
+        onAdditionalFuncMapListener = (OnAdditionalFuncMapListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        onMoreTempleInfoClickListener = null;
         onLoadingStateChangedListener = null;
+        onAdditionalFuncMapListener = null;
     }
 }

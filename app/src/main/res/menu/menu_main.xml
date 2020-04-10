@@ -6,30 +6,25 @@
     <item android:id="@+id/mapFragment"
         android:icon="@drawable/selector_map"
         android:orderInCategory="100"
-        android:title="@string/map"
-        app:showAsAction="always"/>
+        android:title="@string/map"/>
 
     <item android:id="@+id/calendarFragment"
         android:icon="@drawable/selector_calendar"
         android:orderInCategory="100"
-        android:title="@string/calendar"
-        app:showAsAction="always"/>
+        android:title="@string/calendar"/>
 
     <item android:id="@+id/newsFragment"
         android:icon="@drawable/ic_news_selector"
         android:orderInCategory="100"
-        android:title="@string/news"
-        app:showAsAction="always"/>
+        android:title="@string/news"/>
 
-    <item android:id="@+id/prayFragment"
+    <item android:id="@+id/prayVerticalFragment"
         android:icon="@drawable/selecter_prayers"
         android:orderInCategory="100"
-        android:title="@string/prayers"
-        app:showAsAction="always" />
+        android:title="@string/prayers" />
 
     <item android:id="@+id/profileFragment"
         android:icon="@drawable/selector_profile"
         android:orderInCategory="100"
-        app:showAsAction="always"
         android:title="@string/profile"/>
 </menu>

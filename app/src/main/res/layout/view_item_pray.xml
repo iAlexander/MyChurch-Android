@@ -4,56 +4,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="pray"
+            type="com.d2.pcu.data.model.pray.Pray" />
+
         <variable
             name="holder"
-            type="com.d2.pcu.fragments.pray.pray_views.PrayBaseViewHolder" />
+            type="com.d2.pcu.fragments.pray_new.vertical_items.pager_holders.item_holder.PrayItemViewHolder" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/default_padding">
+        app:cardCornerRadius="@dimen/small"
+        android:layout_marginTop="@dimen/small"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/small"
+        android:elevation="@dimen/medium"
+        android:onClick="@{holder::onItemPressed}">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/pray_title_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TitleAppTextBlack.Bold"
-            android:text="dsadsa"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/pray_favorite_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_star_border"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/pray_title_tv"
-            app:layout_constraintBottom_toBottomOf="@id/pray_title_tv"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="12dp"
-            app:srcCompat="@drawable/ic_volume"
-            app:layout_constraintEnd_toStartOf="@id/pray_favorite_iv"
-            app:layout_constraintTop_toTopOf="@id/pray_favorite_iv"
-            app:layout_constraintBottom_toBottomOf="@id/pray_favorite_iv"
-            android:layout_marginEnd="@dimen/default_margin"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/AppText"
-            app:layout_constraintTop_toBottomOf="@id/pray_title_tv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:maxLines="2"
-            android:layout_marginTop="@dimen/small"
-            android:text="dsadsaddadsadsadsadsadsadsadsadsadsadsadsadsdsadsadsads dsa dsa"
-            android:ellipsize="end"/>
+            android:layout_height="match_parent"
+            android:padding="@dimen/default_padding">
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/pray_title_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{pray.title}"
+                android:textAppearance="@style/TitleAppTextBlack.Bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="12dp"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:visibility="@{pray.file == null || pray.file.name.empty ? View.GONE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/pray_title_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/pray_title_tv"
+                app:srcCompat="@drawable/ic_volume" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="@{pray.text}"
+                android:textAppearance="@style/AppText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pray_title_tv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

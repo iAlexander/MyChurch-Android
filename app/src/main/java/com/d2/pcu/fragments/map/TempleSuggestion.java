@@ -7,22 +7,25 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 public class TempleSuggestion implements SearchSuggestion {
 
     private String templeName;
+    private String location;
     private int id;
 
 
-    public TempleSuggestion(String templeName, int id) {
+    public TempleSuggestion(String templeName, String location, int id) {
         this.templeName = templeName;
         this.id = id;
+        this.location = location;
     }
 
     public TempleSuggestion(Parcel source) {
         this.templeName = source.readString();
         this.id = source.readInt();
+        this.location = source.readString();
     }
 
     @Override
     public String getBody() {
-        return templeName;
+        return templeName + ", " + location;
     }
 
     public int getId() {
@@ -49,6 +52,7 @@ public class TempleSuggestion implements SearchSuggestion {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(templeName);
+        dest.writeString(location);
         dest.writeInt(id);
     }
 }

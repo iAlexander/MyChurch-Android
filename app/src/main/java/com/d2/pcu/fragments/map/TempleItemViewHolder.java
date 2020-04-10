@@ -13,15 +13,19 @@ public class TempleItemViewHolder extends RecyclerView.ViewHolder {
     private ItemMapTempleBinding binding;
 
     private OnTempleClickListener onTempleClickListener;
+    private OnGetRouteClickListener onGetRouteClickListener;
 
     private BaseTemple temple;
 
-    TempleItemViewHolder(ItemMapTempleBinding binding, OnTempleClickListener onTempleClickListener) {
+    TempleItemViewHolder(ItemMapTempleBinding binding,
+                         OnTempleClickListener onTempleClickListener,
+                         OnGetRouteClickListener onGetRouteClickListener) {
         super(binding.getRoot());
         this.binding = binding;
         this.binding.setHolder(this);
 
         this.onTempleClickListener = onTempleClickListener;
+        this.onGetRouteClickListener = onGetRouteClickListener;
     }
 
     void bind(BaseTemple temple) {
@@ -32,6 +36,12 @@ public class TempleItemViewHolder extends RecyclerView.ViewHolder {
     public void onTempleClick(View view) {
         if (onTempleClickListener != null) {
             onTempleClickListener.onMoreTempleInfoClick(temple);
+        }
+    }
+
+    public void onGetRouteClick(View view) {
+        if (onGetRouteClickListener != null) {
+            onGetRouteClickListener.getRoute(temple.getLatLng());
         }
     }
 }

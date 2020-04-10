@@ -9,20 +9,13 @@ import java.util.List;
 public class CalendarResponse extends OnMasterResponse {
 
     @SerializedName("data")
-    private List<CalendarItem> calendarItems;
+    private CalendarDataWrapper calendarDataWrapper;
 
-    public List<CalendarItem> getCalendarItems() {
-        return calendarItems;
+    public CalendarDataWrapper getCalendarDataWrapper() {
+        return calendarDataWrapper;
     }
 
-    public void setCalendarItems(List<CalendarItem> calendarItems) {
-        this.calendarItems = calendarItems;
-    }
-
-    @Override
-    public String toString() {
-        return "CalendarResponse{" +
-                "calendarItems=" + calendarItems +
-                '}';
+    public void setCalendarDataWrapper(CalendarDataWrapper calendarDataWrapper) {
+        this.calendarDataWrapper = calendarDataWrapper;
     }
 }

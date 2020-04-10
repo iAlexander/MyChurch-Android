@@ -8,27 +8,54 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.d2.pcu.R;
+import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.databinding.ViewPrayersBinding;
 import com.d2.pcu.fragments.pray.pray_views.EveningPrayersViewHolder;
-import com.d2.pcu.fragments.pray.pray_views.FavoritePrayersViewHolder;
 import com.d2.pcu.fragments.pray.pray_views.MorningPrayersViewHolder;
 import com.d2.pcu.fragments.pray.pray_views.PrayBaseViewHolder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class PrayersAdapter extends RecyclerView.Adapter<PrayBaseViewHolder> {
 
-    private ViewPrayersBinding binding;
-
     private static final int VIEW_EVENING = 0;
     private static final int VIEW_MORNING = 1;
-    private static final int VIEW_FAVORITE = 2;
 
+    private OnPrayItemClickListener onPrayItemClickListener;
+    private OnRefreshPraysListener onRefreshPraysListener;
 
-    private List<Integer> prayers = Arrays.asList(VIEW_EVENING, VIEW_MORNING, VIEW_FAVORITE);
+    private List<Integer> prayers = Arrays.asList(VIEW_MORNING, VIEW_EVENING);
 
-    PrayersAdapter() {
+    private List<Pray> morningPrays;
+    private List<Pray> eveningPrays;
+
+    PrayersAdapter(
+            OnPrayItemClickListener onPrayItemClickListener,
+            OnRefreshPraysListener onRefreshPraysListener) {
+        morningPrays = new ArrayList<>();
+        eveningPrays = new ArrayList<>();
+
+        setHasStableIds(true);
+
+        this.onPrayItemClickListener = onPrayItemClickListener;
+        this.onRefreshPraysListener = onRefreshPraysListener;
+    }
+
+    void setMorningPrays(List<Pray> morningPrays) {
+        this.morningPrays = morningPrays;
+        notifyItemChanged(0);
+    }
+
+    void setEveningPrays(List<Pray> eveningPrays) {
+        this.eveningPrays = eveningPrays;
+        notifyItemChanged(1);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return prayers.get(position);
     }
 
     @NonNull
@@ -36,21 +63,22 @@ public class PrayersAdapter extends RecyclerView.Adapter<PrayBaseViewHolder> {
     public PrayBaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.view_prayers, parent, false);
+        ViewPrayersBinding binding = DataBindingUtil.inflate(inflater, R.layout.view_prayers, parent, false);
 
         PrayBaseViewHolder holder = null;
 
         switch (viewType) {
-            case VIEW_EVENING: {
-                holder = new EveningPrayersViewHolder(binding);
-                break;
-            }
             case VIEW_MORNING: {
-                holder = new MorningPrayersViewHolder(binding);
+                holder = new MorningPrayersViewHolder(
+                        binding, onPrayItemClickListener, onRefreshPraysListener
+                );
                 break;
             }
-            case VIEW_FAVORITE: {
-                holder = new FavoritePrayersViewHolder(binding);
+            case VIEW_EVENING: {
+                holder = new EveningPrayersViewHolder(
+                        binding, onPrayItemClickListener, onRefreshPraysListener)
+                ;
+                break;
             }
         }
 
@@ -60,18 +88,20 @@ public class PrayersAdapter extends RecyclerView.Adapter<PrayBaseViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull PrayBaseViewHolder holder, int position) {
         switch (getItemViewType(position)) {
-            case VIEW_EVENING : {
-                ((EveningPrayersViewHolder)holder).bind();
-                break;
-            }
             case VIEW_MORNING : {
-                ((MorningPrayersViewHolder)holder).bind();
+                holder.bind(morningPrays);
                 break;
             }
-            case VIEW_FAVORITE : {
-                ((FavoritePrayersViewHolder)holder).bind();
+            case VIEW_EVENING : {
+                holder.bind(eveningPrays);
+                break;
             }
         }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return prayers.get(position);
     }
 
     @Override

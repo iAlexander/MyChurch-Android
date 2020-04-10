@@ -3,19 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.d2.pcu.utils.DateFormatter"/>
+        <import type="android.view.View"/>
+        <import type="com.d2.pcu.ui.TextToHtmlFormatter"/>
+
         <variable
             name="model"
             type="com.d2.pcu.fragments.calendar.event.CalendarEventViewModel" />
 
         <variable
             name="event"
-            type="com.d2.pcu.data.model.calendar.Event" />
+            type="com.d2.pcu.data.model.calendar.CalendarItem" />
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/calendar_event_toolbar"
@@ -41,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:text="Date"
+                android:text="@{DateFormatter.getDayAndMonth(event.dateNewStyle)}"
                 android:textAppearance="@style/TitleAppTextWhite.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -56,8 +61,7 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/default_margin_from_bot_nav"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/calendar_event_toolbar">
@@ -75,11 +79,12 @@
                     android:paddingStart="@dimen/default_padding"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="@{event.iconImage == null ? View.GONE : View.VISIBLE}"/>
 
                 <View
                     android:id="@+id/calendar_event_color_v"
-                    android:layout_width="@dimen/big"
+                    android:layout_width="@dimen/medium"
                     android:layout_height="0dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/calendar_event_photo_rv"
@@ -96,6 +101,8 @@
                     android:textAppearance="@style/TitleAppTextBlack.Bold"
                     android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginEnd="@dimen/default_margin"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:text="@{event.name}"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -103,7 +110,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/AppText"
-                    android:text="@{event.conceived}"
+                    android:text="@{@string/event_dates(DateFormatter.getDayAndMonth(event.dateNewStyle), DateFormatter.getDayAndMonth(event.dateOldStyle))}"
                     app:layout_constraintTop_toBottomOf="@id/calendar_event_title_tv"
                     app:layout_constraintStart_toStartOf="@id/calendar_event_title_tv"
                     app:layout_constraintEnd_toEndOf="@id/calendar_event_title_tv"
@@ -113,8 +120,8 @@
                     android:id="@+id/calendar_event_eat_type_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/AppText"
-                    android:text="Pistniy day"
+                    android:textAppearance="@style/AppText.Bold"
+                    android:text="@{event.fasting == 0 ? @string/event_fasting_false : @string/event_fasting_true}"
                     android:layout_marginTop="@dimen/small"
                     app:layout_constraintTop_toBottomOf="@id/calendar_event_date_description_tv"
                     app:layout_constraintStart_toStartOf="@id/calendar_event_date_description_tv"
@@ -130,13 +137,15 @@
                     app:layout_constraintTop_toBottomOf="@id/calendar_event_eat_type_tv"
                     android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginEnd="@dimen/default_margin"
+                    android:paddingBottom="@dimen/default_padding"
+                    android:layout_marginTop="@dimen/default_margin"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:text="@{event.description}"/>
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </layout>

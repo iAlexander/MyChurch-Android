@@ -1,6 +1,5 @@
 package com.d2.pcu.fragments.map.temple.temple_views;
 
-import android.util.Log;
 import android.view.View;
 
 import androidx.arch.core.util.Function;
@@ -12,47 +11,50 @@ import androidx.lifecycle.ViewModel;
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.map.temple.Temple;
+import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.Calendar;
 
 public class TempleContactsViewModel extends ViewModel {
-
 
     private static final String TAG = TempleContactsViewModel.class.getSimpleName();
 
     private OnBackButtonClickListener onBackButtonClickListener;
-
+    private OnAdditionalFuncMapListener onAdditionalFuncMapListener;
     private OnLoadingStateChangedListener onLoadingStateChangedListener;
-
     private Repository repository;
 
-    private LiveData<Temple> templeLiveData;
+    private MutableLiveData<Boolean> isOpen = new MutableLiveData<>();
+
+    private Temple temple;
 
     public TempleContactsViewModel() {
         repository = App.getInstance().getRepositoryInstance();
 
-        templeLiveData = Transformations.switchMap(repository.getTransport().getTempleChannel(), new Function<Temple, LiveData<Temple>>() {
-            @Override
-            public LiveData<Temple> apply(Temple input) {
-                return new MutableLiveData<>(input);
-            }
-        });
+        checkTime();
+    }
+
+    public void setTemple(Temple temple) {
+        this.temple = temple;
+    }
+
+    public Temple getTemple() {
+        return temple;
     }
 
     void setOnBackButtonClickListener(OnBackButtonClickListener onBackButtonClickListener) {
         this.onBackButtonClickListener = onBackButtonClickListener;
     }
 
+    void setOnAdditionalFuncMapListener(OnAdditionalFuncMapListener onAdditionalFuncMapListener) {
+        this.onAdditionalFuncMapListener = onAdditionalFuncMapListener;
+    }
+
     void setOnLoadingStateChangedListener(OnLoadingStateChangedListener onLoadingStateChangedListener) {
         this.onLoadingStateChangedListener = onLoadingStateChangedListener;
-    }
-
-    void loadTempleInfoById(int id) {
-        repository.getTempleById(id);
-    }
-
-    public LiveData<Temple> getTempleLiveData() {
-        return templeLiveData;
     }
 
     void enableLoading() {
@@ -74,8 +76,18 @@ public class TempleContactsViewModel extends ViewModel {
     }
 
     public void onGetDirectionsClick(View view) {
-        Log.d(TAG, "onGetDirectionsClick: ");
+        if (onAdditionalFuncMapListener != null) {
+            onAdditionalFuncMapListener.getDirectionsOnMap(new LatLng(temple.getLt(), temple.getLg()));
+        }
     }
 
-    // TODO: 2019-11-15 MAKE ONE ABSTRACT VIEW HOLDER
+    private void checkTime() {
+        Calendar calendar = Calendar.getInstance();
+
+        isOpen.setValue(calendar.get(Calendar.HOUR_OF_DAY) < 19 && calendar.get(Calendar.HOUR_OF_DAY) >= 9);
+    }
+
+    public MutableLiveData<Boolean> getIsOpen() {
+        return isOpen;
+    }
 }

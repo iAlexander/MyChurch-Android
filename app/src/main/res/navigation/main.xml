@@ -37,24 +37,46 @@
     </fragment>
     <fragment
         android:id="@+id/newsFragment"
-        android:name="com.d2.pcu.fragments.news.NewsFragment"
+        android:name="com.d2.pcu.fragments.news.vertical.NewsFragment"
         android:label="@string/news"
-        tools:layout="@layout/news_fragment" />
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/action_newsFragment_to_newsHorizontalPagerFragment"
+            app:destination="@id/newsHorizontalPagerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/prayFragment"
         android:name="com.d2.pcu.fragments.pray.PrayFragment"
         android:label="@string/prayers"
-        tools:layout="@layout/more_fragment" />
+        tools:layout="@layout/more_fragment" >
+        <action
+            android:id="@+id/action_prayFragment_to_prayItemFragment"
+            app:destination="@id/prayItemFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.d2.pcu.fragments.profile.ProfileFragment"
+        android:name="com.d2.pcu.fragments.cabinet.CabinetFragment"
         android:label="profile_fragment"
-        tools:layout="@layout/profile_fragment" />
+        tools:layout="@layout/profile_fragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_donateFragment"
+            app:destination="@id/donateFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_supportFragment"
+            app:destination="@id/supportFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_profileMenuFragment"
+            app:destination="@id/profileMenuFragment" />
+    </fragment>
     <fragment
         android:id="@+id/templeFragment"
         android:name="com.d2.pcu.fragments.map.temple.TempleFragment"
         android:label="temple_fragment"
-        tools:layout="@layout/temple_fragment" >
+        tools:layout="@layout/fragment_cathedral_contact" >
         <argument
             android:name="serializedTemple"
             app:argType="string" />
@@ -85,4 +107,61 @@
             android:name="serializedEvent"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/newsHorizontalPagerFragment"
+        android:name="com.d2.pcu.fragments.news.horizontal.NewsHorizontalFragment"
+        android:label="fragment_news_horizontal"
+        tools:layout="@layout/fragment_news_horizontal" />
+    <fragment
+        android:id="@+id/prayItemFragment"
+        android:name="com.d2.pcu.fragments.pray.pray_views.pray_item_fragment.PrayItemFragment"
+        android:label="fragment_item_pray"
+        tools:layout="@layout/fragment_item_pray" >
+        <argument
+            android:name="serializedPray"
+            app:argType="string" />
+    </fragment>
+    <activity
+        android:id="@+id/introActivity"
+        android:name="com.d2.pcu.intro.IntroActivity"
+        android:label="IntroActivity" />
+    <fragment
+        android:id="@+id/donateFragment"
+        android:name="com.d2.pcu.fragments.cabinet.donate.DonateFragment"
+        android:label="fragment_donates"
+        tools:layout="@layout/fragment_donates" />
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.d2.pcu.fragments.cabinet.support.SupportFragment"
+        android:label="fragment_support_chats"
+        tools:layout="@layout/fragment_support_chats" />
+    <fragment
+        android:id="@+id/prayVerticalFragment"
+        android:name="com.d2.pcu.fragments.pray_new.PrayVerticalFragment"
+        android:label="PrayVerticalFragment" />
+    <fragment
+        android:id="@+id/prayHorizontalFragment"
+        android:name="com.d2.pcu.fragments.pray_new.prayers_horizontal.PrayHorizontalFragment"
+        android:label="PrayHorizontalFragment" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.d2.pcu.login.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/profileMenuFragment"
+        android:name="com.d2.pcu.fragments.cabinet.user_profile.ProfileMenuFragment"
+        android:label="ProfileMenuFragment" >
+        <action
+            android:id="@+id/action_profileMenuFragment_to_changeProfileEnteringDataFragment"
+            app:destination="@id/changeProfileEnteringDataFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.d2.pcu.fragments.notification.NotificationFragment"
+        android:label="NotificationFragment" />
+    <fragment
+        android:id="@+id/changeProfileEnteringDataFragment"
+        android:name="com.d2.pcu.fragments.cabinet.user_profile.change_data.ChangeProfileEnteringDataFragment"
+        android:label="ChangeProfileEnteringDataFragment" />
 </navigation>

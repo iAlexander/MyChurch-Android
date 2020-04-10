@@ -1,4 +1,6 @@
 package com.d2.pcu.data.responses;
 
-public class OnMasterResponse {
+import com.d2.pcu.data.model.MasterModel;
+
+public class OnMasterResponse extends MasterModel {
 }

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ПЦУ</string>
+    <string name="action_settings">Налаштування</string>
+    <string name="map">Мапа</string>
+    <string name="calendar">Календар</string>
+    <string name="news">Новини</string>
+    <string name="prayers">Молитви</string>
+    <string name="profile">Кабінет</string>
+
+    <string name="more">Більше</string>
+
+    <string name="loading_state_text">Завантаження…</string>
+    <string name="next_text">Далі</string>
+    <string name="skip_text">Пропустити</string>
+
+    <!--  Symbols  -->
+    <string name="dot">\u00b7</string>
+    <string name="km"> км</string>
+    <string name="ok">ОК</string>
+
+    <!-- Intro -->
+    <string name="intro_start_screen">Це стартовий екран</string>
+    <string name="agreement_title">Даю згоду на обробку даних згідно <a href="http://test.cerkva.asp-win.d2.digital/privacy-policy-my-church.pdf">Політики конфіденційності</a></string>
+    <string name="not_approve_policy">Ви маєте надати згоду на обробку данних для використання додатку</string>
+
+
+    <string-array name="intro_titles">
+        <item>Показуємо шлях до найближчого храму</item>
+        <item>Нагадуємо про свята</item>
+        <item>Інформуємо про новини Православної Церкви України</item>
+        <item>Молимося разом</item>
+        <item>Персоналізуємо інформацію для Вас</item>
+    </string-array>
+
+    <!--  Errors  -->
+    <string name="error_no_connection_title">Проблеми з\'єднання</string>
+    <string name="error_no_connection_description">Перевірте підключення до інтернету</string>
+    <string name="error_server_error_title">Помилка серверу</string>
+    <string name="error_server_error_description">Зверніться до підтримки</string>
+    <string name="no_data_text">Вибачте, відсутні данні</string>
+
+    <!--  Map  -->
+    <string name="map_distance">Відстань</string>
+    <string name="map_more">Більше</string>
+    <string name="map_search_hint">Пошук…</string>
+    <string name="map_my_location">Моя позиція</string>
+
+    <!--  Temple  -->
+    <string name="temple_contacts">Контакти</string>
+    <string name="temple_history_descr">Історія та опис</string>
+    <string name="temple_open">Відчинено</string>
+    <string name="temple_close">Зачинено</string>
+    <string name="temple_close_schedule_time">з 9–00 до 19–00</string>
+    <string name="temple_schedule_service">Розклад богослужіння</string>
+    <string name="temple_week_days">пн-пт</string>
+    <string name="temple_weekend_days">сб-нд</string>
+    <string name="temple_holidays">свята</string>
+    <string name="temple_get_directions">Прокласти маршрут</string>
+    <string name="temple_church_holiday">Храмове Свято:</string>
+    <string name="temple_prior">Настоятель:</string>
+    <string name="temple_charity">Благочинний:</string>
+    <string name="temple_phone">Телефон:</string>
+    <string name="temple_history_and_description">Опис та історія</string>
+
+    <!--  Calendar  -->
+    <!--   SingleEvent   -->
+    <string name="event_fasting_true">Пісний день</string>
+    <string name="event_fasting_false">Посту немає</string>
+    <string name="event_dates">%1$s (%2$s за старим стилем)</string>
+
+    <!--  Pray  -->
+    <string name="pray_evening">Вечірні</string>
+    <string name="pray_morning">Ранкові</string>
+    <string name="pray_favorite">Улюблені</string>
+    <string name="pray_item_offline">Доступно офлайн</string>
+
+
+    <!-- News -->
+    <string name="news_important">Важливо!</string>
+    <string name="news_notice">Довідка</string>
+
+<!--  Cabinet  -->
+    <string name="change_email">Змінити e-mail</string>
+    <string name="change_pass">Змінити пароль</string>
+
+    <string name="old_email_title">Стара адреса</string>
+    <string name="new_email_title">Нова адреса</string>
+
+    <string name="old_pass_title">Старий пароль</string>
+    <string name="new_pass_title">Новий пароль</string>
+
+    <string name="change_text">Змінити</string>
+
+    <!--  Profile  -->
+    <string name="profile_support">Духовна підтримка</string>
+    <string name="profile_donate">Благодійність</string>
+
+    <!--  UserProfile  -->
+    <string name="user_profile_title">Профіль</string>
+    <string name="cherneche_name">Чернече ім\'я</string>
+    <string name="name">Ім\'я</string>
+    <string name="surname">Прізвище</string>
+    <string name="benefice">Сан</string>
+    <string name="birthdate">Дата народження</string>
+    <string name="namesake_date">День тезоіменитства</string>
+    <string name="email">Ел. адреса</string>
+    <string name="diocese">Єпархія</string>
+    <string name="temple_name">Храм</string>
+    <string name="status">Статус</string>
+
+    <string name="believer">Вірянин</string>
+    <string name="сlergy">Духовенство</string>
+    <string name="bishop">Архієрей</string>
+
+    <string name="login_resend_sms_timer">Відправити повторно через %1$s сек</string>
+    <string name="login_sms_title">Код було відправлено на\n%1$s</string>
+
+    <string name="forgot_pass_success_text">Ми відправили пароль на вказану адресу</string>
+
+
+    <string-array name="priest_state">
+        <item>Диякон</item>
+        <item>Протодиякон</item>
+        <item>Ієрей</item>
+        <item>Протоієрей</item>
+        <item>Священник</item>
+        <item>Ієродиякон</item>
+        <item>Ієромонах</item>
+        <item>Ігумен</item>
+        <item>Архімандрит</item>
+    </string-array>
+
+    <string-array name="bishop_benefice">
+        <item>Єпископ</item>
+        <item>Архієпископ</item>
+        <item>Митрополит</item>
+    </string-array>
+
+    <string-array name="believer_benefice">
+        <item>Вірянин</item>
+        <item>Член парафіяльної ради</item>
+    </string-array>
+
+    <string name="profile_save">Зберегти</string>
+
+    <!--  Sign in  -->
+    <string name="sign_in_title">Вхід до кабінету</string>
+    <string name="password_title">Пароль</string>
+    <string name="password_reminder">&lt;u&gt;Нагадати пароль&lt;/u&gt;</string>
+    <string name="sign_in_create_profile">&lt;u&gt;Створити профіль&lt;/u&gt;</string>
+    <string name="sign_in">Увійти</string>
+
+    <!--  Sign up  -->
+    <string name="sign_up">Реєстрація</string>
+    <string name="send_code_btn_text">Відправити код</string>
+    <string name="next_btn_text">Продовжити</string>
+    <string name="enter_phone_number">Введіть номер телефону</string>
+    <string name="phone_number">Номер телефону</string>
+    <string name="login_code_length">Код SMS із 4 цифр</string>
+    <string name="resend_sms">Переслати СМС код</string>
+    <string name="create_pass">Вигадайте пароль</string>
+    <string name="profile_at_moderating_text">Ваш профіль знаходиться на верифікації. Ми перевіремо ваші дані найближчим часом, це може зайняти декілька днів.</string>
+
+
+    <!--  Support chats  -->
+    <string name="support_chats_title">Отримати підтримку</string>
+    <string name="support_chat_body_text">Доброго дня! Це ваш віртуальний помічник з духовних питань. Оберіть, будь ласка, програму, де вам було б зручно задавати питання.</string>
+
+    <!--  Donates  -->
+    <string name="donates_title">Пожертвувати кошти через</string>
+    <string name="donates_body_text">Не обов\'язково чекати свята Миколая, щоб зробити добру справу. Адже, тільки справжня добра справа йде від серця, і тільки вона може подарувати щастя.</string>
+    <string name="donates_monobank">Monobank</string>
+    <string name="donates_privat24">Privat24</string>
+    <string name="donates_portmone">Portmone</string>
+    <string name="donates_paypal">PayPal</string>
+
+<!--  Dialog messages  -->
+    <string name="pass_was_send">Пароль від кабінету відправили на пошту <b>%1$s</b></string>
+    <string name="pass_was_send_moderating">Пароль від кабінету відправили на пошту <b>%1$s</b>.\n\nПрофіль на верифікації.\nМи перевіремо ваші дані найближчим часом, це може зайняти декілька днів.</string>
+    <string name="pass_was_change">Пароль успішно змінено</string>
+    <string name="email_was_change">Електронна адреса успішно змінена</string>
+
+    <string name="understand_text">Зрозуміло</string>
+
+<!--  Errors  -->
+    <string name="field_error_text">Перевірте вірність заповнення - \"%1$s\"</string>
+</resources>

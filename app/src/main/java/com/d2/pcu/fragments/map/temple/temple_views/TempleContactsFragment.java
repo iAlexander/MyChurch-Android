@@ -18,11 +18,11 @@ import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.databinding.FragmentTempleContactsBinding;
 import com.d2.pcu.fragments.BaseFragment;
+import com.d2.pcu.fragments.PhotoAdapter;
+import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.google.gson.Gson;
-
-import java.util.Arrays;
 
 public class TempleContactsFragment extends BaseFragment {
 
@@ -31,10 +31,11 @@ public class TempleContactsFragment extends BaseFragment {
 
     private OnBackButtonClickListener onBackButtonClickListener;
     private OnLoadingStateChangedListener onLoadingStateChangedListener;
+    private OnAdditionalFuncMapListener onAdditionalFuncMapListener;
 
     private Temple temple;
 
-    private TemplePhotoAdapter adapter;
+    private PhotoAdapter adapter;
 
     public static TempleContactsFragment newInstance() {
         return new TempleContactsFragment();
@@ -60,7 +61,7 @@ public class TempleContactsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        adapter = new TemplePhotoAdapter();
+        adapter = new PhotoAdapter();
     }
 
     @Override
@@ -68,29 +69,26 @@ public class TempleContactsFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(TempleContactsViewModel.class);
+        viewModel.setTemple(temple);
         viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
         viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
-        viewModel.enableLoading();
-        viewModel.loadTempleInfoById(temple.getId());
+        viewModel.setOnAdditionalFuncMapListener(onAdditionalFuncMapListener);
 
-        binding.setLifecycleOwner(getViewLifecycleOwner());
+
+
+        binding.setLifecycleOwner(this);
         binding.setModel(viewModel);
+        binding.setTemple(temple);
+       // adapter.setUrls(temple.getImageUrls());
 
-        viewModel.getTempleLiveData().observe(getViewLifecycleOwner(), new Observer<Temple>() {
-            @Override
-            public void onChanged(Temple temple) {
-                TempleContactsFragment.this.temple = temple;
-                binding.setTemple(temple);
-                adapter.setUrls(Arrays.asList(temple.getImageUrl()));
 
-                viewModel.disableLoading();
-            }
-        });
 
         binding.templeContactsPhotoRv.setAdapter(adapter);
         binding.templeContactsPhotoRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         new LinearSnapHelper().attachToRecyclerView(binding.templeContactsPhotoRv);
+
+        viewModel.disableLoading();
 
     }
 
@@ -99,6 +97,7 @@ public class TempleContactsFragment extends BaseFragment {
         super.onAttach(context);
         onBackButtonClickListener = (OnBackButtonClickListener) context;
         onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
+        onAdditionalFuncMapListener = (OnAdditionalFuncMapListener) context;
     }
 
     @Override
@@ -106,5 +105,6 @@ public class TempleContactsFragment extends BaseFragment {
         super.onDetach();
         onBackButtonClickListener = null;
         onLoadingStateChangedListener = null;
+        onAdditionalFuncMapListener = null;
     }
 }
