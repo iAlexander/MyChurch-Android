@@ -1,33 +1,31 @@
 package com.d2.pcu.fragments.map;
 
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
-import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.databinding.MapFragmentBinding;
 import com.d2.pcu.fragments.BaseFragment;
+import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.utils.Constants;
 import com.google.android.gms.maps.CameraUpdateFactory;

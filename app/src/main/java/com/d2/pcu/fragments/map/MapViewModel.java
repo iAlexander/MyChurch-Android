@@ -2,14 +2,12 @@ package com.d2.pcu.fragments.map;
 
 import android.app.Application;
 import android.location.Location;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
 
 import com.d2.pcu.App;
 import com.d2.pcu.R;
@@ -30,7 +28,6 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MapViewModel extends AndroidViewModel {
@@ -38,6 +35,7 @@ public class MapViewModel extends AndroidViewModel {
     private static final String TAG = MapViewModel.class.getSimpleName();
 
     private Repository repository;
+    private LatLng prevLocation;
 
     private MutableLiveData<LatLng> location;
     private LiveData<List<BaseTemple>> baseTemplesLiveData;
@@ -58,6 +56,8 @@ public class MapViewModel extends AndroidViewModel {
     public MapViewModel(@NonNull Application application) {
         super(application);
         Locator locator = new Locator(getApplication().getApplicationContext());
+
+        // TODO: 4/11/20 Get current location
         location = new MutableLiveData<>(locator.getDefaultKyivLocation());
 
         repository = App.getInstance().getRepositoryInstance();
@@ -126,56 +126,56 @@ public class MapViewModel extends AndroidViewModel {
     void setGoogleMap(GoogleMap googleMap) {
 
 //        if (clusterManager == null) {
-            this.googleMap = googleMap;
+        this.googleMap = googleMap;
 
-            clusterManager = new ClusterManager<>(
-                    getApplication().getApplicationContext(),
-                    googleMap
-            );
+        clusterManager = new ClusterManager<>(
+                getApplication().getApplicationContext(),
+                googleMap
+        );
 
-            clusterManager.getAlgorithm().setMaxDistanceBetweenClusteredItems(150);
+        clusterManager.getAlgorithm().setMaxDistanceBetweenClusteredItems(150);
 
-            clusterRenderer = new CustomClusterRenderer(
-                    getApplication().getApplicationContext(), googleMap, clusterManager
-            );
+        clusterRenderer = new CustomClusterRenderer(
+                getApplication().getApplicationContext(), googleMap, clusterManager
+        );
 
 
-            clusterManager.setRenderer(clusterRenderer);
+        clusterManager.setRenderer(clusterRenderer);
 
-            clusterManager
-                    .setOnClusterClickListener(new ClusterManager.OnClusterClickListener<BaseTemple>() {
-                        @Override
-                        public boolean onClusterClick(Cluster<BaseTemple> cluster) {
-                            googleMap
-                                    .animateCamera(
-                                            CameraUpdateFactory.newLatLngZoom(cluster.getPosition(), 9f)
-                                    );
-                            return true;
-                        }
-                    });
+        clusterManager
+                .setOnClusterClickListener(new ClusterManager.OnClusterClickListener<BaseTemple>() {
+                    @Override
+                    public boolean onClusterClick(Cluster<BaseTemple> cluster) {
+                        googleMap
+                                .animateCamera(
+                                        CameraUpdateFactory.newLatLngZoom(cluster.getPosition(), 9f)
+                                );
+                        return true;
+                    }
+                });
 
-            clusterManager
-                    .setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<BaseTemple>() {
-                        @Override
-                        public boolean onClusterItemClick(BaseTemple temple) {
-                            onMarkerStateChange(temple);
-                            getAdapter().scrollToItem(temple);
+        clusterManager
+                .setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<BaseTemple>() {
+                    @Override
+                    public boolean onClusterItemClick(BaseTemple temple) {
+                        onMarkerStateChange(temple);
+                        getAdapter().scrollToItem(temple);
 
-                            googleMap
-                                    .animateCamera(
-                                            CameraUpdateFactory.newLatLngZoom(temple.getLatLng(), 16f)
-                                    );
+                        googleMap
+                                .animateCamera(
+                                        CameraUpdateFactory.newLatLngZoom(temple.getLatLng(), 16f)
+                                );
 
-                            return true;
-                        }
-                    });
+                        return true;
+                    }
+                });
 
-            if (baseTemplesLiveData.getValue() != null) {
-                clusterManager.addItems(baseTemplesLiveData.getValue());
-            }
+        if (baseTemplesLiveData.getValue() != null) {
+            clusterManager.addItems(baseTemplesLiveData.getValue());
+        }
 
-            googleMap.setOnMarkerClickListener(clusterManager);
-            googleMap.setOnCameraIdleListener(clusterManager);
+        googleMap.setOnMarkerClickListener(clusterManager);
+        googleMap.setOnCameraIdleListener(clusterManager);
 //        }
     }
 
@@ -188,6 +188,11 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     LiveData<LatLng> getLocation() {
+        return location;
+    }
+
+    LiveData<LatLng> getLocationAndCalc() {
+        repository.getShortTemplesInfo(location.getValue());
         return location;
     }
     //
@@ -216,6 +221,17 @@ public class MapViewModel extends AndroidViewModel {
     private void loadData() {
         enableLoading();
         repository.getShortTemplesInfo(location.getValue());
+    }
+
+    private boolean changeLocation() {
+        if (prevLocation == null) {
+            return true;
+        } else if (prevLocation.equals(location.getValue())) {
+            return false;
+        } else {
+            prevLocation = location.getValue();
+            return true;
+        }
     }
 
     /**

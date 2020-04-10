@@ -12,10 +12,11 @@ public class Constants {
 
     public static final String PREFS = "pcu_app_prefs";
     public static final String STATE_ON_BOARDING = "onBoarding";
-    public static final String STATE_AGREEMENT= "agreementApprove";
+    public static final String STATE_AGREEMENT = "agreementApprove";
     public static final String ACCESS_TOKEN = "accessToken";
     public static final String USER_EMAIL = "userEmail";
     public static final String USER_TYPE = "userType";
+    public static final String LAST_LOCATION = "last_location";
 
 
     public static final String START_SCREEN_ID = "startScreen";
@@ -24,7 +25,7 @@ public class Constants {
     public static final int TEMPLE_TYPE_CHURCH = 2;
     public static final String CATHEDRAL_CHURCH = "Кафедральний";
 
-//    ERRORS
+    //    ERRORS
     public static final String ERROR_FRAGMENT_TAG = "errorFragment";
     public static final int ERROR_TYPE_NO_CONNECTION = 1;
     public static final int ERROR_TYPE_SERVER_ERROR = 2;

@@ -26,21 +26,18 @@ public class Locator {
     private void getCurrent() {
         Task<Location> result = client.getLastLocation();
 
-        result.addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                Location location = result.getResult();
+        result.addOnCompleteListener(task -> {
+            Location location = result.getResult();
 
-                LatLng current; {
-                    if (location != null) {
-                        current = new LatLng(location.getLatitude(), location.getLongitude());
-                    } else {
-                        current = getDefaultKyivLocation();
-                    }
+            LatLng current; {
+                if (location != null) {
+                    current = new LatLng(location.getLatitude(), location.getLongitude());
+                } else {
+                    current = getDefaultKyivLocation();
                 }
-
-                currentLocation.setValue(current);
             }
+
+            currentLocation.setValue(current);
         });
     }
 
