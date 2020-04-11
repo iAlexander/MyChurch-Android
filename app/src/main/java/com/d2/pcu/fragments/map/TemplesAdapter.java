@@ -68,6 +68,14 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
         setTemples(temp);
     }
 
+    public LatLng getFirst() {
+        if (CollectionUtils.isEmpty(temples)) {
+            return new LatLng(50.4902564, 30.481516);
+        } else {
+            return temples.get(0).getLatLng();
+        }
+    }
+
     @NonNull
     @Override
     public TempleItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

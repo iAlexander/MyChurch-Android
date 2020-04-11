@@ -3,6 +3,7 @@ package com.d2.pcu.fragments.map;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -32,7 +32,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.gson.Gson;
+
+import timber.log.Timber;
 
 public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -133,16 +137,35 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 //        googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
         viewModel.setGoogleMap(googleMap);
 
+        try {
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
+
+            if (!success) {
+                Timber.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Timber.e(e, "Can't find  map style. Error: %s", e.getMessage());
+        }
+
         viewModel.getLocationPermission().observe(getViewLifecycleOwner(), granted -> {
             if (granted) {
                 viewModel.getGoogleMap().setMyLocationEnabled(true);
 
                 binding.centerMyLocation.setOnClickListener(view -> {
-                            viewModel.getGoogleMap()
-                                    .animateCamera(
-                                            CameraUpdateFactory.newLatLngZoom(
-                                                    viewModel.getLocationAndCalc().getValue(), 16f)
-                                    );
+                            LatLngBounds bounds = viewModel.getBounds();
+                            if (bounds != null) {
+                                viewModel.getGoogleMap()
+                                        .animateCamera(
+                                                CameraUpdateFactory.newLatLngBounds(bounds, 100)
+                                        );
+                            } else {
+                                viewModel.getGoogleMap()
+                                        .animateCamera(
+                                                CameraUpdateFactory.newLatLngZoom(
+                                                        viewModel.getLocationAndCalc().getValue(), 16f)
+                                        );
+                            }
                         }
                 );
             }

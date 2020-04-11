@@ -22,9 +22,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.Task;
-import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
@@ -87,6 +87,7 @@ public class MapViewModel extends AndroidViewModel {
                 if (clusterManager != null) {
                     clusterManager.clearItems();
                     clusterManager.addItems(baseTemples);
+                    clusterManager.cluster();
                 }
                 disableLoading();
             }
@@ -126,6 +127,7 @@ public class MapViewModel extends AndroidViewModel {
     void setGoogleMap(GoogleMap googleMap) {
 
 //        if (clusterManager == null) {
+
         this.googleMap = googleMap;
 
         clusterManager = new ClusterManager<>(
@@ -142,36 +144,21 @@ public class MapViewModel extends AndroidViewModel {
 
         clusterManager.setRenderer(clusterRenderer);
 
-        clusterManager
-                .setOnClusterClickListener(new ClusterManager.OnClusterClickListener<BaseTemple>() {
-                    @Override
-                    public boolean onClusterClick(Cluster<BaseTemple> cluster) {
-                        googleMap
-                                .animateCamera(
-                                        CameraUpdateFactory.newLatLngZoom(cluster.getPosition(), 9f)
-                                );
-                        return true;
-                    }
-                });
+        clusterManager.setOnClusterClickListener(cluster -> {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(cluster.getPosition(), 9f));
+            return true;
+        });
 
-        clusterManager
-                .setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<BaseTemple>() {
-                    @Override
-                    public boolean onClusterItemClick(BaseTemple temple) {
-                        onMarkerStateChange(temple);
-                        getAdapter().scrollToItem(temple);
-
-                        googleMap
-                                .animateCamera(
-                                        CameraUpdateFactory.newLatLngZoom(temple.getLatLng(), 16f)
-                                );
-
-                        return true;
-                    }
-                });
+        clusterManager.setOnClusterItemClickListener(temple -> {
+            onMarkerStateChange(temple);
+            getAdapter().scrollToItem(temple);
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(temple.getLatLng(), 16f));
+            return true;
+        });
 
         if (baseTemplesLiveData.getValue() != null) {
             clusterManager.addItems(baseTemplesLiveData.getValue());
+            clusterManager.cluster();
         }
 
         googleMap.setOnMarkerClickListener(clusterManager);
@@ -189,6 +176,13 @@ public class MapViewModel extends AndroidViewModel {
 
     LiveData<LatLng> getLocation() {
         return location;
+    }
+
+    LatLngBounds getBounds() {
+        LatLng latLng = location.getValue();
+        adapter.updateDistance(location.getValue());
+        if (latLng == null) return new LatLngBounds(adapter.getFirst(), adapter.getFirst());
+        else return new LatLngBounds(latLng, adapter.getFirst());
     }
 
     LiveData<LatLng> getLocationAndCalc() {
