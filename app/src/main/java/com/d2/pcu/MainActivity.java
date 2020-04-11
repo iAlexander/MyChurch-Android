@@ -1,13 +1,12 @@
 package com.d2.pcu;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -40,7 +39,6 @@ import com.d2.pcu.ui.error.fragments.ErrorFragment;
 import com.d2.pcu.ui.utils.UIUtils;
 import com.d2.pcu.utils.Constants;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity implements OnError,
@@ -114,9 +112,12 @@ public class MainActivity extends AppCompatActivity implements OnError,
 
     private void setStartScreen() {
         int startId = App.getInstance().getRepositoryInstance().getSelectedStartScreenId();
-        if (startId != -1) {
+        if (startId != R.id.unset_resource) {
             NavGraph navDestinations = navController.getGraph();
-            navDestinations.setStartDestination(startId);
+            TypedArray typedArray = getResources().obtainTypedArray(R.array.fragments_ids);
+            int startScreen = typedArray.getResourceId(startId, R.id.mapFragment);
+            typedArray.recycle();
+            navDestinations.setStartDestination(startScreen);
             navController.setGraph(navDestinations);
         }
     }
@@ -126,46 +127,49 @@ public class MainActivity extends AppCompatActivity implements OnError,
         navController.popBackStack();
     }
 
-    private void setOnMenuClickHandling() {
-        binding.navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (currentFragmentId != item.getItemId()) {
+    /*
 
-                    switch (item.getItemId()) {
-                        case R.id.mapFragment: {
-                            navController.navigate(R.id.mapFragment);
-                            currentFragmentId = R.id.mapFragment;
-                            return true;
-                        }
-                        case R.id.calendarFragment: {
-                            navController.navigate(R.id.calendarFragment);
-                            currentFragmentId = R.id.calendarFragment;
-                            return true;
-                        }
-                        case R.id.newsFragment: {
-                            navController.navigate(R.id.newsFragment);
-                            currentFragmentId = R.id.newsFragment;
-                            return true;
-                        }
-                        case R.id.prayFragment: {
-                            navController.navigate(R.id.prayFragment);
-                            currentFragmentId = R.id.prayFragment;
-                            return true;
-                        }
-                        case R.id.profileFragment: {
-                            navController.navigate(R.id.profileFragment);
-                            currentFragmentId = R.id.profileFragment;
-                            return true;
+        private void setOnMenuClickHandling() {
+            binding.navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    if (currentFragmentId != item.getItemId()) {
+
+                        switch (item.getItemId()) {
+                            case R.id.mapFragment: {
+                                navController.navigate(R.id.mapFragment);
+                                currentFragmentId = R.id.mapFragment;
+                                return true;
+                            }
+                            case R.id.calendarFragment: {
+                                navController.navigate(R.id.calendarFragment);
+                                currentFragmentId = R.id.calendarFragment;
+                                return true;
+                            }
+                            case R.id.newsFragment: {
+                                navController.navigate(R.id.newsFragment);
+                                currentFragmentId = R.id.newsFragment;
+                                return true;
+                            }
+                            case R.id.prayFragment: {
+                                navController.navigate(R.id.prayFragment);
+                                currentFragmentId = R.id.prayFragment;
+                                return true;
+                            }
+                            case R.id.profileFragment: {
+                                navController.navigate(R.id.profileFragment);
+                                currentFragmentId = R.id.profileFragment;
+                                return true;
+                            }
                         }
                     }
+
+                    return false;
                 }
+            });
+        }
 
-                return false;
-            }
-        });
-    }
-
+    */
     @Override
     public void onTempleInfoClick(String serializedTemple, int type) {
         if (type == Constants.TEMPLE_TYPE_CATHEDRAL) {

@@ -68,22 +68,11 @@ public class ProfileMenuFragment extends BaseFragment {
     private void setSelectorData() {
         binding.defaultScreenSelector.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.
-                    setTitle(getString(R.string.intro_start_screen)).
-                    setItems(
-                            R.array.menu_names,
-                            (dialog, which) -> {
-                                binding.
-                                        defaultScreenSelector.
-                                        setDialogSelectedText(
-                                                getResources().
-                                                        getStringArray(R.array.menu_names)[which]);
-
-                                viewModel.setSelectedDefaultScreen(
-                                        viewModel.collectFragments(
-                                                getResources().obtainTypedArray(R.array.fragments_ids)
-                                        )[which]
-                                );
+            builder.setTitle(getString(R.string.intro_start_screen)).
+                    setItems(R.array.menu_names, (dialog, which) -> {
+                                binding.defaultScreenSelector.setDialogSelectedText(
+                                        getResources().getStringArray(R.array.menu_names)[which]);
+                                viewModel.setSelectedDefaultScreen(viewModel.collectFragments()[which]);
                             }
                     );
             builder.create().show();
@@ -91,19 +80,11 @@ public class ProfileMenuFragment extends BaseFragment {
     }
 
     private void getDefaultSelectedFragmentName() {
-        int[] ids = viewModel.collectFragments(
-                getResources().obtainTypedArray(R.array.fragments_ids)
-        );
-
         String[] names = getResources().getStringArray(R.array.menu_names);
 
         int defaultSelectedFragment = viewModel.getSelectedDefaultScreen();
-        for (int i = 0; i < ids.length; i++) {
-            if (ids[i] == defaultSelectedFragment) {
-                selectedName = names[i];
-                break;
-            }
-        }
+        if (defaultSelectedFragment != R.id.unset_resource)
+            selectedName = names[defaultSelectedFragment];
     }
 
     @Override

@@ -11,6 +11,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import com.d2.pcu.R;
+import com.d2.pcu.StartFragments;
 import com.d2.pcu.data.db.MasterDbModel;
 import com.d2.pcu.data.db.OnDbResult;
 import com.d2.pcu.data.db.OnDbResultState;
@@ -132,12 +134,12 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         sharedPreferences.edit().putBoolean(Constants.STATE_ON_BOARDING, state).apply();
     }
 
-    public void setSelectedStartScreenId(int id) {
+    public void setSelectedStartScreenId(@StartFragments int id) {
         sharedPreferences.edit().putInt(Constants.START_SCREEN_ID, id).apply();
     }
 
     public int getSelectedStartScreenId() {
-        return sharedPreferences.getInt(Constants.START_SCREEN_ID, -1);
+        return sharedPreferences.getInt(Constants.START_SCREEN_ID, R.id.unset_resource);
     }
 
     public void saveAgreementApprove(boolean isApply) {
@@ -180,14 +182,13 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getShortTemplesInfo(new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getShortTemplesInfo -> onSuccess ");
                 channels.getBaseTemplesChannel().postValue(((ShortTemplesInfoResponse) response).getData().getList());
             }
 
             @Override
             public void onFail(Throwable ex) {
+                Timber.e(ex, "getShortTemplesInfo: %s", ex.getMessage());
                 if (onError != null) {
-                    Log.i(TAG, "getShortTemplesInfo -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -202,8 +203,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getShortTemplesInfo(new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getShortTemplesInfo -> onSuccess ");
-
                 List<BaseTemple> temples = ((ShortTemplesInfoResponse) response).getData().getList();
 
                 for (BaseTemple temple : temples) {
@@ -226,8 +225,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
             @Override
             public void onFail(Throwable ex) {
+                Timber.e(ex, "getShortTemplesInfo: %s", ex.getMessage());
                 if (onError != null) {
-                    Log.i(TAG, "getShortTemplesInfo -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -242,14 +241,13 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getTempleById(id, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getTempleById -> onSuccess ");
                 channels.getTempleChannel().setValue(((TempleResponse) response).getTemple());
             }
 
             @Override
             public void onFail(Throwable ex) {
+                Timber.e(ex, "getTempleById: %s", ex.getMessage());
                 if (onError != null) {
-                    Log.i(TAG, "getTempleById -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -272,8 +270,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
             @Override
             public void onFail(Throwable ex) {
+                Timber.e(ex, "getCalendar: %s", ex.getMessage());
                 if (onError != null) {
-                    Log.i(TAG, "getCalendar -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -288,14 +286,13 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getEventInfo(id, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getEventInfo -> onSuccess ");
                 channels.getEventChannel().postValue(((EventResponse) response).getEvent());
             }
 
             @Override
             public void onFail(Throwable ex) {
+                Timber.e(ex, "getEventInfo: %s", ex.getMessage());
                 if (onError != null) {
-                    Log.i(TAG, "getEventInfo -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -310,35 +307,28 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getNews(length, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getNews -> onSuccess ");
-
                 List<NewsItem> items = ((NewsResponse) response).getNews();
 
-                dbLoader.updateAndSaveNewsToDb(items, new OnDbResultState() {
-                    @Override
-                    public void onResult(boolean isSuccess) {
-                        if (isSuccess) {
-                            dbLoader.getNews(new OnDbResult() {
-                                @Override
-                                public void onSuccess(MasterDbModel dbModel) {
-                                    channels.getNewsChannel().postValue(((NewsList) dbModel).getItems());
-                                }
+                dbLoader.updateAndSaveNewsToDb(items, isSuccess -> {
+                    if (isSuccess) {
+                        dbLoader.getNews(new OnDbResult() {
+                            @Override
+                            public void onSuccess(MasterDbModel dbModel) {
+                                channels.getNewsChannel().postValue(((NewsList) dbModel).getItems());
+                            }
 
-                                @Override
-                                public void onFail() {
-                                    // TODO: 2020-01-13
-                                }
-                            });
-                        }
+                            @Override
+                            public void onFail() {
+                                // TODO: 2020-01-13
+                            }
+                        });
                     }
                 });
-
             }
 
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "getNews -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -350,11 +340,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
     }
 
     public void updateNewsItemAsRead(NewsItem newsItem) {
-        dbLoader.updateReadNewsItem(newsItem, new OnDbResultState() {
-            @Override
-            public void onResult(boolean isSuccess) {
-                // TODO: 2020-01-13
-            }
+        dbLoader.updateReadNewsItem(newsItem, isSuccess -> {
+            // TODO: 2020-01-13
         });
     }
 
@@ -362,8 +349,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getPrays(new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getPrays -> onSuccess ");
-
                 List<Pray> prays = ((PrayResponse) response).getPrayDataWrapper().getPrays();
 
                 List<Pray> morningList = new LinkedList<>();
@@ -384,7 +369,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "getPrays -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -396,11 +380,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
     }
 
     public void savePrayToDb(Pray pray) {
-        dbLoader.savePray(pray, new OnDbResultState() {
-            @Override
-            public void onResult(boolean isSuccess) {
-                // TODO: 2019-12-19
-            }
+        dbLoader.savePray(pray, isSuccess -> {
+            // TODO: 2019-12-19
         });
     }
 
@@ -415,7 +396,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
                     channels.getEveningDBPraysChannel().postValue(((PraysList) dbModel).getPrays());
                 } else {
-                    Log.e(TAG, "onSuccess: PRAYS WRONG TYPE");
+                    Timber.e("onSuccess: PRAYS WRONG TYPE");
                 }
             }
 
@@ -439,14 +420,12 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getDioceses(new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getDiocese -> onSuccess ");
                 channels.getDioceseChannel().postValue(((DioceseResponse) response).getDioceseDataWrapper().getDioceseList());
             }
 
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "getDiocese -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -461,8 +440,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.signIn(email, password, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "signIn -> onSuccess ");
-
                 boolean ok = ((ProfileSignUpResponse) response).isOk();
                 String accessToken = ((ProfileSignUpResponse) response).getProfileAccessTokenWrapperResponse().getAccessToken();
 
@@ -481,7 +458,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "signUp -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onLoginErrorListener.onError(ex.getMessage());
                     } else {
@@ -498,8 +474,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.signUp(userProfile, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "signUp Token -> onSuccess ");
-
                 boolean ok = ((ProfileSignUpResponse) response).isOk();
                 String accessToken = ((ProfileSignUpResponse) response).getProfileAccessTokenWrapperResponse().getAccessToken();
 
@@ -518,7 +492,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "signUp -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onLoginErrorListener.onError(ex.getMessage());
                     } else {
@@ -544,7 +517,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "forgotPass -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onLoginErrorListener.onError(ex.getMessage());
                     } else {
@@ -584,7 +556,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 }
 
                 if (onError != null) {
-                    Log.i(TAG, "getUserProfile -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -600,8 +571,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.changeEmail(newEmail, authHeader, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "changeEmail -> onSuccess ");
-
                 boolean ok = ((BoolResponse) response).isOk();
 
                 if (ok) {
@@ -628,7 +597,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 }
 
                 if (onError != null) {
-                    Log.i(TAG, "changeEmail -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -644,14 +612,11 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.changePassword(oldPass, newPass, authHeader, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "changePassword -> onSuccess ");
-
                 boolean ok = ((BoolResponse) response).isOk();
 
                 if (ok) {
                     onRequestResult.onSuccess();
                 }
-
             }
 
             @Override
@@ -673,7 +638,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 }
 
                 if (onError != null) {
-                    Log.i(TAG, "changePassword -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {

@@ -1,11 +1,11 @@
 package com.d2.pcu.fragments.cabinet.user_profile;
 
-import android.content.res.TypedArray;
 import android.view.View;
 
 import androidx.lifecycle.LiveData;
 
 import com.d2.pcu.App;
+import com.d2.pcu.StartFragments;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.fragments.BaseViewModel;
@@ -77,16 +77,14 @@ public class ProfileMenuViewModel extends BaseViewModel {
         }
     }
 
-    int[] collectFragments(TypedArray fragmentsIds) {
-        int[] fragmentId = new int[fragmentsIds.length()];
-
-        for (int i = 0; i < fragmentsIds.length(); i++) {
-            int id = fragmentsIds.getResourceId(i, -1);
-            if (id != -1) {
-                fragmentId[i] = (id);
-            }
-        }
-        return fragmentId;
+    int[] collectFragments() {
+        return new int[]{
+                StartFragments.MAP,
+                StartFragments.CALENDAR,
+                StartFragments.NEWS,
+                StartFragments.PRAY,
+                StartFragments.PROFILE
+        };
     }
 
     public void onNotificationClick(View view) {
