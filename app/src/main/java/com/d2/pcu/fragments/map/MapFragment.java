@@ -120,7 +120,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 //            @Override
 //            public void onChanged(LatLng latLng) {
 //                if (viewModel.getGoogleMap() != null) {
-                    //comment this - client want zoom at temple on app start
+        //comment this - client want zoom at temple on app start
 //                    viewModel.getGoogleMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
 //                }
 //            }
@@ -133,21 +133,18 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 //        googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
         viewModel.setGoogleMap(googleMap);
 
-        viewModel.getLocationPermission().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean granted) {
-                if (granted) {
-                    viewModel.getGoogleMap().setMyLocationEnabled(true);
+        viewModel.getLocationPermission().observe(getViewLifecycleOwner(), granted -> {
+            if (granted) {
+                viewModel.getGoogleMap().setMyLocationEnabled(true);
 
-                    binding.centerMyLocation.setOnClickListener(view -> {
-                                viewModel.getGoogleMap()
-                                        .animateCamera(
-                                                CameraUpdateFactory.newLatLngZoom(
-                                                        viewModel.getLocation().getValue(), 16f)
-                                        );
-                            }
-                    );
-                }
+                binding.centerMyLocation.setOnClickListener(view -> {
+                            viewModel.getGoogleMap()
+                                    .animateCamera(
+                                            CameraUpdateFactory.newLatLngZoom(
+                                                    viewModel.getLocationAndCalc().getValue(), 16f)
+                                    );
+                        }
+                );
             }
         });
 

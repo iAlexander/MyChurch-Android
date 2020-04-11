@@ -10,8 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.databinding.ItemMapTempleBinding;
+import com.d2.pcu.utils.DistanceCalculator;
+import com.google.android.gms.common.util.CollectionUtils;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
@@ -42,6 +46,26 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
         this.temples.clear();
         this.temples.addAll(temples);
         notifyDataSetChanged();
+    }
+
+    public void updateDistance(LatLng location) {
+        if (CollectionUtils.isEmpty(temples) || location == null) return;
+        ArrayList<BaseTemple> temp = new ArrayList<>(temples);
+        for (BaseTemple temple : temp) {
+            temple.setDistance(
+                    DistanceCalculator.distanceFlatKm(
+                            location.latitude,
+                            temple.getLt(),
+                            location.longitude,
+                            temple.getLg())
+            );
+        }
+
+        Collections.sort(
+                temp,
+                (o1, o2) -> Double.compare(o1.getDistance(), o2.getDistance())
+        );
+        setTemples(temp);
     }
 
     @NonNull

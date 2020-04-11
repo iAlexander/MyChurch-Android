@@ -192,10 +192,10 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     LiveData<LatLng> getLocationAndCalc() {
-        repository.getShortTemplesInfo(location.getValue());
+        adapter.updateDistance(location.getValue());
         return location;
     }
-    //
+
 
     /**
      * Enable loading overlayView at main activity

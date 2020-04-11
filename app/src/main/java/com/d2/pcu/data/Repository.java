@@ -26,12 +26,11 @@ import com.d2.pcu.data.responses.OnMasterResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
-import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
-import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
+import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
 import com.d2.pcu.login.OnLoginError;
 import com.d2.pcu.login.sign_up.UserProfileViewModel;
@@ -43,18 +42,14 @@ import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.DistanceCalculator;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class Repository implements LifecycleObserver, LifecycleOwner {
 
@@ -213,16 +208,11 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
                 for (BaseTemple temple : temples) {
                     temple.setDistance(
-                            (DistanceCalculator.distance(
-                                            latLng.latitude,
-                                            temple.getLt(),
-                                            latLng.longitude,
-                                            temple.getLg(),
-                                            0.0,
-                                            0.0
-                                    )
-                                     / 1000
-                            )
+                            DistanceCalculator.distanceFlatKm(
+                                    latLng.latitude,
+                                    temple.getLt(),
+                                    latLng.longitude,
+                                    temple.getLg())
                     );
                 }
 
