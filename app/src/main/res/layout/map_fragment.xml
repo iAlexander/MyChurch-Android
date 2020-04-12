@@ -58,6 +58,7 @@
             android:layout_margin="@dimen/medium"
             android:background="@drawable/bg_circle"
             android:src="@drawable/ic_my_location"
+            android:elevation="@dimen/pcu_default_elevation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/templates_list_rv"
             android:visibility="@{model.locationPermission ? View.VISIBLE : View.GONE}"/>

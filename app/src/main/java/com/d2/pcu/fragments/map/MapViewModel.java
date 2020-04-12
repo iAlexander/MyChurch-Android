@@ -57,8 +57,7 @@ public class MapViewModel extends AndroidViewModel {
         super(application);
         Locator locator = new Locator(getApplication().getApplicationContext());
 
-        // TODO: 4/11/20 Get current location
-        location = new MutableLiveData<>(locator.getDefaultKyivLocation());
+        location = locator.getCurrentLocation();
 
         repository = App.getInstance().getRepositoryInstance();
 
@@ -181,8 +180,9 @@ public class MapViewModel extends AndroidViewModel {
     LatLngBounds getBounds() {
         LatLng latLng = location.getValue();
         adapter.updateDistance(location.getValue());
-        if (latLng == null) return new LatLngBounds(adapter.getFirst(), adapter.getFirst());
-        else return new LatLngBounds(latLng, adapter.getFirst());
+        return adapter.getNearest(latLng);
+//        if (latLng == null) return new LatLngBounds(adapter.getFirst(), adapter.getFirst());
+//        else return new LatLngBounds(latLng, adapter.getFirst());
     }
 
     LiveData<LatLng> getLocationAndCalc() {

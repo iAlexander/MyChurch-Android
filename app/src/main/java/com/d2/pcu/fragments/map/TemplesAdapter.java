@@ -11,8 +11,10 @@ import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.databinding.ItemMapTempleBinding;
 import com.d2.pcu.utils.DistanceCalculator;
+import com.d2.pcu.utils.Locator;
 import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,11 +70,23 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
         setTemples(temp);
     }
 
-    public LatLng getFirst() {
+    public LatLngBounds getNearest(LatLng current) {
         if (CollectionUtils.isEmpty(temples)) {
-            return new LatLng(50.4902564, 30.481516);
+            if (current == null)
+                return new LatLngBounds(Locator.DEFAULT_KYIV, Locator.DEFAULT_KYIV);
+            else return new LatLngBounds(current, current);
         } else {
-            return temples.get(0).getLatLng();
+            LatLngBounds bounds = new LatLngBounds(
+                    current == null ? temples.get(0).getLatLng() : current,
+                    temples.get(0).getLatLng()
+            );
+            if (temples.size() > 1) {
+                for (int i = 1; i < temples.size() && temples.get(i).getDistance() < 3; i++) {
+                    bounds = bounds.including(temples.get(i).getLatLng());
+                }
+            }
+
+            return bounds;
         }
     }
 
