@@ -2,7 +2,7 @@ package com.d2.pcu.utils;
 
 public class Constants {
 
-    public static final String BASE_URL = "http://test.cerkva.asp-win.d2.digital/";
+//    public static final String BASE_URL = "http://test.cerkva.asp-win.d2.digital/";
 //    public static final String BASE_URL = "http://ec2-3-133-104-185.us-east-2.compute.amazonaws.com:8081/";
 //    public static final String BASE_URL = "http://10.103.41.17:8081/";
 
@@ -34,4 +34,13 @@ public class Constants {
     //PRAYS
     public static final String PRAY_MORNING = "РАНКОВІ";
     public static final String PRAY_EVENING = "ВЕЧІРНІ";
+
+    public static final String PLAYBACK_CHANNEL_ID = "playback_channel";
+    public static final int PLAYBACK_NOTIFICATION_ID = 1;
+    public static final String MEDIA_SESSION_TAG = "audio_pcu";
+    public static final String EXO_BUNDLE_KEY = "exo_bundle";
+    public static final String ITEMS_KEY = "playlist";
+    public static final String EXO_POSITION = "exo_track";
+
+
 }

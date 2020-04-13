@@ -19,7 +19,7 @@
         android:title="@string/news"/>
 
     <item android:id="@+id/prayVerticalFragment"
-        android:icon="@drawable/selecter_prayers"
+        android:icon="@drawable/selector_prayers"
         android:orderInCategory="100"
         android:title="@string/prayers" />
 

@@ -1,6 +1,7 @@
 package com.d2.pcu.data.serializers.temples;
 
 
+import com.d2.pcu.BuildConfig;
 import com.d2.pcu.data.model.news.NewsItem;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
@@ -40,7 +41,7 @@ public class ShortTemplesDeserializer implements JsonDeserializer<ShortTemplesIn
                 JsonElement pictureName = picture.getAsJsonObject().get("name");
                 JsonElement picturePath = picture.getAsJsonObject().get("path");
 
-                item.setImageUrl(Constants.BASE_URL + picturePath.getAsString() + "/" + pictureName.getAsString());
+                item.setImageUrl(BuildConfig.API_BASE_URL + picturePath.getAsString() + "/" + pictureName.getAsString());
 
                 news.add(item);
             } catch (StackOverflowError e) {

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.databinding.ViewItemPrayBinding;
+import com.d2.pcu.fragments.pray.OnPlayClickListener;
 import com.d2.pcu.fragments.pray.OnPrayItemClickListener;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class PrayersItemAdapter extends RecyclerView.Adapter<PrayItemViewHolder>
     private String type;
 
     private OnPrayItemClickListener onPrayItemClickListener;
+    private OnPlayClickListener onPlayClickListener;
 
     public PrayersItemAdapter(String type, OnPrayItemClickListener onPrayItemClickListener) {
         prays = new ArrayList<>();
@@ -50,6 +52,11 @@ public class PrayersItemAdapter extends RecyclerView.Adapter<PrayItemViewHolder>
     @Override
     public void onBindViewHolder(@NonNull PrayItemViewHolder holder, int position) {
         holder.bind(prays.get(position), position);
+        holder.setOnPlayClickListener((pray, position1) -> {
+            if (onPlayClickListener != null) {
+                onPlayClickListener.onPlayClick(prays, position);
+            }
+        });
     }
 
     @Override
@@ -60,5 +67,10 @@ public class PrayersItemAdapter extends RecyclerView.Adapter<PrayItemViewHolder>
     @Override
     public long getItemId(int position) {
         return prays.get(position).getId();
+    }
+
+    public PrayersItemAdapter setOnPlayClickListener(OnPlayClickListener onPlayClickListener) {
+        this.onPlayClickListener = onPlayClickListener;
+        return this;
     }
 }

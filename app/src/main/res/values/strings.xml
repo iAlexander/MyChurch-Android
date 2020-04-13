@@ -49,7 +49,7 @@
         <item>@id/mapFragment</item>
         <item>@id/calendarFragment</item>
         <item>@id/newsFragment</item>
-        <item>@id/prayFragment</item>
+        <item>@id/prayVerticalFragment</item>
         <item>@id/profileFragment</item>
     </integer-array>
 
@@ -214,6 +214,7 @@
 
 <!--  Errors  -->
     <string name="field_error_text">Check field - %1$s</string>
+    <string name="playback_channel_name">Playback</string>
 
 
 </resources>

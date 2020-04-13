@@ -13,9 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/bg_app_color_gradient_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:elevation="@dimen/pcu_default_elevation"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -38,39 +35,18 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <!--        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-        <!--            android:id="@+id/prayers_vertical_swite_refresh_l"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/news_toolbar"-->
-        <!--            android:clipToPadding="false"-->
-        <!--            android:clipChildren="false">-->
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/prayer_vertical_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/prayers_toolbar"
-            app:tabSelectedTextColor="@color/colorAccent"
             android:elevation="@dimen/pcu_default_elevation"
+            app:tabSelectedTextColor="@color/colorAccent"
             app:tabTextAppearance="@style/TabTextAppearance" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/prayers_vertical_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/prayer_vertical_tabs" />
-
-        <!--        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
-
-
+            android:layout_height="match_parent" />
     </LinearLayout>
-
 </layout>

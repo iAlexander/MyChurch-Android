@@ -23,9 +23,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
-        >
+        android:usesCleartextTraffic="true">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -49,7 +48,7 @@
             android:name=".services.FirebaseBackgroundMessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
@@ -57,25 +56,26 @@
             android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name=".services.AudioExoPlayerService" />
 
-        <activity android:name=".intro.IntroActivity"
-            android:theme="@style/AppTheme"
+        <activity
+            android:name=".intro.IntroActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/AppTheme" />
 
-        <activity android:name=".login.LoginActivity"
-            android:theme="@style/AppTheme"
+        <activity
+            android:name=".login.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".MainActivity"
             android:configChanges="locale"
-            android:theme="@style/AppTheme.Launcher"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="pray"
             type="com.d2.pcu.data.model.pray.Pray" />
@@ -19,29 +21,37 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/default_padding">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/pray_item_fragment_title_tv"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin"
-                android:text="@{pray.title}"
-                android:textAppearance="@style/TitleAppTextBlack.Bold" />
+                android:layout_marginBottom="@dimen/default_margin"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/pray_item_fragment_title_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{pray.title}"
+                    android:textAppearance="@style/TitleAppTextBlack.Bold" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivPlayBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="@{pray.file == null || pray.file.name.empty ? View.GONE : View.VISIBLE}"
+                    app:srcCompat="@drawable/ic_volume" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:paddingBottom="@dimen/default_margin"
                 android:text="@{pray.text}"
-                android:textAppearance="@style/AppText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pray_item_fragment_title_tv" />
+                android:textAppearance="@style/AppText" />
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
 </layout>

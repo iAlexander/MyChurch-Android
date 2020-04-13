@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
+
 import com.d2.pcu.BuildConfig;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolResponse;
@@ -93,7 +94,7 @@ public class NetLoader implements DefaultLifecycleObserver {
         httpClient = builder.build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
+                .baseUrl(BuildConfig.API_BASE_URL)
                 .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -211,8 +212,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
                 int resCode = response.code();
 
-                Log.i(TAG, "getEventInfo -> onResponse: " + resCode);
-
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
                 } else {
@@ -222,7 +221,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<NewsResponse> call, @NonNull Throwable t) {
-                Log.i(TAG, "getEventInfo -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));
@@ -234,8 +232,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             public void onResponse(@NonNull Call<PrayResponse> call, @NonNull Response<PrayResponse> response) {
                 int resCode = response.code();
 
-                Log.i(TAG, "getPrays -> onResponse: " + resCode);
-
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
                 } else {
@@ -245,7 +241,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<PrayResponse> call, @NonNull Throwable t) {
-                Log.i(TAG, "getPrays -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));

@@ -25,6 +25,7 @@ public class PrayersAdapter extends RecyclerView.Adapter<PrayBaseViewHolder> {
 
     private OnPrayItemClickListener onPrayItemClickListener;
     private OnRefreshPraysListener onRefreshPraysListener;
+    private OnPlayClickListener onPlayClickListener;
 
     private List<Integer> prayers = Arrays.asList(VIEW_MORNING, VIEW_EVENING);
 
@@ -33,7 +34,8 @@ public class PrayersAdapter extends RecyclerView.Adapter<PrayBaseViewHolder> {
 
     PrayersAdapter(
             OnPrayItemClickListener onPrayItemClickListener,
-            OnRefreshPraysListener onRefreshPraysListener) {
+            OnRefreshPraysListener onRefreshPraysListener,
+            OnPlayClickListener onPlayClickListener) {
         morningPrays = new ArrayList<>();
         eveningPrays = new ArrayList<>();
 
@@ -41,6 +43,7 @@ public class PrayersAdapter extends RecyclerView.Adapter<PrayBaseViewHolder> {
 
         this.onPrayItemClickListener = onPrayItemClickListener;
         this.onRefreshPraysListener = onRefreshPraysListener;
+        this.onPlayClickListener = onPlayClickListener;
     }
 
     void setMorningPrays(List<Pray> morningPrays) {
@@ -70,7 +73,7 @@ public class PrayersAdapter extends RecyclerView.Adapter<PrayBaseViewHolder> {
         switch (viewType) {
             case VIEW_MORNING: {
                 holder = new MorningPrayersViewHolder(
-                        binding, onPrayItemClickListener, onRefreshPraysListener
+                        binding, onPrayItemClickListener, onRefreshPraysListener, onPlayClickListener
                 );
                 break;
             }

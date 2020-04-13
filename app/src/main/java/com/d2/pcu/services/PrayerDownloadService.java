@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.d2.pcu.App;
 import com.d2.pcu.R;
+import com.d2.pcu.utils.DownloadUtil;
 import com.google.android.exoplayer2.offline.Download;
 import com.google.android.exoplayer2.offline.DownloadManager;
 import com.google.android.exoplayer2.offline.DownloadService;
@@ -21,7 +22,7 @@ public class PrayerDownloadService extends DownloadService {
 
     private static final String CHANNEL_ID = "download_channel";
     private static final int JOB_ID = 1;
-    private static final int FOREGROUND_NOTIFICATION_ID = 1;
+    private static final int FOREGROUND_NOTIFICATION_ID = 2;
 
     private static int nextNotificationId = FOREGROUND_NOTIFICATION_ID + 1;
 
@@ -46,7 +47,7 @@ public class PrayerDownloadService extends DownloadService {
 
     @Override
     protected DownloadManager getDownloadManager() {
-        return App.getInstance().getDownloadManager();
+        return DownloadUtil.getDownloadManager();
     }
 
     @Nullable

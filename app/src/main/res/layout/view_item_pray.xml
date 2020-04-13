@@ -19,40 +19,44 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/small"
-        android:layout_marginTop="@dimen/small"
         android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/small"
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginBottom="@dimen/small"
         android:elevation="@dimen/medium"
-        android:onClick="@{holder::onItemPressed}">
+        android:onClick="@{holder::onItemPressed}"
+        app:cardCornerRadius="@dimen/small">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="@dimen/default_padding">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/pray_title_tv"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@{pray.title}"
-                android:textAppearance="@style/TitleAppTextBlack.Bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="12dp"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:visibility="@{pray.file == null || pray.file.name.empty ? View.GONE : View.GONE}"
-                app:layout_constraintBottom_toBottomOf="@id/pray_title_tv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/pray_title_tv"
-                app:srcCompat="@drawable/ic_volume" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/pray_title_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{pray.title}"
+                    android:textAppearance="@style/TitleAppTextBlack.Bold" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivPlayBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:onClick="@{holder::onPlayPressed}"
+                    android:visibility="@{pray.file == null || pray.file.name.empty ? View.GONE : View.VISIBLE}"
+                    app:srcCompat="@drawable/ic_volume" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -61,11 +65,7 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:text="@{pray.text}"
-                android:textAppearance="@style/AppText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pray_title_tv" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:textAppearance="@style/AppText" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>
