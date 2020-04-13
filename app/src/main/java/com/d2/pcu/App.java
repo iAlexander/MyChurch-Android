@@ -14,14 +14,11 @@ import timber.log.Timber;
 
 public class App extends Application {
 
-    private static final String TAG = App.class.getSimpleName();
-
     private static App instance;
     private Repository repository;
     private AppDatabase database;
 
     private String firebaseToken;
-    private DownloadUtil downloadUtil;
 
     @Override
     public void onCreate() {
