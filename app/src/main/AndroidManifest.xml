@@ -36,6 +36,7 @@
 
         <service
             android:name=".services.PrayerDownloadService"
+            android:enabled="${audioServicesEnabled}"
             android:exported="false">
             <!-- This is needed for Scheduler -->
             <intent-filter>
@@ -54,9 +55,12 @@
 
         <service
             android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
+            android:enabled="${audioServicesEnabled}"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service android:name=".services.AudioExoPlayerService" />
+        <service
+            android:name=".services.AudioExoPlayerService"
+            android:enabled="${audioServicesEnabled}" />
 
         <activity
             android:name=".intro.IntroActivity"

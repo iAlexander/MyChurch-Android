@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.d2.pcu.utils.Constants" />
+
         <variable
             name="pray"
             type="com.d2.pcu.data.model.pray.Pray" />
@@ -54,7 +56,7 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
                     android:onClick="@{holder::onPlayPressed}"
-                    android:visibility="@{pray.file == null || pray.file.name.empty ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{!Constants.AUDIO_ENABLED || pray.file == null || pray.file.name.empty ? View.GONE : View.VISIBLE}"
                     app:srcCompat="@drawable/ic_volume" />
             </LinearLayout>
 

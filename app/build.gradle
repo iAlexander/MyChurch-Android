@@ -60,6 +60,7 @@ android {
             buildConfigField "boolean", "isDonatEnabled", "true"
             buildConfigField "boolean", "isAudioEnabled", "true"
             buildConfigField "boolean", "isDebugEnabled", "true"
+            manifestPlaceholders.audioServicesEnabled = "true"
         }
 
         prod {
@@ -70,6 +71,8 @@ android {
             buildConfigField "boolean", "isDonatEnabled", "false"
             buildConfigField "boolean", "isAudioEnabled", "false"
             buildConfigField "boolean", "isDebugEnabled", "false"
+
+            manifestPlaceholders.audioServicesEnabled = "false"
         }
     }
 }
