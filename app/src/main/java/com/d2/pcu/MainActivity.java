@@ -85,21 +85,30 @@ public class MainActivity extends AppCompatActivity implements OnError,
             @Override
             public void onChanged(UserState userState) {
 
-                if (userState == UserState.AUTHENTICATED) {
-                    onProfileClick();
+                switch (userState) {
+                    default:
+                    case NON_AUTH:
+                        break;
+                    case SIGNED_UP:
+                        onProfileClick();
 
-                    UIUtils.assembleModeratingDialog(
-                            MainActivity.this,
-                            getString(R.string.pass_was_send, repository.getCredentials(Constants.USER_EMAIL)),
-                            getString(R.string.understand_text)
-                    ).show();
+                        UIUtils.assembleModeratingDialog(
+                                MainActivity.this,
+                                getString(R.string.pass_was_send, repository.getCredentials(Constants.USER_EMAIL)),
+                                getString(R.string.understand_text)
+                        ).show();
 
-                } else if (userState == UserState.MODERATING) {
-                    UIUtils.assembleModeratingDialog(
-                            MainActivity.this,
-                            getString(R.string.pass_was_send_moderating, repository.getCredentials(Constants.USER_EMAIL)),
-                            getString(R.string.understand_text)
-                    ).show();
+                        break;
+                    case AUTHENTICATED:
+                        onProfileClick();
+                        break;
+                    case MODERATING:
+                        UIUtils.assembleModeratingDialog(
+                                MainActivity.this,
+                                getString(R.string.pass_was_send_moderating, repository.getCredentials(Constants.USER_EMAIL)),
+                                getString(R.string.understand_text)
+                        ).show();
+                        break;
                 }
             }
         });
