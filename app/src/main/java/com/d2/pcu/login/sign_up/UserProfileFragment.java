@@ -46,6 +46,7 @@ public class UserProfileFragment extends BaseFragment {
     private AlertDialog churchDialog;
 
     private UserType userType;
+    private int scrollPosition = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -242,25 +243,7 @@ public class UserProfileFragment extends BaseFragment {
         });
 
         binding.eparhiaSelectorD.setOnClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.
-                    setTitle(getString(R.string.diocese)).
-                    setItems(
-                            viewModel.getDioceseNames(),
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    binding.eparhiaSelectorD.setDialogSelectedText(
-                                            viewModel.getDioceseNames()[which]
-                                    );
-
-                                    viewModel.getUserProfile().setDiocese(
-                                            viewModel.getDioceseList().get(which)
-                                    );
-                                }
-                            }
-                    );
-            builder.create().show();
+            dioceseSelector();
         });
 
         viewModel.setOnSaveClickListener(new OnSaveClickListener() {
@@ -302,25 +285,7 @@ public class UserProfileFragment extends BaseFragment {
         );
 
         binding.eparhiaSelectorD.setOnClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.
-                    setTitle(getString(R.string.diocese)).
-                    setItems(
-                            viewModel.getDioceseNames(),
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    binding.eparhiaSelectorD.setDialogSelectedText(
-                                            viewModel.getDioceseNames()[which]
-                                    );
-
-                                    viewModel.getUserProfile().setDiocese(
-                                            viewModel.getDioceseList().get(which)
-                                    );
-                                }
-                            }
-                    );
-            builder.create().show();
+            dioceseSelector();
         });
 
         binding.sanSelectorD.setOnClickListener(view -> {
@@ -372,6 +337,25 @@ public class UserProfileFragment extends BaseFragment {
                 checkUserProfileValidity();
             }
         });
+    }
+
+    private void dioceseSelector() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.
+                setTitle(getString(R.string.diocese)).
+                setItems(
+                        viewModel.getDioceseNames(),
+                        (dialog, which) -> {
+                            binding.eparhiaSelectorD.setDialogSelectedText(
+                                    viewModel.getDioceseNames()[which]
+                            );
+
+                            viewModel.getUserProfile().setDiocese(
+                                    viewModel.getDioceseList().get(which)
+                            );
+                        }
+                );
+        builder.create().show();
     }
 
     private void changeViewVisibility(boolean visible, View... views) {
@@ -468,7 +452,7 @@ public class UserProfileFragment extends BaseFragment {
                     break ifBlock;
                 }
 
-               viewModel.valid = true;
+                viewModel.valid = true;
             }
         }
     }
@@ -495,5 +479,18 @@ public class UserProfileFragment extends BaseFragment {
         onBackButtonClickListener = null;
         onLoginError = null;
         signInOnClickListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.nScroll.setScrollY(scrollPosition);
+
+    }
+
+    @Override
+    public void onPause() {
+        scrollPosition = binding.nScroll.getScrollY();
+        super.onPause();
     }
 }

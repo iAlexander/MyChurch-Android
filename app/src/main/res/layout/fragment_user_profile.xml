@@ -22,9 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="84dp"
             android:background="@drawable/bg_app_color_gradient_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -55,6 +52,7 @@
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nScroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -64,6 +62,8 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:paddingBottom="@dimen/default_padding">
 
                 <androidx.appcompat.widget.AppCompatTextView
