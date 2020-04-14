@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="intro_icons">
+        <item>@drawable/intro_map</item>
+        <item>@drawable/intro_calendar</item>
+        <item>@drawable/intro_news</item>
+        <item>@drawable/intro_pray</item>
+        <item>@drawable/intro_profile</item>
+    </integer-array>
+
+    <integer-array name="fragments_ids">
+        <item>@id/mapFragment</item>
+        <item>@id/calendarFragment</item>
+        <item>@id/newsFragment</item>
+        <item>@id/prayVerticalFragment</item>
+        <item>@id/profileFragment</item>
+    </integer-array>
+
+    <string-array name="menu_names">
+        <item>@string/map</item>
+        <item>@string/calendar</item>
+        <item>@string/news</item>
+        <item>@string/prayers</item>
+        <item>@string/profile</item>
+    </string-array>
+</resources>

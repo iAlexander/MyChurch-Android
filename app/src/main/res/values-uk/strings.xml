@@ -24,7 +24,6 @@
     <string name="agreement_title">Даю згоду на обробку даних згідно <a href="http://test.cerkva.asp-win.d2.digital/privacy-policy-my-church.pdf">Політики конфіденційності</a></string>
     <string name="not_approve_policy">Ви маєте надати згоду на обробку данних для використання додатку</string>
 
-
     <string-array name="intro_titles">
         <item>Показуємо шлях до найближчого храму</item>
         <item>Нагадуємо про свята</item>
@@ -75,7 +74,6 @@
     <string name="pray_favorite">Улюблені</string>
     <string name="pray_item_offline">Доступно офлайн</string>
 
-
     <!-- News -->
     <string name="news_important">Важливо!</string>
     <string name="news_notice">Довідка</string>
@@ -117,7 +115,6 @@
     <string name="login_sms_title">Код було відправлено на\n%1$s</string>
 
     <string name="forgot_pass_success_text">Ми відправили пароль на вказану адресу</string>
-
 
     <string-array name="priest_state">
         <item>Диякон</item>
@@ -161,7 +158,6 @@
     <string name="resend_sms">Переслати СМС код</string>
     <string name="create_pass">Вигадайте пароль</string>
     <string name="profile_at_moderating_text">Ваш профіль знаходиться на верифікації. Ми перевіремо ваші дані найближчим часом, це може зайняти декілька днів.</string>
-
 
     <!--  Support chats  -->
     <string name="support_chats_title">Отримати підтримку</string>
