@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements OnError,
 
     private void setStartScreen() {
         int startId = App.getInstance().getRepositoryInstance().getSelectedStartScreenId();
-        if (startId != R.id.unset_resource) {
+        if (startId != R.id.resource_unset) {
             NavGraph navDestinations = navController.getGraph();
             TypedArray typedArray = getResources().obtainTypedArray(R.array.fragments_ids);
             int startScreen = typedArray.getResourceId(startId, R.id.mapFragment);

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingTop="40dp"
+            android:paddingEnd="@dimen/default_padding"
+            android:paddingBottom="@dimen/default_padding"
+            android:text="@string/change_email"
+            android:textAppearance="@style/TitleAppTextBlack"
+            tools:text="Change email" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/small"
+            app:srcCompat="@drawable/ic_arrow_right_blue" />
+    </LinearLayout>
+</layout>

@@ -57,6 +57,8 @@ android {
             applicationIdSuffix ""
             versionNameSuffix "-dev"
             buildConfigField "String", "API_BASE_URL", '"http://test.cerkva.asp-win.d2.digital/"'
+            buildConfigField "boolean", "isDonatEnabled", "true"
+            buildConfigField "boolean", "isAudioEnabled", "true"
             buildConfigField "boolean", "isDebugEnabled", "true"
         }
 
@@ -65,6 +67,8 @@ android {
             applicationIdSuffix ""
             versionNameSuffix ""
             buildConfigField "String", "API_BASE_URL", '"http://test.cerkva.asp-win.d2.digital/"'
+            buildConfigField "boolean", "isDonatEnabled", "false"
+            buildConfigField "boolean", "isAudioEnabled", "false"
             buildConfigField "boolean", "isDebugEnabled", "false"
         }
     }

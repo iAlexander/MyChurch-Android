@@ -83,7 +83,7 @@ public class ProfileMenuFragment extends BaseFragment {
         String[] names = getResources().getStringArray(R.array.menu_names);
 
         int defaultSelectedFragment = viewModel.getSelectedDefaultScreen();
-        if (defaultSelectedFragment != R.id.unset_resource)
+        if (defaultSelectedFragment != R.id.resource_unset)
             selectedName = names[defaultSelectedFragment];
     }
 

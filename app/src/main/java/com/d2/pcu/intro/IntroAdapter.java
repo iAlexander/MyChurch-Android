@@ -89,8 +89,8 @@ public class IntroAdapter extends RecyclerView.Adapter<IntroItemViewHolder> {
 
     private void collectDrawable(TypedArray ids) {
         for (int i = 0; i < ids.length(); i++) {
-            int id = ids.getResourceId(i, R.id.unset_resource);
-            if (id != R.id.unset_resource) {
+            int id = ids.getResourceId(i, R.id.resource_unset);
+            if (id != R.id.resource_unset) {
                 imageDrawable.add(context.getDrawable(id));
             }
         }

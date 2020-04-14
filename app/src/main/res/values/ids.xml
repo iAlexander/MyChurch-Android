@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="unset_resource" type="id" />
+    <item name="resource_unset" type="id" />
 </resources>

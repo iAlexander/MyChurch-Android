@@ -4,22 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.d2.pcu.fragments.cabinet.user_profile.ProfileMenuViewModel.ChangeDataType"/>
+
+        <import type="com.d2.pcu.fragments.cabinet.user_profile.ProfileMenuViewModel.ChangeDataType" />
+
         <variable
             name="model"
             type="com.d2.pcu.fragments.cabinet.user_profile.ProfileMenuViewModel" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
         tools:context=".LoginActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/user_profile_menu"
             android:layout_width="match_parent"
-            android:layout_height="84dp"
+            android:layout_height="@dimen/fat_toolbar"
             android:background="@drawable/bg_app_color_gradient_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,112 +51,53 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
                 android:layout_marginEnd="@dimen/small"
+                android:onClick="@{model::onNotificationClick}"
                 android:padding="@dimen/default_margin"
-                app:srcCompat="@drawable/ic_notifications_none"
-                android:onClick="@{model::onNotificationClick}"/>
+                app:srcCompat="@drawable/ic_notifications_none" />
 
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/name_field"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="#F2F9FE"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingTop="40dp"
+            android:paddingEnd="@dimen/default_padding"
+            android:paddingBottom="@dimen/default_padding"
+            android:textAppearance="@style/TitleAppTextBlack"
+            tools:text="No back end" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/name_field"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TitleAppTextBlack"
-                android:paddingTop="40dp"
-                android:background="#F2F9FE"
-                android:paddingBottom="@dimen/default_padding"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingEnd="@dimen/default_padding"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="No back end"/>
+        <com.d2.pcu.ui.view.ButtonWithArrow
+            android:id="@+id/btnChangeEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{(view) -> model.onEditEmail(view, ChangeDataType.EMAIL)}"
+            app:bwaText="@string/change_email" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/profile_menu_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TitleAppTextBlack"
-                android:paddingTop="40dp"
-                android:paddingBottom="@dimen/default_padding"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingEnd="@dimen/default_padding"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/arrow_symbol"
-                app:layout_constraintTop_toBottomOf="@id/name_field"
-                tools:text="Change email"
-                android:text="@string/change_email"
-                android:onClick="@{(view) -> model.onEditEmail(view, ChangeDataType.EMAIL)}"/>
+        <com.d2.pcu.ui.view.ButtonWithArrow
+            android:id="@+id/btnChangePass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{(view) -> model.onEditEmail(view, ChangeDataType.PASSWORD)}"
+            app:bwaText="@string/change_pass" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/arrow_symbol"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/profile_menu_btn"
-                app:layout_constraintTop_toTopOf="@id/profile_menu_btn"
-                app:layout_constraintBottom_toBottomOf="@id/profile_menu_btn"
-                android:padding="@dimen/small"
-                app:srcCompat="@drawable/ic_arrow_right_blue"
-                android:onClick="@{(view) -> model.onEditEmail(view, ChangeDataType.EMAIL)}"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/change_pass_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TitleAppTextBlack"
-                android:paddingTop="40dp"
-                android:paddingBottom="@dimen/default_padding"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingEnd="@dimen/default_padding"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/arrow_symbol"
-                app:layout_constraintTop_toBottomOf="@id/profile_menu_btn"
-                tools:text="Change pass"
-                android:text="@string/change_pass"
-                android:onClick="@{(view) -> model.onEditEmail(view, ChangeDataType.PASSWORD)}"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/start_screen_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_padding"
+            android:layout_marginTop="@dimen/default_padding"
+            android:text="@string/intro_start_screen" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/arrow_symbol2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/change_pass_btn"
-                app:layout_constraintTop_toTopOf="@id/change_pass_btn"
-                app:layout_constraintBottom_toBottomOf="@id/change_pass_btn"
-                android:padding="@dimen/small"
-                app:srcCompat="@drawable/ic_arrow_right_blue"
-                android:onClick="@{(view) -> model.onEditEmail(view, ChangeDataType.PASSWORD)}"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/start_screen_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/change_pass_btn"
-                android:text="@string/intro_start_screen"
-                android:layout_marginStart="@dimen/default_padding"
-                android:layout_marginTop="@dimen/default_padding"/>
-
-            <com.d2.pcu.ui.view.DialogSelector
-                android:id="@+id/default_screen_selector"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/start_screen_title"
-                android:layout_marginTop="@dimen/small"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
+        <com.d2.pcu.ui.view.DialogSelector
+            android:id="@+id/default_screen_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/small"
+            android:layout_marginEnd="@dimen/default_margin" />
+    </LinearLayout>
 </layout>

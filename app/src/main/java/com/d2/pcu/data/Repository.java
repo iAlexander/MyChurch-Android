@@ -139,7 +139,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
     }
 
     public int getSelectedStartScreenId() {
-        return sharedPreferences.getInt(Constants.START_SCREEN_ID, R.id.unset_resource);
+        return sharedPreferences.getInt(Constants.START_SCREEN_ID, R.id.resource_unset);
     }
 
     public void saveAgreementApprove(boolean isApply) {

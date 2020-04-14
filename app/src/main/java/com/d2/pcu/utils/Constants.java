@@ -1,6 +1,11 @@
 package com.d2.pcu.utils;
 
+import com.d2.pcu.BuildConfig;
+
 public class Constants {
+
+    public static final boolean DONATE_ENABLED = BuildConfig.isDonatEnabled;
+    public static final boolean AUDIO_ENABLED = BuildConfig.isAudioEnabled;
 
 //    public static final String BASE_URL = "http://test.cerkva.asp-win.d2.digital/";
 //    public static final String BASE_URL = "http://ec2-3-133-104-185.us-east-2.compute.amazonaws.com:8081/";
