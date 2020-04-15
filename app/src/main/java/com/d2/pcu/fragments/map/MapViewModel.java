@@ -1,7 +1,6 @@
 package com.d2.pcu.fragments.map;
 
 import android.app.Application;
-import android.location.Location;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -17,27 +16,21 @@ import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.utils.CustomClusterRenderer;
 import com.d2.pcu.utils.Locator;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.tasks.Task;
 import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MapViewModel extends AndroidViewModel {
-
-    private static final String TAG = MapViewModel.class.getSimpleName();
-
     private Repository repository;
     private LatLng prevLocation;
 
-    private MutableLiveData<LatLng> location;
+    private MutableLiveData<LatLng> location = new MutableLiveData<>(Locator.DEFAULT_KYIV);
     private LiveData<List<BaseTemple>> baseTemplesLiveData;
 
     private OnLoadingStateChangedListener onLoadingStateChangedListener;
@@ -52,11 +45,11 @@ public class MapViewModel extends AndroidViewModel {
     private TemplesAdapter adapter;
 
     private LiveData<Temple> templeLiveData;
+    private final Locator locator;
 
     public MapViewModel(@NonNull Application application) {
         super(application);
-        Locator locator = new Locator(getApplication().getApplicationContext());
-
+        locator = new Locator(getApplication().getApplicationContext());
         location = locator.getCurrentLocation();
 
         repository = App.getInstance().getRepositoryInstance();
@@ -91,8 +84,7 @@ public class MapViewModel extends AndroidViewModel {
                 disableLoading();
             }
         });
-
-        loadData();
+        location.observe(repository, latLng -> loadData());
     }
 
     /**
@@ -181,8 +173,6 @@ public class MapViewModel extends AndroidViewModel {
         LatLng latLng = location.getValue();
         adapter.updateDistance(location.getValue());
         return adapter.getNearest(latLng);
-//        if (latLng == null) return new LatLngBounds(adapter.getFirst(), adapter.getFirst());
-//        else return new LatLngBounds(latLng, adapter.getFirst());
     }
 
     LiveData<LatLng> getLocationAndCalc() {
@@ -215,17 +205,6 @@ public class MapViewModel extends AndroidViewModel {
     private void loadData() {
         enableLoading();
         repository.getShortTemplesInfo(location.getValue());
-    }
-
-    private boolean changeLocation() {
-        if (prevLocation == null) {
-            return true;
-        } else if (prevLocation.equals(location.getValue())) {
-            return false;
-        } else {
-            prevLocation = location.getValue();
-            return true;
-        }
     }
 
     /**
@@ -271,30 +250,12 @@ public class MapViewModel extends AndroidViewModel {
      * Method which if permission granted get location service and change location liveData
      */
     void locationPermissionGranted() {
-        FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(
-                getApplication().getApplicationContext()
-        );
-
-        Task<Location> result = client.getLastLocation();
-        result.addOnSuccessListener(task -> {
-            Location resultLocation = result.getResult();
-
-            LatLng current;
-            {
-                if (resultLocation != null) {
-                    current = new LatLng(resultLocation.getLatitude(), resultLocation.getLongitude());
-                } else {
-                    current = new LatLng(50.4902564, 30.481516);
-                }
-            }
-
-            location.setValue(current);
-        });
-
+        location = locator.getCurrentLocationUpdate();
         locationPermission.setValue(true);
     }
 
     void locationPermissionDenied() {
+        location.setValue(location.getValue());
         locationPermission.setValue(false);
     }
 

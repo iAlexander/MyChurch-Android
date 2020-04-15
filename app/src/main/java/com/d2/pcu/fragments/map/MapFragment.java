@@ -40,8 +40,6 @@ import timber.log.Timber;
 
 public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
-    private static final String TAG = MapFragment.class.getSimpleName();
-
     private MapFragmentBinding binding;
     private MapViewModel viewModel;
 
@@ -120,15 +118,6 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
             viewModel.locationPermissionDenied();
         }
 
-//        viewModel.getLocation().observe(getViewLifecycleOwner(), new Observer<LatLng>() {
-//            @Override
-//            public void onChanged(LatLng latLng) {
-//                if (viewModel.getGoogleMap() != null) {
-        //comment this - client want zoom at temple on app start
-//                    viewModel.getGoogleMap().animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -142,43 +131,44 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
                     MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
 
             if (!success) {
-                Timber.e(TAG, "Style parsing failed.");
+                Timber.e("Style parsing failed.");
             }
         } catch (Resources.NotFoundException e) {
             Timber.e(e, "Can't find  map style. Error: %s", e.getMessage());
         }
 
+        initMyLocation();
+
+        if (viewModel.getGoogleMap() != null) {
+            if (viewModel.getAdapter().getItemCount() != 0) {
+                updateDataOnMap();
+            }
+        }
+    }
+
+    private void initMyLocation() {
         viewModel.getLocationPermission().observe(getViewLifecycleOwner(), granted -> {
             if (granted) {
                 viewModel.getGoogleMap().setMyLocationEnabled(true);
 
-                binding.centerMyLocation.setOnClickListener(view -> {
-                            LatLngBounds bounds = viewModel.getBounds();
-                            if (bounds != null) {
-                                viewModel.getGoogleMap()
-                                        .animateCamera(
-                                                CameraUpdateFactory.newLatLngBounds(bounds, 100)
-                                        );
-                            } else {
-                                viewModel.getGoogleMap()
-                                        .animateCamera(
-                                                CameraUpdateFactory.newLatLngZoom(
-                                                        viewModel.getLocationAndCalc().getValue(), 16f)
-                                        );
-                            }
-                        }
-                );
+                binding.centerMyLocation.setOnClickListener(view -> updateDataOnMap());
             }
         });
+    }
 
-        if (viewModel.getGoogleMap() != null) {
-            if (viewModel.getAdapter().getItemCount() != 0) {
-                viewModel.getGoogleMap().moveCamera(
-                        CameraUpdateFactory.newLatLngZoom(
-                                viewModel.getAdapter().onItemScroll(0).getLatLng(), 16f
-                        )
-                );
-            }
+    private void updateDataOnMap() {
+        LatLngBounds bounds = viewModel.getBounds();
+        if (bounds != null) {
+            viewModel.getGoogleMap()
+                    .animateCamera(
+                            CameraUpdateFactory.newLatLngBounds(bounds, 100)
+                    );
+        } else {
+            viewModel.getGoogleMap()
+                    .animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                    viewModel.getLocationAndCalc().getValue(), 16f)
+                    );
         }
     }
 
@@ -278,6 +268,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 if (checkPermission()) {
                     viewModel.locationPermissionGranted();
+                } else {
+                    viewModel.locationPermissionDenied();
                 }
             }
         }

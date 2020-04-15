@@ -40,8 +40,12 @@ public class Locator {
         });
     }
 
-    public MutableLiveData<LatLng> getCurrentLocation() {
+    public MutableLiveData<LatLng> getCurrentLocationUpdate() {
         getCurrent();
+        return currentLocation;
+    }
+
+    public MutableLiveData<LatLng> getCurrentLocation(){
         return currentLocation;
     }
 
