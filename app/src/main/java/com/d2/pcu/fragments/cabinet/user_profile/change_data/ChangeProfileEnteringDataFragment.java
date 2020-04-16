@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.d2.pcu.R;
@@ -55,6 +56,7 @@ public class ChangeProfileEnteringDataFragment extends BaseFragment {
             binding.changeEnteringDataTopbarTitleTv.setText(getString(R.string.change_email));
 
             binding.titleOldValueTv.setVisibility(View.GONE);
+            binding.changeEnteringDataOldPasswordInputL.setVisibility(View.GONE);
             binding.changeEnteringDataOldPasswordEt.setVisibility(View.GONE);
 
             binding.titleNewValueTv.setText(getString(R.string.new_email_title));
@@ -70,7 +72,7 @@ public class ChangeProfileEnteringDataFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(ChangeProfileEnteringDataViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ChangeProfileEnteringDataViewModel.class);
         viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
         viewModel.setInfoDialogListener(infoDialogListener);
         viewModel.setChangeDataType(changeDataType);

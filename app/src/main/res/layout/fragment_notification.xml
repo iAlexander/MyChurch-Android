@@ -10,31 +10,25 @@
             type="com.d2.pcu.fragments.notification.NotificationViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".fragments.calendar.CalendarFragment">
 
-        <androidx.appcompat.widget.Toolbar
+        <LinearLayout
             android:id="@+id/notification_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/bg_app_color_gradient_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            style="@style/AppToolbar"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginEnd="@dimen/small"
+                android:layout_gravity="start|bottom"
                 android:onClick="@{model::onBackPressed}"
-                android:padding="@dimen/small"
+                android:padding="@dimen/default_margin"
                 app:srcCompat="@drawable/ic_arrow_back_white" />
-
-        </androidx.appcompat.widget.Toolbar>
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notifications_rv"
@@ -43,10 +37,6 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:padding="@dimen/default_padding"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/notification_toolbar" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </LinearLayout>
 </layout>

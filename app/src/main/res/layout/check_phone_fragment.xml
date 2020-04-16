@@ -46,7 +46,7 @@
                 android:layout_gravity="center_horizontal|bottom"
                 android:padding="@dimen/default_margin"
                 android:text="@string/sign_up"
-                android:textAppearance="@style/TitleAppTextWhite.Bold" />
+                android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvText"
-                android:textAppearance="@style/TitleAppTextBlack.Bold"
+                android:textAppearance="@style/AppText.Big.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/enter_phone_number"
@@ -114,15 +114,13 @@
                     android:inputType="phone"
                     android:maxLength="9"
                     android:text="@={model.phone}"
-                    android:textAppearance="@style/LoginEditTextStyle"
+                    android:textAppearance="@style/AppText.Big.Bold"
                     android:layout_marginTop="@dimen/default_margin"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"/>
 
             </com.google.android.material.textfield.TextInputLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -133,12 +131,7 @@
             android:layout_marginTop="@dimen/default_margin"
             android:enabled="false"
             android:onClick="@{model::apply}"
-            android:text="@string/send_code_btn_text"
-            android:textAllCaps="false"/>
-
-
+            android:text="@string/send_code_btn_text" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 </layout>

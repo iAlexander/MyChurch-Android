@@ -18,44 +18,48 @@
         android:background="@color/white"
         android:orientation="vertical"
         tools:context=".LoginActivity">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/user_profile_menu"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fat_toolbar"
-            android:background="@drawable/bg_app_color_gradient_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+        <LinearLayout
+            style="@style/AppToolbar"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
-                android:layout_marginEnd="@dimen/small"
                 android:onClick="@{model::onBackPressed}"
                 android:padding="@dimen/default_margin"
                 app:srcCompat="@drawable/ic_arrow_back_white" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|bottom"
-                android:padding="@dimen/default_margin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
                 android:text="@string/profile"
-                android:textAppearance="@style/TitleAppTextWhite.Bold" />
+                android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
+                android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/small"
                 android:onClick="@{model::onNotificationClick}"
-                android:padding="@dimen/default_margin"
+                android:padding="@dimen/small"
                 app:srcCompat="@drawable/ic_notifications_none" />
+        </LinearLayout>
 
-        </androidx.appcompat.widget.Toolbar>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMember"
+            android:background="#F2F9FE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/default_padding"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingEnd="@dimen/default_padding"
+            android:paddingBottom="@dimen/small"
+            tools:text="Parishioner"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/name_field"
@@ -63,10 +67,9 @@
             android:layout_height="wrap_content"
             android:background="#F2F9FE"
             android:paddingStart="@dimen/default_padding"
-            android:paddingTop="40dp"
             android:paddingEnd="@dimen/default_padding"
             android:paddingBottom="@dimen/default_padding"
-            android:textAppearance="@style/TitleAppTextBlack"
+            android:textAppearance="@style/AppText.Title.Bold"
             tools:text="No back end" />
 
         <com.d2.pcu.ui.view.ButtonWithArrow

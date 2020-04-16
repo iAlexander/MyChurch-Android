@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@{temple.name}"
-                    android:textAppearance="@style/TitleAppTextBlack.Bold" />
+                    android:textAppearance="@style/AppText.Big.Bold" />
 
             </androidx.appcompat.widget.Toolbar>
 

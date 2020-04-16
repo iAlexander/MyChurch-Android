@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -75,7 +76,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(MapViewModel.class);
+        viewModel = new ViewModelProvider(getActivity()).get(MapViewModel.class);
         viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
 
         if (viewModel.getAdapter() == null) {

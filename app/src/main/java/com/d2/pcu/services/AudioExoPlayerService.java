@@ -20,7 +20,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -28,7 +27,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleService;
-import androidx.lifecycle.MutableLiveData;
 
 import com.d2.pcu.App;
 import com.d2.pcu.R;
@@ -36,7 +34,8 @@ import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.DownloadUtil;
-import com.google.android.exoplayer2.ExoPlayer;
+import com.d2.pcu.utils.exo.AudioOnlyRenderersFactory;
+import com.d2.pcu.utils.exo.Mp3ExtractorsFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
@@ -138,7 +137,7 @@ public class AudioExoPlayerService extends LifecycleService {
 
     private void startPlayer(Context context) {
         trackSelector = new DefaultTrackSelector(context);
-        player = new SimpleExoPlayer.Builder(context)
+        player = new SimpleExoPlayer.Builder(context, new AudioOnlyRenderersFactory(context))
                 .setTrackSelector(trackSelector)
                 .build();
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
@@ -159,7 +158,7 @@ public class AudioExoPlayerService extends LifecycleService {
         ConcatenatingMediaSource concatenatingMediaSource = new ConcatenatingMediaSource();
 
         for (Pray pray : prayList) {
-            MediaSource mediaSource = new ProgressiveMediaSource.Factory(cacheDataSourceFactory)
+            MediaSource mediaSource = new ProgressiveMediaSource.Factory(cacheDataSourceFactory, new Mp3ExtractorsFactory())
                     .createMediaSource(pray.getUrl());
             Timber.e("url play: %s", pray.getUrl());
             concatenatingMediaSource.addMediaSource(mediaSource);
@@ -234,15 +233,16 @@ public class AudioExoPlayerService extends LifecycleService {
 
         */
 /**
-         * This method should be used only for setting the exoplayer instance.
-         * If exoplayer's internal are altered or accessed we can not guarantee
-         * things will work correctly.
-         *//*
+ * This method should be used only for setting the exoplayer instance.
+ * If exoplayer's internal are altered or accessed we can not guarantee
+ * things will work correctly.
+ *//*
 
         public ExoPlayer getExoPlayerInstance() {
             return player;
         }
     }
 */
+
 
 }

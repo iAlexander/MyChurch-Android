@@ -35,7 +35,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/prayers"
-                android:textAppearance="@style/TitleAppTextWhite.Bold" />
+                android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"

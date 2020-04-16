@@ -2,6 +2,7 @@ package com.d2.pcu.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,7 @@ import com.d2.pcu.ui.error.OnError;
 import com.d2.pcu.ui.error.OnHTTPResult;
 import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.DistanceCalculator;
+import com.d2.pcu.utils.Locator;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -58,7 +60,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
     private static final String TAG = Repository.class.getSimpleName();
 
     private LifecycleRegistry lifecycleRegistry;
-
+    private Gson gson;
     private NetLoader netLoader;
     private DbLoader dbLoader;
     private Transport channels;
@@ -176,6 +178,27 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
     public UserState getAuthState() {
         return UserState.fromString(sharedPreferences.getString("isAuth", ""));
+    }
+
+    public void setLastLocation(LatLng location) {
+        if (location == null) {
+            sharedPreferences.edit().remove(Constants.LAST_LOCATION).apply();
+        } else {
+            sharedPreferences.edit().putString(Constants.LAST_LOCATION, getGson().toJson(location)).apply();
+        }
+    }
+
+    public LatLng getLastLocation() {
+        LatLng latLng = Locator.DEFAULT_KYIV;
+        String json = sharedPreferences.getString(Constants.LAST_LOCATION, "");
+        if (!TextUtils.isEmpty(json)) {
+            try {
+                latLng = getGson().fromJson(json, LatLng.class);
+            } catch (Exception e) {
+                Timber.e(e, "parse json from sp: %s", e.getMessage());
+            }
+        }
+        return latLng;
     }
 
     public void getShortTemplesInfo() {
@@ -534,6 +557,10 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onSuccess(OnMasterResponse response) {
                 boolean ok = ((GetUserProfileResponse) response).isOk();
+                UserProfile up = ((GetUserProfileResponse) response).getUserProfile();
+                if (up != null && up.getChurch() != null) {
+                    setLastLocation(((GetUserProfileResponse) response).getUserProfile().getChurch().getLatLng());
+                }
                 getTransport().getUserProfileChannel().postValue(((GetUserProfileResponse) response).getUserProfile());
             }
 
@@ -648,7 +675,14 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
-//    public void downloadFile(String url, File fileDest) {
+    public Gson getGson() {
+        if (gson == null) {
+            gson = new Gson();
+        }
+        return gson;
+    }
+
+    //    public void downloadFile(String url, File fileDest) {
 //        netLoader.downloadFileSync(url, fileDest);
 //    }
 }

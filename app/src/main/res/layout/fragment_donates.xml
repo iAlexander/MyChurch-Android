@@ -39,7 +39,7 @@
                 android:layout_gravity="center_horizontal|bottom"
                 android:padding="@dimen/default_margin"
                 android:text="@string/profile_donate"
-                android:textAppearance="@style/TitleAppTextWhite.Bold" />
+                android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/donates_title"
-            android:textAppearance="@style/TitleAppTextBlack.Bold"
+            android:textAppearance="@style/AppText.Big.Bold"
             app:layout_constraintBottom_toTopOf="@id/support_body_tv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

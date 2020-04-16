@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:checked="false"
-        android:buttonTint="@color/colorAccent"/>
+        android:buttonTint="@color/colorAccent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/policy_tv"
@@ -35,10 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/AppButton"
-        android:textAllCaps="false"
         android:enabled="false"
         android:text="@string/next_btn_text"/>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

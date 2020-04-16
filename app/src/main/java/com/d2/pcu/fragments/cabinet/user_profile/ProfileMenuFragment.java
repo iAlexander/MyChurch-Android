@@ -61,6 +61,7 @@ public class ProfileMenuFragment extends BaseFragment {
                 userProfile -> {
                     String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
                     binding.nameField.setText(fullName);
+//                    binding.tvMember.setText(userProfile.getMember());
                 }
         );
     }

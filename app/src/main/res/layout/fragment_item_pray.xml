@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragments.pray.pray_views.pray_item_fragment.PrayItemFragment">
 
@@ -16,7 +15,7 @@
     </data>
 
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -24,36 +23,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/default_padding">
+            android:paddingStart="@dimen/default_padding"
+            android:paddingTop="@dimen/big"
+            android:paddingEnd="@dimen/default_padding"
+            android:paddingBottom="@dimen/big">
 
-            <LinearLayout
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/pray_item_fragment_title_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:orientation="horizontal">
+                android:layout_marginBottom="@dimen/big"
+                android:text="@{pray.title}"
+                android:textAppearance="@style/AppText.Title.Bold"
+                tools:text="Title" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/pray_item_fragment_title_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@{pray.title}"
-                    android:textAppearance="@style/TitleAppTextBlack.Bold" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivPlayBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="12dp"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="@{!Constants.AUDIO_ENABLED || pray.file == null || pray.file.name.empty ? View.GONE : View.VISIBLE}"
-                    app:srcCompat="@drawable/ic_volume" />
-            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{pray.text}"
-                android:textAppearance="@style/AppText" />
+                android:textAppearance="@style/AppText.Large"
+                tools:text="Body" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </layout>

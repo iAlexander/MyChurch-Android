@@ -13,4 +13,11 @@
     <dimen name="item_map_width">320dp</dimen>
     <dimen name="pcu_default_elevation">4dp</dimen>
     <dimen name="fat_toolbar">84dp</dimen>
+
+    <dimen name="textSizeTitle">22sp</dimen>
+    <dimen name="textSizeBig">20sp</dimen>
+    <dimen name="textSizeLarge">18sp</dimen>
+    <dimen name="textSizeGeneral">16sp</dimen>
+    <dimen name="textSizeSecondary">14sp</dimen>
+    <dimen name="textSizeSmall">12sp</dimen>
 </resources>

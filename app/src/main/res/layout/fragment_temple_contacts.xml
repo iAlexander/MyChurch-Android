@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.view.View"/>
-        <import type="com.d2.pcu.utils.DateFormatter"/>
+
+        <import type="android.view.View" />
+
+        <import type="com.d2.pcu.utils.DateFormatter" />
 
         <variable
             name="temple"
@@ -20,53 +22,40 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/temple_contacts_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_app_color_gradient_blue"
-            android:elevation="@dimen/pcu_default_elevation">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+        <LinearLayout
+            style="@style/AppToolbar"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
+                android:layout_gravity="start|bottom"
                 android:onClick="@{model::onBackButtonPressed}"
-                android:padding="@dimen/small"
-                android:src="@drawable/ic_arrow_back_white" />
+                android:padding="@dimen/default_margin"
+                app:srcCompat="@drawable/ic_arrow_back_white" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@{temple.name}"
-                android:ellipsize="end"
-                android:maxLines="1"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textAppearance="@style/TitleAppTextWhite.Bold" />
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="@{temple.name}"
+                android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
-                app:srcCompat="@drawable/ic_notifications_none"
-                android:padding="@dimen/default_padding"/>
-
-            </LinearLayout>
-
-        </androidx.appcompat.widget.Toolbar>
+                android:layout_marginEnd="@dimen/small"
+                android:padding="@dimen/small"
+                app:srcCompat="@drawable/ic_notifications_none" />
+        </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/temple_contacts_toolbar">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -87,38 +76,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:text="@{temple.name}"
-                    android:textAppearance="@style/TitleAppTextBlack"
+                    android:textAppearance="@style/AppText.Big"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_photo_rv"
-                    android:paddingStart="@dimen/default_padding"
-                    android:paddingEnd="@dimen/default_padding"/>
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_photo_rv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contacts_diocese_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:text="@{temple.diocese.name}"
                     android:textAppearance="@style/AppText"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_title_tv"
-                    android:paddingStart="@dimen/default_padding"
-                    android:paddingEnd="@dimen/default_padding"/>
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_title_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_state_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_padding"
                     android:layout_marginTop="@dimen/medium"
                     android:text="@{model.isOpen ? @string/temple_open : @string/temple_close}"
                     android:textAppearance="@style/AppText"
                     android:textColor="@{model.isOpen ? @color/green : @color/red}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_diocese_tv"
-                    android:layout_marginStart="@dimen/default_padding"/>
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_diocese_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contacts_dot_tv"
@@ -146,24 +135,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:text="@string/temple_schedule_service"
                     android:textAppearance="@style/AppText"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_schedule_close_time_tv"
-                    android:paddingStart="@dimen/default_padding"
-                    android:paddingEnd="@dimen/default_padding"/>
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_schedule_close_time_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contacts_week_days_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:text="@{temple.schedule}"
                     android:textAppearance="@style/AppText"
                     app:layout_constraintStart_toStartOf="@id/temple_contacts_serving_schedule_tv"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_serving_schedule_tv"
-                    android:paddingStart="@dimen/default_padding"
-                    android:paddingEnd="@dimen/default_padding"/>
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_serving_schedule_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contacts_week_time_tv"
@@ -181,13 +170,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:text="@string/temple_weekend_days"
                     android:textAppearance="@style/AppText"
                     android:visibility="invisible"
                     app:layout_constraintStart_toStartOf="@id/temple_contacts_serving_schedule_tv"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_week_days_tv"
-                    android:paddingStart="@dimen/default_padding"
-                    android:paddingEnd="@dimen/default_padding"/>
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_week_days_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contacts_weekend_time_tv"
@@ -204,13 +193,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:text="@string/temple_holidays"
                     android:textAppearance="@style/AppText.Small.AccentColor.Bold"
                     android:visibility="invisible"
                     app:layout_constraintStart_toStartOf="@id/temple_contacts_serving_schedule_tv"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_weekend_days_tv"
-                    android:paddingStart="@dimen/default_padding"
-                    android:paddingEnd="@dimen/default_padding"/>
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_weekend_days_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contacts_holidays_time_tv"
@@ -226,62 +215,62 @@
                     android:id="@+id/temple_contacts_map_marker_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_padding"
                     android:layout_marginTop="@dimen/default_margin"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/temple_contacts_holidays_schedule_tv"
-                    app:srcCompat="@drawable/map_pin"
-                    android:layout_marginStart="@dimen/default_padding"/>
+                    app:srcCompat="@drawable/map_pin" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contacts_address_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/small"
+                    android:layout_marginEnd="@dimen/default_margin"
                     android:text="@{((temple.street == null) ? `` : (temple.street + `, `)) + ` ` + temple.locality}"
                     android:textAppearance="@style/AppText"
                     app:layout_constraintBottom_toBottomOf="@id/temple_contacts_map_marker_iv"
-                    app:layout_constraintStart_toEndOf="@id/temple_contacts_map_marker_iv"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="@dimen/default_margin"/>
+                    app:layout_constraintStart_toEndOf="@id/temple_contacts_map_marker_iv" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/temple_contacts_direction_btn"
                     style="@style/AppButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
                     android:background="@drawable/bg_button"
                     android:onClick="@{model::onGetDirectionsClick}"
                     android:text="@string/temple_get_directions"
                     android:textAllCaps="false"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_address_tv"
-                    android:layout_marginEnd="@dimen/default_margin"
-                    android:layout_marginStart="@dimen/default_margin"/>
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_address_tv" />
 
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contact_temple_holiday_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
                     android:layout_marginTop="@dimen/default_margin"
                     android:text="@string/temple_church_holiday"
                     android:textAppearance="@style/AppText"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_direction_btn"
                     app:layout_constraintEnd_toStartOf="@id/temple_contact_temple_holiday_date_tv"
-                    android:layout_marginStart="@dimen/default_margin"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_direction_btn" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contact_temple_holiday_date_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
                     android:text="@{DateFormatter.getDayAndMonth(temple.galaDay)}"
                     android:textAppearance="@style/AppText"
-                    app:layout_constraintStart_toEndOf="@id/temple_contact_temple_holiday_tv"
-                    app:layout_constraintTop_toTopOf="@id/temple_contact_temple_holiday_tv"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="@dimen/default_margin"/>
+                    app:layout_constraintStart_toEndOf="@id/temple_contact_temple_holiday_tv"
+                    app:layout_constraintTop_toTopOf="@id/temple_contact_temple_holiday_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contact_prior_tv"
@@ -290,9 +279,9 @@
                     android:layout_marginTop="@dimen/small"
                     android:text="@string/temple_prior"
                     android:textAppearance="@style/AppText"
+                    android:visibility="@{temple.presiding == null || temple.presiding.name.empty ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="@+id/temple_contact_temple_holiday_tv"
                     app:layout_constraintTop_toBottomOf="@id/temple_contact_temple_holiday_date_tv"
-                    android:visibility="@{temple.presiding == null || temple.presiding.name.empty ? View.INVISIBLE : View.VISIBLE}"
 
                     />
 
@@ -302,9 +291,9 @@
                     android:layout_height="wrap_content"
                     android:text="@{temple.presiding.name}"
                     android:textAppearance="@style/AppText"
+                    app:layout_constraintEnd_toEndOf="@id/temple_contact_temple_holiday_date_tv"
                     app:layout_constraintStart_toStartOf="@id/temple_contact_temple_holiday_date_tv"
-                    app:layout_constraintTop_toTopOf="@id/temple_contact_prior_tv"
-                    app:layout_constraintEnd_toEndOf="@id/temple_contact_temple_holiday_date_tv"/>
+                    app:layout_constraintTop_toTopOf="@id/temple_contact_prior_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contact_charity_tv"
@@ -313,10 +302,9 @@
                     android:layout_marginTop="@dimen/small"
                     android:text="@string/temple_charity"
                     android:textAppearance="@style/AppText"
-                    app:layout_constraintStart_toStartOf="@id/temple_contact_temple_holiday_tv"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_prior_setter_tv"
                     android:visibility="@{temple.priest == null || temple.priest.name.empty ? View.INVISIBLE : View.VISIBLE}"
-                    />
+                    app:layout_constraintStart_toStartOf="@id/temple_contact_temple_holiday_tv"
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_prior_setter_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contacts_charity_setter_tv"
@@ -324,9 +312,9 @@
                     android:layout_height="wrap_content"
                     android:text="@{temple.priest.name}"
                     android:textAppearance="@style/AppText"
+                    app:layout_constraintEnd_toEndOf="@id/temple_contact_temple_holiday_date_tv"
                     app:layout_constraintStart_toStartOf="@id/temple_contact_temple_holiday_date_tv"
-                    app:layout_constraintTop_toTopOf="@id/temple_contact_charity_tv"
-                    app:layout_constraintEnd_toEndOf="@id/temple_contact_temple_holiday_date_tv"/>
+                    app:layout_constraintTop_toTopOf="@id/temple_contact_charity_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contact_phone_tv"
@@ -334,8 +322,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small"
                     android:text="@string/temple_phone"
-                    android:visibility="@{temple.phone == null || temple.phone.empty ? View.INVISIBLE : View.VISIBLE}"
                     android:textAppearance="@style/AppText"
+                    android:visibility="@{temple.phone == null || temple.phone.empty ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="@id/temple_contact_temple_holiday_tv"
                     app:layout_constraintTop_toBottomOf="@id/temple_contacts_charity_setter_tv" />
 
@@ -345,13 +333,10 @@
                     android:layout_height="wrap_content"
                     android:text="@{temple.phone}"
                     android:textAppearance="@style/AppText"
+                    app:layout_constraintEnd_toEndOf="@id/temple_contact_temple_holiday_date_tv"
                     app:layout_constraintStart_toStartOf="@id/temple_contact_temple_holiday_date_tv"
-                    app:layout_constraintTop_toTopOf="@id/temple_contact_phone_tv"
-                    app:layout_constraintEnd_toEndOf="@id/temple_contact_temple_holiday_date_tv"/>
-
+                    app:layout_constraintTop_toTopOf="@id/temple_contact_phone_tv" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.core.widget.NestedScrollView>
-
     </LinearLayout>
 </layout>

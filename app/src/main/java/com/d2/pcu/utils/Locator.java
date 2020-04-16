@@ -16,9 +16,9 @@ public class Locator {
     private MutableLiveData<LatLng> currentLocation = new MutableLiveData<>();
     public static final LatLng DEFAULT_KYIV = new LatLng(50.4902564, 30.481516);
 
-    public Locator(Context context) {
+    public Locator(Context context, LatLng defaultLocation) {
         client = LocationServices.getFusedLocationProviderClient(context);
-        currentLocation.setValue(DEFAULT_KYIV);
+        currentLocation.setValue(defaultLocation);
     }
 
     private void getCurrent() {
@@ -32,7 +32,7 @@ public class Locator {
                 if (location != null) {
                     current = new LatLng(location.getLatitude(), location.getLongitude());
                 } else {
-                    current = getDefaultKyivLocation();
+                    current = currentLocation.getValue();
                 }
             }
 
@@ -45,12 +45,8 @@ public class Locator {
         return currentLocation;
     }
 
-    public MutableLiveData<LatLng> getCurrentLocation(){
+    public MutableLiveData<LatLng> getCurrentLocation() {
         return currentLocation;
-    }
-
-    public LatLng getDefaultKyivLocation() {
-        return DEFAULT_KYIV;
     }
 
 }

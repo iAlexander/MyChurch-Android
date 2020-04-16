@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.d2.pcu.fragments.cabinet.user_profile.change_data.ChangeProfileEnteringDataViewModel" />
@@ -15,58 +16,61 @@
         android:orientation="vertical"
         tools:context=".LoginActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/user_profile_menu"
-            android:layout_width="match_parent"
-            android:layout_height="84dp"
-            android:background="@drawable/bg_app_color_gradient_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+        <LinearLayout
+            style="@style/AppToolbar"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
-                android:layout_marginEnd="@dimen/small"
                 android:onClick="@{model::onBackPressed}"
                 android:padding="@dimen/default_margin"
                 app:srcCompat="@drawable/ic_arrow_back_white" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/change_entering_data_topbar_title_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="@string/change_pass"
+                android:textAppearance="@style/AppText.Big.White.Bold" />
+
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|bottom"
-                android:padding="@dimen/default_margin"
-                android:text="@string/change_pass"
-                android:textAppearance="@style/TitleAppTextWhite.Bold" />
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/small"
+                android:padding="@dimen/small"
+                app:srcCompat="@drawable/ic_notifications_none" />
+        </LinearLayout>
 
-        </androidx.appcompat.widget.Toolbar>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/default_padding"
-            android:paddingEnd="@dimen/default_padding"
             android:orientation="vertical"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            >
+            android:padding="@dimen/default_padding">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/title_old_value_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
-                tools:text="Some text"
-                android:text="@string/old_pass_title"/>
+                android:text="@string/old_pass_title"
+                tools:text="Some text" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/change_entering_data_old_password_input_l"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="64dp"
                 app:passwordToggleEnabled="true">
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -74,10 +78,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin"
-                    android:inputType="textPassword"
-                    android:textAppearance="@style/LoginEditTextStyle"
                     android:backgroundTint="@color/light_gray"
-                    android:text="@={model.oldValue}"/>
+                    android:inputType="textPassword"
+                    android:text="@={model.oldValue}"
+                    android:textAppearance="@style/AppText.Big.Bold" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,9 +89,8 @@
                 android:id="@+id/title_new_value_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
-                tools:text="Some text"
-                android:text="@string/new_pass_title"/>
+                android:text="@string/new_pass_title"
+                tools:text="Some text" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/change_entering_data_new_password_input_l"
@@ -100,10 +103,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin"
-                    android:inputType="textPassword"
-                    android:textAppearance="@style/LoginEditTextStyle"
                     android:backgroundTint="@color/light_gray"
-                    android:text="@={model.newValue}"/>
+                    android:inputType="textPassword"
+                    android:text="@={model.newValue}"
+                    android:textAppearance="@style/AppText.Big.Bold" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,12 +117,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/big"
                 android:onClick="@{model::apply}"
-                tools:text="some"
                 android:text="@string/change_text"
-                android:textAllCaps="false" />
+                tools:text="some" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3" />
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 </layout>

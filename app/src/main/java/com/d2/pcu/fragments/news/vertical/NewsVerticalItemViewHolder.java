@@ -36,9 +36,9 @@ public class NewsVerticalItemViewHolder extends RecyclerView.ViewHolder {
         this.position = position;
 
         if (newsItem.isRead()) {
-            binding.newsItemTitleTv.setTextAppearance(context, R.style.TitleAppTextBlack);
+            binding.newsItemTitleTv.setTextAppearance(context, R.style.AppText_Big);
         } else {
-            binding.newsItemTitleTv.setTextAppearance(context, R.style.TitleAppTextBlack_Bold);
+            binding.newsItemTitleTv.setTextAppearance(context, R.style.AppText_Big_Bold);
         }
     }
 

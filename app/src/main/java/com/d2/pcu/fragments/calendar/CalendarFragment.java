@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.applandeo.materialcalendarview.EventDay;
@@ -68,7 +69,7 @@ public class CalendarFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(CalendarViewModel.class);
+        viewModel = new ViewModelProvider(getActivity()).get(CalendarViewModel.class);
         viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
 
         if (viewModel.getAssembledItemsArray() == null) {

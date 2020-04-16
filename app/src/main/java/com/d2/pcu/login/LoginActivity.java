@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity implements
         OnErrorChannelCallback, OnBackButtonClickListener,
         SignInOnClickListener, OnLoginError, InfoDialogListener {
 
-    private static final String TAG = LoginActivity.class.getSimpleName();
     private NavController navController;
 
     private UserType userType;
