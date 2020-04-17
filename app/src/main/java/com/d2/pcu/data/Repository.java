@@ -42,12 +42,12 @@ import com.d2.pcu.ui.error.HTTPException;
 import com.d2.pcu.ui.error.OnError;
 import com.d2.pcu.ui.error.OnHTTPResult;
 import com.d2.pcu.utils.Constants;
-import com.d2.pcu.utils.DistanceCalculator;
 import com.d2.pcu.utils.Locator;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -229,13 +229,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 List<BaseTemple> temples = ((ShortTemplesInfoResponse) response).getData().getList();
 
                 for (BaseTemple temple : temples) {
-                    temple.setDistance(
-                            DistanceCalculator.distanceFlatKm(
-                                    latLng.latitude,
-                                    temple.getLt(),
-                                    latLng.longitude,
-                                    temple.getLg())
-                    );
+                    temple.setDistance(SphericalUtil.computeDistanceBetween(latLng, temple.getLatLng()) / 1000);
                 }
 
                 Collections.sort(

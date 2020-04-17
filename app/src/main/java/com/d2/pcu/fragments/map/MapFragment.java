@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +49,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private static final int REQUEST_CODE = 201;
+    private DisplayMetrics metrics;
+    private GoogleMap mMap;
 
     public static MapFragment newInstance() {
         return new MapFragment();
@@ -110,22 +112,29 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
         binding.setLifecycleOwner(this);
         binding.setModel(viewModel);
 
-        setUpSearchView();
-        setUpTempleRecyclerView();
-
         if (checkPermission()) {
             viewModel.locationPermissionGranted();
         } else {
             viewModel.locationPermissionDenied();
         }
 
+        metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        setUpSearchView();
+        setUpTempleRecyclerView();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.clear();
+        if (mMap != null) {
+            return;
+        }
+        mMap = googleMap;
 //        googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-        viewModel.setGoogleMap(googleMap);
+
+        viewModel.setGoogleMap(googleMap, metrics);
+
 
         try {
             boolean success = googleMap.setMapStyle(
@@ -138,38 +147,32 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
             Timber.e(e, "Can't find  map style. Error: %s", e.getMessage());
         }
 
-        initMyLocation();
 
-        if (viewModel.getGoogleMap() != null) {
-            if (viewModel.getAdapter().getItemCount() != 0) {
-                updateDataOnMap();
-            }
-        }
-    }
-
-    private void initMyLocation() {
         viewModel.getLocationPermission().observe(getViewLifecycleOwner(), granted -> {
             if (granted) {
-                viewModel.getGoogleMap().setMyLocationEnabled(true);
+                mMap.setMyLocationEnabled(true);
 
                 binding.centerMyLocation.setOnClickListener(view -> updateDataOnMap());
             }
         });
+
+        if (viewModel.getAdapter().getItemCount() != 0) {
+            updateDataOnMap();
+        }
+
     }
 
     private void updateDataOnMap() {
+        if (mMap == null) {
+            return;
+        }
         LatLngBounds bounds = viewModel.getBounds();
         if (bounds != null) {
-            viewModel.getGoogleMap()
-                    .animateCamera(
-                            CameraUpdateFactory.newLatLngBounds(bounds, 100)
-                    );
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
         } else {
-            viewModel.getGoogleMap()
-                    .animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                    viewModel.getLocationAndCalc().getValue(), 16f)
-                    );
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    viewModel.getLocationAndCalc().getValue(), 16f)
+            );
         }
     }
 
@@ -197,18 +200,21 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     private void setUpSearchView() {
-        binding.mapFloatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
-            @Override
-            public void onSearchTextChanged(String oldQuery, String newQuery) {
-                if (newQuery.length() < 3) {
-                    return;
-                }
-
-                binding.mapFloatingSearchView.showProgress();
-                binding.mapFloatingSearchView.swapSuggestions(viewModel.getBaseTemplesByName(newQuery));
-                binding.mapFloatingSearchView.hideProgress();
+        binding.mapFloatingSearchView.setOnQueryChangeListener((oldQuery, newQuery) -> {
+            if (newQuery.length() == 0) {
+                binding.mapFloatingSearchView.clearSuggestions();
+                return;
+            } else if (newQuery.length() < 3) {
+                return;
             }
+
+            binding.mapFloatingSearchView.showProgress();
+            binding.mapFloatingSearchView.swapSuggestions(viewModel.getBaseTemplesByName(newQuery));
+            binding.mapFloatingSearchView.hideProgress();
         });
+        binding.mapFloatingSearchView.setOnClearSearchActionListener(
+                () -> binding.mapFloatingSearchView.clearSuggestions()
+        );
 
         binding.mapFloatingSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
             @Override
@@ -234,11 +240,9 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     private void moveCameraToLocation(BaseTemple temple) {
+        if (mMap == null) return;
         viewModel.onMarkerStateChange(temple);
-        viewModel.getGoogleMap()
-                .animateCamera(
-                        CameraUpdateFactory.newLatLngZoom(temple.getLatLng(), 16f)
-                );
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(temple.getLatLng(), 16f));
     }
 
     private boolean checkPermission() {
