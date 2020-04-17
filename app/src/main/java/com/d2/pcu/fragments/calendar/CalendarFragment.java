@@ -12,9 +12,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.utils.DateUtils;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.calendar.CalendarItem;
@@ -28,6 +28,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import timber.log.Timber;
+
 public class CalendarFragment extends Fragment {
 
     private static final String TAG = CalendarFragment.class.getSimpleName();
@@ -39,6 +41,7 @@ public class CalendarFragment extends Fragment {
     private OnCalendarEventItemClickListener onCalendarEventItemClickListener;
 
     private DayEventsAdapter adapter;
+    private Calendar lastDate;
 
     public static CalendarFragment newInstance() {
         return new CalendarFragment();
@@ -120,10 +123,21 @@ public class CalendarFragment extends Fragment {
     }
 
     private void setCurrentDateInfo() {
-        setEvents(binding.calendarCv.getFirstSelectedDate());
+        if (lastDate != null) {
+            try {
+                binding.calendarCv.setDate(lastDate);
+                setEvents(lastDate);
+            } catch (OutOfDateRangeException e) {
+                Timber.e(e, "restore date: %s", e.getMessage());
+                setEvents(binding.calendarCv.getFirstSelectedDate());
+            }
+        } else {
+            setEvents(binding.calendarCv.getFirstSelectedDate());
+        }
     }
 
     private void setEvents(Calendar source) {
+        this.lastDate = source;
         Calendar calendar = Calendar.getInstance();
         calendar.set(source.get(Calendar.YEAR), source.get(Calendar.MONTH), source.get(Calendar.DATE));
 
