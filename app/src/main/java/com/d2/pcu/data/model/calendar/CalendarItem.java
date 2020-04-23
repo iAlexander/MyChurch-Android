@@ -1,7 +1,10 @@
 package com.d2.pcu.data.model.calendar;
 
+import android.net.Uri;
+import android.text.TextUtils;
+
+import com.d2.pcu.BuildConfig;
 import com.d2.pcu.data.model.BaseModel;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
@@ -129,6 +132,16 @@ public class CalendarItem extends BaseModel {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public String getImageUrl() {
+        if (iconImage == null) return null;
+        if (TextUtils.isEmpty(iconImage.getPath()) || TextUtils.isEmpty(iconImage.getName()))
+            return null;
+        return new Uri.Builder().scheme("http")
+                .authority(Uri.parse(BuildConfig.API_BASE_URL).getAuthority())
+                .path(iconImage.getPath()).appendPath(iconImage.getName())
+                .build().toString();
     }
 
     @Override
