@@ -75,7 +75,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:visibility="@{event.iconImage == null ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{event.imageUrl == null ? View.GONE : View.VISIBLE}"
                     app:cardCornerRadius="@dimen/small">
 
                     <androidx.appcompat.widget.AppCompatImageView
