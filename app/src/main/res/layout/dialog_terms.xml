@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/bg_rounded"
-    android:padding="@dimen/default_padding">
+    android:background="@drawable/bg_rounded">
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/agreement_cx"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:checked="false"
@@ -19,19 +20,21 @@
         android:id="@+id/policy_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:paddingTop="20dp"
+        android:layout_marginEnd="@dimen/default_margin"
         android:text="@string/agreement_title"
         app:layout_constraintStart_toEndOf="@id/agreement_cx"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/apply_into_btn"/>
+        app:layout_constraintBottom_toTopOf="@id/apply_into_btn"
+        app:layout_constraintVertical_chainStyle="packed"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/apply_into_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/policy_tv"
-        android:layout_marginTop="@dimen/default_margin"
+        android:layout_margin="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
