@@ -239,7 +239,8 @@ public class MainActivity extends AppCompatActivity implements OnError,
 
     @Override
     public void onProfileClick() {
-        if (App.getInstance().getRepositoryInstance().getAuthState() == UserState.AUTHENTICATED) {
+        if (App.getInstance().getRepositoryInstance().getAuthState() == UserState.AUTHENTICATED
+                || App.getInstance().getRepositoryInstance().getAuthState() == UserState.SIGNED_UP) {
             navController.navigate(R.id.profileMenuFragment);
         } else {
             navController.navigate(R.id.loginActivity);
