@@ -70,17 +70,20 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
                 return new LatLngBounds(Locator.DEFAULT_KYIV, Locator.DEFAULT_KYIV);
             else return new LatLngBounds(current, current);
         } else {
-            LatLngBounds bounds = new LatLngBounds(
-                    current == null ? temples.get(0).getLatLng() : current,
-                    temples.get(0).getLatLng()
-            );
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(temples.get(0).getLatLng());
+
+            if (current != null) {
+               builder.include(current);
+            }
+
             if (temples.size() > 1) {
                 for (int i = 1; i < temples.size() && temples.get(i).getDistance() < 3; i++) {
-                    bounds = bounds.including(temples.get(i).getLatLng());
+                    builder.include(temples.get(i).getLatLng());
                 }
             }
 
-            return bounds;
+            return builder.build();
         }
     }
 

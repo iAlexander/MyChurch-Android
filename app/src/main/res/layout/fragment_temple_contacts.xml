@@ -227,7 +227,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/small"
                     android:layout_marginEnd="@dimen/default_margin"
-                    android:text="@{((temple.street == null) ? `` : (temple.street + `, `)) + ` ` + temple.locality}"
+                    android:text="@{temple.streetLocality}"
                     android:textAppearance="@style/AppText"
                     app:layout_constraintBottom_toBottomOf="@id/temple_contacts_map_marker_iv"
                     app:layout_constraintEnd_toEndOf="parent"

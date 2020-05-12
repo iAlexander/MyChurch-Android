@@ -30,6 +30,9 @@ public class BaseTemple extends BaseModel implements ClusterItem {
     @SerializedName("location")
     private String location;
 
+    @SerializedName("locality")
+    private String locality;
+
     public BaseTemple() {
         id = 0;
         name = "";
@@ -38,6 +41,7 @@ public class BaseTemple extends BaseModel implements ClusterItem {
         lg = 0;
         type = "";
         location = "";
+        locality = "";
     }
 
     public int getId() {
@@ -98,6 +102,15 @@ public class BaseTemple extends BaseModel implements ClusterItem {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public BaseTemple setLocality(String locality) {
+        this.locality = locality;
+        return this;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.d2.pcu.data.model.map.temple;
 
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
@@ -311,6 +313,14 @@ public class Temple extends BaseModel implements ClusterItem {
     @Override
     public String getSnippet() {
         return name;
+    }
+
+    public String getStreetLocality(){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(!TextUtils.isEmpty(street)) stringBuilder.append(street);
+        if(!TextUtils.isEmpty(street) && !TextUtils.isEmpty(locality)) stringBuilder.append(", ");
+        if(!TextUtils.isEmpty(locality)) stringBuilder.append(locality);
+        return stringBuilder.toString();
     }
 
 }
