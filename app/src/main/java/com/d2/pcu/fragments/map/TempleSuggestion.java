@@ -1,6 +1,7 @@
 package com.d2.pcu.fragments.map;
 
 import android.os.Parcel;
+import android.text.TextUtils;
 
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 
@@ -25,7 +26,11 @@ public class TempleSuggestion implements SearchSuggestion {
 
     @Override
     public String getBody() {
-        return templeName + ", " + location;
+        StringBuilder stringBuilder = new StringBuilder();
+        if(!TextUtils.isEmpty(templeName)) stringBuilder.append(templeName);
+        if(!TextUtils.isEmpty(templeName) && !TextUtils.isEmpty(location)) stringBuilder.append(", ");
+        if(!TextUtils.isEmpty(location)) stringBuilder.append(location);
+        return stringBuilder.toString();
     }
 
     public int getId() {
