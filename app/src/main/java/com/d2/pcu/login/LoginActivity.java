@@ -110,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onError(String message) {
+        enableLoading(false);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
@@ -148,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements
     public void onSignedUp() {
         Toast.makeText(this, "Реєстрація пройшла успішно", Toast.LENGTH_LONG).show();
         if (userType == UserType.BELIEVER) {
-            App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.AUTHENTICATED);
+            App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.SIGNED_UP);
             saveUserState(UserState.SIGNED_UP);
         } else {
             App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.MODERATING);

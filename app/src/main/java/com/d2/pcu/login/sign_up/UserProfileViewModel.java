@@ -10,6 +10,7 @@ import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.diocese.Diocese;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.data.model.profile.UserProfile;
+import com.d2.pcu.fragments.BaseViewModel;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.login.SignInOnClickListener;
 import com.d2.pcu.login.user_type.UserType;
@@ -19,7 +20,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserProfileViewModel extends ViewModel {
+public class UserProfileViewModel extends BaseViewModel {
 
     private Repository repository;
     private UserType userType;
@@ -129,6 +130,7 @@ public class UserProfileViewModel extends ViewModel {
     }
 
     public void onSaveClick(View view) {
+        enableLoading();
         if (onSaveClickListener != null) {
             onSaveClickListener.onSaveClick();
 
@@ -138,6 +140,7 @@ public class UserProfileViewModel extends ViewModel {
                     if (signInOnClickListener != null) {
                         signInOnClickListener.onSignedUp();
                     }
+                    disableLoading();
                 });
             }
         }

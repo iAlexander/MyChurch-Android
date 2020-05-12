@@ -23,6 +23,7 @@ import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.databinding.FragmentUserProfileBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
+import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.login.OnLoginError;
 import com.d2.pcu.login.SignInOnClickListener;
 import com.d2.pcu.login.sign_up.adapters_and_viewholders.TemplesDialogAdapter;
@@ -40,6 +41,7 @@ public class UserProfileFragment extends BaseFragment {
     private OnBackButtonClickListener onBackButtonClickListener;
     private OnLoginError onLoginError;
     private SignInOnClickListener signInOnClickListener;
+    private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
     private TemplesDialogAdapter templesAdapter;
 
@@ -90,6 +92,7 @@ public class UserProfileFragment extends BaseFragment {
         viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
         viewModel.setUserType(userType);
         viewModel.setSignInOnClickListener(signInOnClickListener);
+        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
 
         binding.setModel(viewModel);
 
@@ -424,7 +427,7 @@ public class UserProfileFragment extends BaseFragment {
                     viewModel.valid = false;
                     break ifBlock;
                 }
-                if (userProfile.getPhone().isEmpty()) {
+                if (userProfile.getPhone().isEmpty() || userProfile.getPhone().length() < 12) {
                     onLoginError.onError(formatter(R.string.phone_number));
                     viewModel.valid = false;
                     break ifBlock;
@@ -471,6 +474,7 @@ public class UserProfileFragment extends BaseFragment {
         onBackButtonClickListener = (OnBackButtonClickListener) context;
         onLoginError = (OnLoginError) context;
         signInOnClickListener = (SignInOnClickListener) context;
+        onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
     }
 
     @Override
