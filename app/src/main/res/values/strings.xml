@@ -1,9 +1,9 @@
 <resources>
     <string name="google_apis" translatable="false">AIzaSyCUmvMjpTGt_AIaWORUUUYMggbj8LRmOr0</string>
-    <string name="exo_download_notification_channel_name" translatable="false">AIzaSyCUmvMjOR</string>
+<!--    <string name="exo_download_notification_channel_name" translatable="false">AIzaSyCUmvMjOR</string>-->
 
     <string name="pcu_firebase_msg_channel_id" translatable="false">firebase_pcu_msg_id_01</string>
-
+    <string name="app_name_test">test</string>
 
     <string name="app_name">PCU</string>
     <string name="action_settings">Settings</string>
@@ -167,6 +167,8 @@
     <!--  Support chats  -->
     <string name="support_chats_title">Get support</string>
     <string name="support_chat_body_text">Доброго дня! Це ваш віртуальний помічник з духовних питань. Оберіть, будь ласка, програму, де вам було б зручно задавати питання.</string>
+    <string name="support_chat_body_text_short">Доброго дня! Це ваш віртуальний помічник з духовних питань.</string>
+
     <string name="support_chats_viber" translatable="false">Viber</string>
     <string name="support_chats_telegram" translatable="false">Telegram</string>
     <string name="support_chats_fm" translatable="false">Facebook messanger</string>

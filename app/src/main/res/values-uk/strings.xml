@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name_test">test</string>
+
     <string name="app_name">ПЦУ</string>
     <string name="action_settings">Налаштування</string>
     <string name="map">Мапа</string>
@@ -162,6 +164,7 @@
     <!--  Support chats  -->
     <string name="support_chats_title">Отримати підтримку</string>
     <string name="support_chat_body_text">Доброго дня! Це ваш віртуальний помічник з духовних питань. Оберіть, будь ласка, програму, де вам було б зручно задавати питання.</string>
+    <string name="support_chat_body_text_short">Доброго дня! Це ваш віртуальний помічник з духовних питань.</string>
 
     <!--  Donates  -->
     <string name="donates_title">Пожертвувати кошти через</string>

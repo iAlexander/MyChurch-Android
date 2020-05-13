@@ -2,6 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="com.d2.pcu.utils.Constants" />
+
+        <import type="android.view.View" />
+
         <variable
             name="model"
             type="com.d2.pcu.fragments.cabinet.support.SupportViewModel" />
@@ -27,16 +32,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
                 android:layout_marginEnd="@dimen/small"
+                android:onClick="@{model::onBackPressed}"
                 android:padding="@dimen/default_margin"
-                app:srcCompat="@drawable/ic_arrow_back_white"
-                android:onClick="@{model::onBackPressed}"/>
+                app:srcCompat="@drawable/ic_arrow_back_white" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                android:text="@string/profile_support"
                 android:padding="@dimen/default_margin"
+                android:text="@string/profile_support"
                 android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -53,26 +58,26 @@
             android:id="@+id/support_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/support_chats_toolbar"
-            app:layout_constraintBottom_toTopOf="@id/support_body_tv"
+            android:text="@string/support_chats_title"
             android:textAppearance="@style/AppText.Big.Bold"
-            android:text="@string/support_chats_title"/>
+            app:layout_constraintBottom_toTopOf="@id/support_body_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/support_chats_toolbar" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/support_body_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/support_title_tv"
-            app:layout_constraintBottom_toTopOf="@id/telegram_btn"
-            android:textAppearance="@style/AppText"
-            android:text="@string/support_chat_body_text"
-            android:gravity="center"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"/>
+            android:layout_marginEnd="@dimen/default_margin"
+            android:gravity="center"
+            android:text="@string/support_chat_body_text_short"
+            android:textAppearance="@style/AppText"
+            app:layout_constraintBottom_toTopOf="@id/telegram_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/support_title_tv" />
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -84,16 +89,17 @@
             android:layout_marginTop="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:background="@drawable/bg_button"
+            android:onClick="@{model::onChatClick}"
             android:text="@string/support_chats_telegram"
             android:textAllCaps="false"
-
-            android:onClick="@{model::onChatClick}"
-
+            android:visibility="@{Constants.MESSENGERS_ENABLED?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toTopOf="@id/viber_btn"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/support_chats_toolbar"
-            app:layout_constraintVertical_chainStyle="packed"/>
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/viber_btn"
@@ -101,38 +107,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
             android:background="@drawable/bg_button"
-            android:text="@string/support_chats_viber"
-            android:textAllCaps="false"
-
             android:onClick="@{model::onChatClick}"
+            android:text="@string/support_chats_viber"
 
-            app:layout_constraintBottom_toTopOf="@id/messenger_btn"
+            android:textAllCaps="false"
+            android:visibility="@{Constants.MESSENGERS_ENABLED?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/btnFacebookWeb"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/telegram_btn" />
+            app:layout_constraintTop_toBottomOf="@id/telegram_btn"
+            tools:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/messenger_btn"
+            android:id="@+id/btnFacebookWeb"
             style="@style/AppButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
             android:background="@drawable/bg_button"
-            android:text="@string/support_chats_fm"
-            android:textAllCaps="false"
-
             android:onClick="@{model::onChatClick}"
+            android:text="@string/support_chats_fm"
+
+            android:textAllCaps="false"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/viber_btn"
-            />
+            app:layout_constraintTop_toBottomOf="@id/viber_btn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

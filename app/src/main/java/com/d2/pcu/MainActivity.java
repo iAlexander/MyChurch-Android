@@ -301,11 +301,12 @@ public class MainActivity extends AppCompatActivity implements OnError,
 //                startActivity(intent);
                 break;
             }
-            case R.id.messenger_btn: {
-                Toast.makeText(getApplicationContext(), "Messenger click", Toast.LENGTH_SHORT).show();
-
-//                intent.setData(Uri.parse(""));
-//                startActivity(intent);
+            case R.id.btnFacebookWeb: {
+                Intent intentWeb = new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.FACEBOOK_URL));
+                intentWeb.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (intentWeb.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intentWeb);
+                }
                 break;
             }
         }
