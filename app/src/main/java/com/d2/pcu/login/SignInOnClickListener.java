@@ -8,5 +8,5 @@ public interface SignInOnClickListener {
 
     void onCreateAccCLick();
 
-    void onSignedUp();
+    void onSignedUp(boolean moderating);
 }

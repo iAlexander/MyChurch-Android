@@ -3,7 +3,6 @@ package com.d2.pcu.login.sign_up;
 import android.view.View;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
@@ -15,7 +14,6 @@ import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.login.SignInOnClickListener;
 import com.d2.pcu.login.user_type.UserType;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -138,7 +136,7 @@ public class UserProfileViewModel extends BaseViewModel {
                 userProfile.setFirebaseToken(App.getInstance().getFirebaseToken());
                 repository.signUp(userProfile, () -> {
                     if (signInOnClickListener != null) {
-                        signInOnClickListener.onSignedUp();
+                        signInOnClickListener.onSignedUp(!userProfile.getMember().equals("Parishioner"));
                     }
                     disableLoading();
                 });

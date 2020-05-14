@@ -109,7 +109,7 @@ ext {
 
     daggerVersion = '2.23.2'
 
-    okhttp3Version = '4.5.0'
+    okhttp3Version = '4.6.0'
 
     jodaTimeVersion = '2.10.1'
 
@@ -186,7 +186,7 @@ dependencies {
 
     // Firebase
     implementation "com.google.firebase:firebase-analytics:17.4.1"
-    implementation "com.google.firebase:firebase-messaging:20.1.6"
+    implementation "com.google.firebase:firebase-messaging:20.1.7"
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
 
 

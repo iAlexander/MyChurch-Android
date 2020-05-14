@@ -146,15 +146,22 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onSignedUp() {
+    public void onSignedUp(boolean moderating) {
         Toast.makeText(this, "Реєстрація пройшла успішно", Toast.LENGTH_LONG).show();
-        if (userType == UserType.BELIEVER) {
-            App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.SIGNED_UP);
-            saveUserState(UserState.SIGNED_UP);
-        } else {
+        if(moderating){
             App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.MODERATING);
             saveUserState(UserState.MODERATING);
+        } else {
+            App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.SIGNED_UP);
+            saveUserState(UserState.SIGNED_UP);
         }
+//        if (userType == UserType.BELIEVER) {
+//            App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.SIGNED_UP);
+//            saveUserState(UserState.SIGNED_UP);
+//        } else {
+//            App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.MODERATING);
+//            saveUserState(UserState.MODERATING);
+//        }
         finish();
     }
 
