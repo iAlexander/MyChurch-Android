@@ -60,7 +60,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.map_fragment, container, false);
-
+        viewModel = new ViewModelProvider(this).get(MapViewModel.class);
         return binding.getRoot();
     }
 
@@ -68,9 +68,12 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_container);
-
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
+        }
+
+        if (viewModel.getAdapter() == null) {
+            viewModel.setAdapter(new TemplesAdapter());
         }
     }
 
@@ -78,12 +81,9 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = new ViewModelProvider(getActivity()).get(MapViewModel.class);
         viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
 
-        if (viewModel.getAdapter() == null) {
-            viewModel.setAdapter(new TemplesAdapter());
-        }
+        viewModel.subscribe();
 
         viewModel.getAdapter().setOnTempleClickListener(temple -> {
             viewModel.getFullTemple(temple);
@@ -148,7 +148,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
         }
 
 
-        viewModel.getLocationPermission().observe(getViewLifecycleOwner(), granted -> {
+        viewModel.getLocationPermission().observe(this, granted -> {
             if (granted) {
                 mMap.setMyLocationEnabled(true);
 

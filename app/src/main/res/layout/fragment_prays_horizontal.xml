@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -50,9 +51,25 @@
                 app:srcCompat="@drawable/ic_notifications_none" />
         </LinearLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/prayers_horizontal_vp"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/prayers_horizontal_vp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.google.android.exoplayer2.ui.PlayerControlView
+                android:id="@+id/playerControlView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:visibility="gone"
+                app:played_color="@color/colorAccent"
+                app:scrubber_color="@color/colorAccent"
+                app:controller_layout_id="@layout/view_pray_playback_control"
+                tools:visibility="visible" />
+        </FrameLayout>
     </LinearLayout>
 </layout>

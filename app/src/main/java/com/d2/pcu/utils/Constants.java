@@ -24,6 +24,7 @@ public class Constants {
     public static final String USER_EMAIL = "userEmail";
     public static final String USER_TYPE = "userType";
     public static final String LAST_LOCATION = "last_location";
+    public static final String PUSH_TOKEN = "pushToken";
 
 
     public static final String START_SCREEN_ID = "startScreen";

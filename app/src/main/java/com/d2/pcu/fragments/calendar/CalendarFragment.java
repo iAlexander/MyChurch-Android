@@ -72,7 +72,6 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        viewModel = ViewModelProviders.of(getActivity()).get(CalendarViewModel.class);
         viewModel = new ViewModelProvider(getActivity()).get(CalendarViewModel.class);
         viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
 

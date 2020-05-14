@@ -22,6 +22,8 @@ import com.d2.pcu.data.model.news.NewsItem;
 import com.d2.pcu.data.model.news.NewsList;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.data.model.pray.PraysList;
+import com.d2.pcu.data.model.profile.NotificationHistoryItem;
+import com.d2.pcu.data.model.profile.NotificationList;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.model.profile.UserState;
 import com.d2.pcu.data.responses.BoolResponse;
@@ -33,6 +35,7 @@ import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
+import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
 import com.d2.pcu.login.OnLoginError;
@@ -362,6 +365,12 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
+    public void updateNotificationItemAsRead(NotificationHistoryItem item) {
+        dbLoader.updateReadNotificationItem(item, isSuccess -> {
+            // TODO: 2020-01-13
+        });
+    }
+
     public void getPrays() {
         netLoader.getPrays(new OnHTTPResult() {
             @Override
@@ -544,6 +553,89 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
+    public void updatePushToken(String token) {
+        String auth = getCredentials(Constants.ACCESS_TOKEN);
+        if(TextUtils.isEmpty(auth)) return;
+        netLoader.updatePushToken(auth, token, new OnHTTPResult() {
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+                boolean ok = ((BoolResponse) response).isOk();
+
+                if (ok) saveCredentials(token, Constants.PUSH_TOKEN);
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                try {
+                    Gson gson = new Gson();
+
+                    JsonObject errorBody = gson.fromJson(ex.getMessage(), JsonObject.class);
+                    String newToken = errorBody.getAsJsonObject().get("data").getAsJsonObject().get("accessToken").getAsString();
+
+                    if (newToken != null && !newToken.isEmpty()) {
+                        saveCredentials(newToken, Constants.ACCESS_TOKEN);
+                        updatePushToken(token);
+                    }
+
+                } catch (JsonSyntaxException ignore) {
+                }
+            }
+        });
+    }
+
+    public void getNotificationHistory() {
+        netLoader.getNotifications(getCredentials(Constants.ACCESS_TOKEN), new OnHTTPResult() {
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+                List<NotificationHistoryItem> items = ((NotificationHistoryResponse) response).getNotificationList();
+                if (items.isEmpty()) {
+                    channels.getNotificationChannel().postValue(items);
+                } else {
+                    dbLoader.updateAndSaveNotificationToDb(items, isSuccess -> {
+                        if (isSuccess) {
+                            dbLoader.getNotifications(new OnDbResult() {
+                                @Override
+                                public void onSuccess(MasterDbModel dbModel) {
+                                    channels.getNotificationChannel().postValue(((NotificationList) dbModel).getItems());
+                                }
+
+                                @Override
+                                public void onFail() {
+                                    Timber.w("fail db");
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                try {
+                    Gson gson = new Gson();
+
+                    JsonObject errorBody = gson.fromJson(ex.getMessage(), JsonObject.class);
+                    String newToken = errorBody.getAsJsonObject().get("data").getAsJsonObject().get("accessToken").getAsString();
+
+                    if (newToken != null && !newToken.isEmpty()) {
+                        saveCredentials(newToken, Constants.ACCESS_TOKEN);
+                        getNotificationHistory();
+                        return;
+                    }
+
+                } catch (JsonSyntaxException ignore) {
+                }
+                if (onError != null) {
+                    if (ex instanceof HTTPException) {
+                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
+                    } else {
+                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
+                    }
+                }
+            }
+        });
+    }
+
     public void getUserProfile(String accessToken) {
 
         String authHeader = "Bearer " + accessToken;
@@ -569,7 +661,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
                     if (newToken != null && !newToken.isEmpty()) {
                         getUserProfile(newToken);
-                        saveCredentials(Constants.ACCESS_TOKEN, newToken);
+                        saveCredentials(newToken, Constants.ACCESS_TOKEN);
                         return;
                     }
 
@@ -609,7 +701,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                     String newToken = errorBody.getAsJsonObject().get("data").getAsJsonObject().get("accessToken").getAsString();
 
                     if (newToken != null && !newToken.isEmpty()) {
-                        saveCredentials(Constants.ACCESS_TOKEN, newToken);
+                        saveCredentials(newToken, Constants.ACCESS_TOKEN);
                         changeEmail(newEmail, newToken, onRequestResult);
                         return;
                     }
@@ -650,7 +742,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                     String newToken = errorBody.getAsJsonObject().get("data").getAsJsonObject().get("accessToken").getAsString();
 
                     if (newToken != null && !newToken.isEmpty()) {
-                        saveCredentials(Constants.ACCESS_TOKEN, newToken);
+                        saveCredentials(newToken, Constants.ACCESS_TOKEN);
                         changePassword(oldPass, newPass, newToken, onRequestResult);
                         return;
                     }

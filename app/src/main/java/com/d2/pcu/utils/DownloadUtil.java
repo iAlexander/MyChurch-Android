@@ -21,7 +21,6 @@ import android.os.Environment;
 import com.d2.pcu.R;
 import com.google.android.exoplayer2.database.ExoDatabaseProvider;
 import com.google.android.exoplayer2.offline.DownloadManager;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor;
@@ -42,11 +41,17 @@ public class DownloadUtil {
         File downloadDirectory = new File(appContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "prays");
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
                 Util.getUserAgent(appContext, appContext.getString(R.string.app_name)),
-                25000,25000, true
+                25000, 25000, true
         );
 
         ExoDatabaseProvider databaseProvider = new ExoDatabaseProvider(appContext);
-
+        httpDataSourceFactory.getDefaultRequestProperties().clear();
+//        Map<String, String> map = new HashMap<>();
+//        map.put("Accept-Language","en-US,en;q=0.9");
+//        map.put("Accept-Encoding","gzip, deflate");
+//        map.put("Accept", "audio/mpeg");
+//        httpDataSourceFactory.getDefaultRequestProperties().clearAndSet(map);
+//        httpDataSourceFactory.getDefaultRequestProperties().set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
 
         if (!downloadDirectory.exists()) {
             downloadDirectory.mkdir();
@@ -61,7 +66,9 @@ public class DownloadUtil {
                 databaseProvider,
                 downloadCache,
                 httpDataSourceFactory);
+
         downloadManager.setMinRetryCount(2);
+//        downloadManager.setRequirements(new Requirements(Requirements.NETWORK));
 
         downloadManager.setMaxParallelDownloads(2);
 

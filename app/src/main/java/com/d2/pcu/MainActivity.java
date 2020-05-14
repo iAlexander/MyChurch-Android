@@ -39,6 +39,7 @@ import com.d2.pcu.ui.error.fragments.ErrorFragment;
 import com.d2.pcu.ui.utils.UIUtils;
 import com.d2.pcu.utils.Constants;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.FirebaseApp;
 
 
 public class MainActivity extends AppCompatActivity implements OnError,
@@ -81,35 +82,32 @@ public class MainActivity extends AppCompatActivity implements OnError,
         getLifecycle().addObserver(repository);
         repository.setOnErrorListener(this);
 
-        repository.getTransport().getStateSingleEvent().observe(this, new Observer<UserState>() {
-            @Override
-            public void onChanged(UserState userState) {
+        repository.getTransport().getStateSingleEvent().observe(this, userState -> {
 
-                switch (userState) {
-                    default:
-                    case NON_AUTH:
-                        break;
-                    case SIGNED_UP:
-                        onProfileClick();
+            switch (userState) {
+                default:
+                case NON_AUTH:
+                    break;
+                case SIGNED_UP:
+                    onProfileClick();
 
-                        UIUtils.assembleModeratingDialog(
-                                MainActivity.this,
-                                getString(R.string.pass_was_send, repository.getCredentials(Constants.USER_EMAIL)),
-                                getString(R.string.understand_text)
-                        ).show();
+                    UIUtils.assembleModeratingDialog(
+                            MainActivity.this,
+                            getString(R.string.pass_was_send, repository.getCredentials(Constants.USER_EMAIL)),
+                            getString(R.string.understand_text)
+                    ).show();
 
-                        break;
-                    case AUTHENTICATED:
-                        onProfileClick();
-                        break;
-                    case MODERATING:
-                        UIUtils.assembleModeratingDialog(
-                                MainActivity.this,
-                                getString(R.string.pass_was_send_moderating, repository.getCredentials(Constants.USER_EMAIL)),
-                                getString(R.string.understand_text)
-                        ).show();
-                        break;
-                }
+                    break;
+                case AUTHENTICATED:
+                    onProfileClick();
+                    break;
+                case MODERATING:
+                    UIUtils.assembleModeratingDialog(
+                            MainActivity.this,
+                            getString(R.string.pass_was_send_moderating, repository.getCredentials(Constants.USER_EMAIL)),
+                            getString(R.string.understand_text)
+                    ).show();
+                    break;
             }
         });
     }

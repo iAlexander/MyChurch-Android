@@ -171,7 +171,7 @@
 
     <string name="support_chats_viber" translatable="false">Viber</string>
     <string name="support_chats_telegram" translatable="false">Telegram</string>
-    <string name="support_chats_fm" translatable="false">Facebook messanger</string>
+    <string name="support_chats_fm" translatable="false">Facebook</string>
     
         <!--  Donates  -->
     <string name="donates_title">Пожертвувати кошти через</string>
@@ -192,5 +192,6 @@
 <!--  Errors  -->
     <string name="field_error_text">Check field - %1$s</string>
     <string name="playback_channel_name">Playback</string>
+    <string name="notifications">Повiдомлення</string>
 
 </resources>

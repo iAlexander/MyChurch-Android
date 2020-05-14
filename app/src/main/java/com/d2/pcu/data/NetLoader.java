@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-
 import com.d2.pcu.BuildConfig;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolResponse;
@@ -20,13 +19,13 @@ import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
+import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
 import com.d2.pcu.data.serializers.news.NewsDeserializer;
 import com.d2.pcu.ui.error.HTTPCode;
 import com.d2.pcu.ui.error.HTTPException;
 import com.d2.pcu.ui.error.OnHTTPResult;
-import com.d2.pcu.utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -86,7 +85,7 @@ public class NetLoader implements DefaultLifecycleObserver {
                 .cache(null)
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS);
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG || BuildConfig.isDebugEnabled) {
             HttpLoggingInterceptor interceptorLog = new HttpLoggingInterceptor();
             interceptorLog.level(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(interceptorLog);
@@ -107,7 +106,7 @@ public class NetLoader implements DefaultLifecycleObserver {
 
         handler = new Handler(handlerThread.getLooper());
 
-        Log.i(TAG, "Created");
+        Timber.d("Created");
     }
 
     @Override
@@ -120,7 +119,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             @Override
             public void onResponse(@NonNull Call<BaseTempleResponse> call, @NonNull Response<BaseTempleResponse> response) {
                 int resCode = response.code();
-                Timber.d("getBaseTemplesInfo -> onResponseCode: %s", resCode);
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
@@ -142,8 +140,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             public void onResponse(Call<TempleResponse> call, Response<TempleResponse> response) {
                 int resCode = response.code();
 
-                Timber.d("getTempleById -> onResponseCode: %s", resCode);
-
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
                 } else {
@@ -153,8 +149,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<TempleResponse> call, Throwable t) {
-                Log.i(TAG, "getTempleById -> onFailure");
-
                 result.onFail(t);
             }
         }));
@@ -166,8 +160,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             public void onResponse(@NonNull Call<CalendarResponse> call, @NonNull Response<CalendarResponse> response) {
                 int resCode = response.code();
 
-                Log.i(TAG, "getCalendarInfo -> onResponse: " + resCode);
-
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
                 } else {
@@ -177,7 +169,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<CalendarResponse> call, Throwable t) {
-                Log.i(TAG, "getCalendarInfo -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));
@@ -189,8 +180,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             public void onResponse(@NonNull Call<EventResponse> call, @NonNull Response<EventResponse> response) {
                 int resCode = response.code();
 
-                Log.i(TAG, "getEventInfo -> onResponse: " + resCode);
-
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
                 } else {
@@ -200,7 +189,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<EventResponse> call, @NonNull Throwable t) {
-                Log.i(TAG, "getEventInfo -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));
@@ -251,9 +239,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             @Override
             public void onResponse(Call<ShortTemplesInfoResponse> call, Response<ShortTemplesInfoResponse> response) {
                 int resCode = response.code();
-
-                Log.i(TAG, "getShortTemplesInfo -> onResponse: " + resCode);
-
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
                 } else {
@@ -263,7 +248,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<ShortTemplesInfoResponse> call, Throwable t) {
-                Log.i(TAG, "getShortTemplesInfo -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));
@@ -274,9 +258,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             @Override
             public void onResponse(Call<DioceseResponse> call, Response<DioceseResponse> response) {
                 int resCode = response.code();
-
-                Log.i(TAG, "getDioceses -> onResponse: " + resCode);
-
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
                 } else {
@@ -286,7 +267,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<DioceseResponse> call, Throwable t) {
-                Log.i(TAG, "getDioceses -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));
@@ -297,8 +277,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             @Override
             public void onResponse(Call<ProfileSignUpResponse> call, Response<ProfileSignUpResponse> response) {
                 int resCode = response.code();
-
-                Log.i(TAG, "signUp -> onResponse: " + resCode);
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
@@ -321,7 +299,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<ProfileSignUpResponse> call, Throwable t) {
-                Log.i(TAG, "signUp -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));
@@ -346,7 +323,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             public void onResponse(Call<ProfileSignUpResponse> call, Response<ProfileSignUpResponse> response) {
                 int resCode = response.code();
 
-                Log.i(TAG, "signUp -> onResponse: " + resCode);
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
@@ -369,7 +345,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<ProfileSignUpResponse> call, Throwable t) {
-                Log.i(TAG, "signUp -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));
@@ -380,8 +355,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             @Override
             public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
                 int resCode = response.code();
-
-                Log.i(TAG, "forgotPass -> onResponse: " + resCode);
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
@@ -404,7 +377,64 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<BoolResponse> call, Throwable t) {
-                Log.i(TAG, "forgotPass -> onFailure: " + t.getMessage());
+                result.onFail(t);
+            }
+        }));
+    }
+
+    void updatePushToken(String accessToken, String token, OnHTTPResult result) {
+        handler.post(() -> api.updatePushToken("Bearer " + accessToken, token).enqueue(new Callback<BoolResponse>() {
+            @Override
+            public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
+                int resCode = response.code();
+
+                if (resCode >= 200 && resCode < 300) {
+                    result.onSuccess(response.body());
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
+
+                    JsonObject error = gson.fromJson(response.errorBody().charStream(), type);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    JsonArray errors = error.getAsJsonArray("errors");
+                    for (JsonElement object : errors) {
+                        stringBuilder.append(object.getAsJsonObject().get("message")).append("\n");
+                    }
+                    onFailure(null, new HTTPException(stringBuilder.toString()));
+                } else {
+                    onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BoolResponse> call, Throwable t) {
+                result.onFail(t);
+            }
+        }));
+    }
+
+    void getNotifications(final String accessToken, final OnHTTPResult result) {
+        handler.post(() -> api.getNotificationHistory("Bearer " + accessToken).enqueue(new Callback<NotificationHistoryResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<NotificationHistoryResponse> call, Response<NotificationHistoryResponse> response) {
+                int resCode = response.code();
+
+                if (resCode >= 200 && resCode < 300) {
+                    result.onSuccess(response.body());
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
+                    JsonObject errorBody = gson.fromJson(response.errorBody().charStream(), type);
+                    onFailure(null, new HTTPException(errorBody.toString()));
+                }  else {
+                    onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NotificationHistoryResponse> call, @NonNull Throwable t) {
                 result.onFail(t);
             }
         }));
@@ -415,8 +445,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             @Override
             public void onResponse(Call<GetUserProfileResponse> call, Response<GetUserProfileResponse> response) {
                 int resCode = response.code();
-
-                Log.i(TAG, "getUserProfile -> onResponse: " + resCode);
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
@@ -433,7 +461,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<GetUserProfileResponse> call, Throwable t) {
-                Log.i(TAG, "getUserProfile -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));

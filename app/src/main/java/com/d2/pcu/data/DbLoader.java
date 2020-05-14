@@ -16,6 +16,9 @@ import com.d2.pcu.data.model.news.NewsItem;
 import com.d2.pcu.data.model.news.NewsList;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.data.model.pray.PraysList;
+import com.d2.pcu.data.model.profile.NotificationHistoryItem;
+import com.d2.pcu.data.model.profile.NotificationList;
+import com.d2.pcu.utils.ListUpdater;
 import com.d2.pcu.utils.news.NewsListUpdater;
 
 import java.util.List;
@@ -124,6 +127,52 @@ public class DbLoader implements DefaultLifecycleObserver {
     void updateReadNewsItem(NewsItem newsItem, OnDbResultState resultState) {
         handler.post(() -> {
             int result = database.newsDao().update(newsItem);
+            if (result >= 1) {
+                resultState.onResult(true);
+            } else {
+                resultState.onResult(false);
+            }
+        });
+    }
+
+    void getNotifications(OnDbResult result) {
+        handler.post(() -> {
+            List<NotificationHistoryItem> items = database.notificationDao().getAllNotification();
+
+
+            NotificationList list = new NotificationList();
+            if (items != null)
+                list.setItems(items);
+            result.onSuccess(list);
+//            if (items != null) {
+//                NotificationList list = new NotificationList();
+//                list.setItems(items);
+//
+//                result.onSuccess(list);
+//            } else {
+//                result.onFail();
+//            }
+        });
+    }
+
+    void updateAndSaveNotificationToDb(final List<NotificationHistoryItem> items, OnDbResultState resultState) {
+        handler.post(() -> {
+
+            List<NotificationHistoryItem> upItems = new ListUpdater<NotificationHistoryItem>()
+                    .updateList(database.notificationDao().getAllNotification(), items);
+
+            List<Long> response = database.notificationDao().insert(upItems);
+            if (!response.isEmpty()) {
+                resultState.onResult(true);
+            } else {
+                resultState.onResult(false);
+            }
+        });
+    }
+
+    void updateReadNotificationItem(NotificationHistoryItem item, OnDbResultState resultState) {
+        handler.post(() -> {
+            int result = database.notificationDao().update(item);
             if (result >= 1) {
                 resultState.onResult(true);
             } else {

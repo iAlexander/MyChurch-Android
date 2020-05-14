@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.d2.pcu.utils.DateFormatter" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.d2.pcu.data.model.profile.NotificationHistoryItem" />
+
+        <variable
+            name="holder"
+            type="com.d2.pcu.fragments.notification.NotificationItemViewHolder" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_underline"
+        android:onClick="@{holder::onItemClick}"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/small"
+        android:paddingTop="@dimen/default_margin"
+        android:paddingEnd="@dimen/small"
+        android:paddingBottom="@dimen/default_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/small"
+                android:layout_height="@dimen/small"
+                android:layout_gravity="center"
+                android:background="@drawable/dot_blue"
+                android:visibility="@{item.read?View.GONE:View.VISIBLE}" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:text="@{DateFormatter.getDate(item.createdAt)}"
+                android:textAppearance="@style/AppText.Small" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium"
+                android:text="@{DateFormatter.getTime(item.createdAt)}"
+                android:textAppearance="@style/AppText.Small" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{item.title}" />
+    </LinearLayout>
+</layout>

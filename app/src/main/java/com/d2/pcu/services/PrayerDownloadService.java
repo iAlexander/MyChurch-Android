@@ -4,7 +4,6 @@ import android.app.Notification;
 
 import androidx.annotation.Nullable;
 
-import com.d2.pcu.App;
 import com.d2.pcu.R;
 import com.d2.pcu.utils.DownloadUtil;
 import com.google.android.exoplayer2.offline.Download;

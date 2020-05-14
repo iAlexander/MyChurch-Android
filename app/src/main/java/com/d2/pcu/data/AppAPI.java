@@ -9,12 +9,10 @@ import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
-import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
+import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
+import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
-
-import java.util.Calendar;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -95,14 +93,14 @@ public interface AppAPI {
 
     @FormUrlEncoded
     @POST("/account/forgot-password")
-    Call<BoolResponse> forgotPass(
-            @Field("login") String email
-    );
+    Call<BoolResponse> forgotPass(@Field("login") String email);
+
+    @FormUrlEncoded
+    @POST("/account/token-update")
+    Call<BoolResponse> updatePushToken(@Header("Authorization") String accessToken, @Field("firebaseToken") String token);
 
     @GET("/account/profile")
-    Call<GetUserProfileResponse> getUserProfile(
-            @Header("Authorization") String accessToken
-    );
+    Call<GetUserProfileResponse> getUserProfile(@Header("Authorization") String accessToken);
 
     @FormUrlEncoded
     @POST("/profile/email-change")
@@ -119,5 +117,7 @@ public interface AppAPI {
             @Field("newPassword") String newPass
     );
 
+    @GET("/notification/history")
+    Call<NotificationHistoryResponse> getNotificationHistory(@Header("Authorization") String accessToken);
 
 }

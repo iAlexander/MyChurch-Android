@@ -21,7 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.IBinder;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.text.TextUtils;
 
@@ -33,24 +33,19 @@ import com.d2.pcu.R;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.utils.Constants;
-import com.d2.pcu.utils.DownloadUtil;
-import com.d2.pcu.utils.exo.AudioOnlyRenderersFactory;
+import com.d2.pcu.utils.exo.ExoHelper;
 import com.d2.pcu.utils.exo.Mp3ExtractorsFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
+import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.common.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -60,41 +55,35 @@ import timber.log.Timber;
 
 public class AudioExoPlayerService extends LifecycleService {
 
+    private ExoHelper exoHelper;
+
     private SimpleExoPlayer player;
     private PlayerNotificationManager playerNotificationManager;
     private MediaSessionCompat mediaSession;
     private MediaSessionConnector mediaSessionConnector;
     private Repository repository;
-    private CacheDataSourceFactory cacheDataSourceFactory;
-    private DefaultTrackSelector trackSelector;
+    private List<Pray> mediaList = new ArrayList<>();
+//    private IBinder exoServiceBinder = new ExoServiceBinder();
 
     @Override
     public void onCreate() {
         super.onCreate();
-        final Context context = this;
-        startPlayer(context);
+        exoHelper = App.getInstance().getExoHelper();
+        player = exoHelper.getPlayer();
 
         repository = App.getInstance().getRepositoryInstance();
-
-
+        repository.getTransport().getPlayItemEvent().observe(this, playItem -> {
+            preparePlayList(playItem.isMorning(), playItem.getPosition());
+        });
     }
 
     @Override
     public void onDestroy() {
-//        mediaSession.release();
-//        mediaSessionConnector.setPlayer(null);
-        playerNotificationManager.setPlayer(null);
-        player.release();
-        player = null;
+        if (playerNotificationManager != null)
+            playerNotificationManager.setPlayer(null);
 
+        exoHelper.onDestroy();
         super.onDestroy();
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        handleIntent(intent);
-        return super.onBind(intent);
     }
 
     @Override
@@ -107,64 +96,88 @@ public class AudioExoPlayerService extends LifecycleService {
         if (intent != null) {
             Bundle exoBundle = intent.getBundleExtra(Constants.EXO_BUNDLE_KEY);
             if (exoBundle != null) {
-
                 boolean isMorning = exoBundle.getBoolean(Constants.ITEMS_KEY, true);
-                int position = exoBundle.getInt(Constants.EXO_POSITION, 0);
+                if (exoBundle.containsKey(Constants.SINGLE_TRACK)) {
 
-                if (player.isPlaying()) {
-                    player.stop();
-                }
-                if (isMorning) {
-                    repository.getTransport().getMorningServerPraysChannel().observe(
-                            this, prayList -> {
-                                if (CollectionUtils.isEmpty(prayList) || prayList.size() < position)
-                                    return;
-                                List<Pray> pl = new ArrayList<>();
-                                for (int i = position; i < prayList.size(); i++) {
-                                    if (TextUtils.isEmpty(prayList.get(i).getFile().getName()))
-                                        continue;
-                                    pl.add(prayList.get(i));
-                                }
-                                if (!CollectionUtils.isEmpty(pl)) {
-                                    setupPlayList(pl);
-                                }
-                            }
-                    );
+                    int track = exoBundle.getInt(Constants.SINGLE_TRACK);
+                    prepareSingleTrack(isMorning, track);
+                } else {
+                    int position = exoBundle.getInt(Constants.EXO_POSITION, 0);
+                    preparePlayList(isMorning, position);
                 }
             }
         }
     }
 
-    private void startPlayer(Context context) {
-        trackSelector = new DefaultTrackSelector(context);
-        player = new SimpleExoPlayer.Builder(context, new AudioOnlyRenderersFactory(context))
-                .setTrackSelector(trackSelector)
-                .build();
-        DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
-                Util.getUserAgent(context, context.getString(R.string.app_name)),
-                5000, 5000, true
-        );
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(context,
-                null,
-                httpDataSourceFactory);
-        cacheDataSourceFactory = new CacheDataSourceFactory(
-                DownloadUtil.getDownloadCache(),
-                dataSourceFactory,
-                CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR);
+    private void preparePlayList(boolean isMorning, int position) {
+        if (player.isPlaying()) {
+            player.stop();
+        }
+        if (isMorning) {
+            repository.getTransport().getMorningServerPraysChannel().observe(
+                    this, prayList -> {
+                        if (CollectionUtils.isEmpty(prayList) || prayList.size() < position)
+                            return;
+                        mediaList.clear();
+                        for (int i = position; i < prayList.size(); i++) {
+                            if (TextUtils.isEmpty(prayList.get(i).getFile().getName()))
+                                continue;
+                            mediaList.add(prayList.get(i));
+                        }
+                        if (!CollectionUtils.isEmpty(mediaList)) {
+                            setupPlayList(mediaList);
+                        }
+                    }
+            );
+        }
+    }
+
+    private void prepareSingleTrack(boolean isMorning, int position) {
+        if (player.isPlaying()) {
+            player.stop();
+        }
+        if (isMorning) {
+            repository.getTransport().getMorningServerPraysChannel().observe(
+                    this, prayList -> {
+                        if (CollectionUtils.isEmpty(prayList)
+                                || prayList.size() < position
+                                || TextUtils.isEmpty(prayList.get(position).getFile().getName()))
+                            return;
+                        mediaList.clear();
+                        mediaList.add(prayList.get(position));
+                        if (!CollectionUtils.isEmpty(mediaList)) {
+                            setupPlayList(mediaList);
+                        }
+                    }
+            );
+        }
     }
 
     private void setupPlayList(List<Pray> prayList) {
-        Timber.e("setup play list: %s", prayList.size());
         ConcatenatingMediaSource concatenatingMediaSource = new ConcatenatingMediaSource();
 
         for (Pray pray : prayList) {
-            MediaSource mediaSource = new ProgressiveMediaSource.Factory(cacheDataSourceFactory, new Mp3ExtractorsFactory())
+            MediaSource mediaSource = new ProgressiveMediaSource.Factory(exoHelper.getCacheDataSourceFactory(), new Mp3ExtractorsFactory())
                     .createMediaSource(pray.getUrl());
             Timber.e("url play: %s", pray.getUrl());
+
             concatenatingMediaSource.addMediaSource(mediaSource);
         }
         player.prepare(concatenatingMediaSource);
         player.setPlayWhenReady(true);
+        player.addListener(new Player.EventListener() {
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+                if (ExoPlaybackException.TYPE_SOURCE == error.type) {
+                    if (player.getNextWindowIndex() != -1) {
+                        int index = player.getCurrentWindowIndex();
+                        concatenatingMediaSource.removeMediaSource(index);
+                        prayList.remove(index);
+                        player.prepare(concatenatingMediaSource, false, false);
+                    }
+                }
+            }
+        });
 
         playerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(
                 this,
@@ -175,7 +188,9 @@ public class AudioExoPlayerService extends LifecycleService {
                 new MediaDescriptionAdapter() {
                     @Override
                     public String getCurrentContentTitle(Player player) {
-                        return prayList.get(player.getCurrentWindowIndex()).getTitle();
+                        if (prayList.size() > player.getCurrentWindowIndex())
+                            return prayList.get(player.getCurrentWindowIndex()).getTitle();
+                        else return "";
                     }
 
                     @Nullable
@@ -187,7 +202,9 @@ public class AudioExoPlayerService extends LifecycleService {
                     @Nullable
                     @Override
                     public String getCurrentContentText(Player player) {
-                        return prayList.get(player.getCurrentWindowIndex()).getText();
+                        if (prayList.size() > player.getCurrentWindowIndex())
+                            return prayList.get(player.getCurrentWindowIndex()).getText();
+                        else return "";
                     }
 
                     @Nullable
@@ -210,39 +227,20 @@ public class AudioExoPlayerService extends LifecycleService {
         );
         playerNotificationManager.setPlayer(player);
 
-        /*
-        mediaSession = new MediaSessionCompat(context, MEDIA_SESSION_TAG);
+        mediaSession = exoHelper.getMediaSession();
         mediaSession.setActive(true);
 
         playerNotificationManager.setMediaSessionToken(mediaSession.getSessionToken());
 
-        mediaSessionConnector = new MediaSessionConnector(mediaSession);
+        mediaSessionConnector = exoHelper.getMediaSessionConnector();
         mediaSessionConnector.setQueueNavigator(new TimelineQueueNavigator(mediaSession) {
             @Override
             public MediaDescriptionCompat getMediaDescription(Player player, int windowIndex) {
-                return Samples.getMediaDescription(context, SAMPLES[windowIndex]);
+                return Pray.getMediaDescription(AudioExoPlayerService.this, mediaList.get(windowIndex));
             }
         });
 
         mediaSessionConnector.setPlayer(player);
-        */
+//        mediaSession.setSessionActivity();
     }
-/*
-
-    public class ExoServiceBinder extends Binder {
-
-        */
-/**
- * This method should be used only for setting the exoplayer instance.
- * If exoplayer's internal are altered or accessed we can not guarantee
- * things will work correctly.
- *//*
-
-        public ExoPlayer getExoPlayerInstance() {
-            return player;
-        }
-    }
-*/
-
-
 }

@@ -3,6 +3,7 @@ package com.d2.pcu.fragments.pray_new;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.media.session.MediaControllerCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.d2.pcu.App;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.databinding.FragmentPrayersVerticalBinding;
@@ -22,6 +24,11 @@ import com.d2.pcu.listeners.OnAdditionalFuncPrayersListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.services.AudioExoPlayerService;
 import com.d2.pcu.utils.Constants;
+import com.google.android.exoplayer2.ControlDispatcher;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -37,24 +44,11 @@ public class PrayVerticalFragment extends BaseFragment {
     private OnAdditionalFuncPrayersListener onAdditionalFuncPrayersListener;
     private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
-    /*
-        private ExoPlayer player;
-        private ServiceConnection serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                if (service instanceof AudioExoPlayerService.ExoServiceBinder) {
-                    //Then we simply set the exoplayer instance on this view.
-                    //Notice we are only getting information.
-                    player = ((AudioExoPlayerService.ExoServiceBinder) service).getExoPlayerInstance();
-                }
-            }
+    private MediaSessionConnector msc;
 
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
+    private ExoPlayer player;
+    private MediaControllerCompat.TransportControls tc;
 
-            }
-        };
-    */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,14 +61,12 @@ public class PrayVerticalFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(PrayViewModel.class);
+        viewModel = new ViewModelProvider(getActivity()).get(PrayViewModel.class);
         viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
         viewModel.enableLoading();
 
-/*
         Intent intentS = new Intent(getContext(), AudioExoPlayerService.class);
-        getActivity().bindService(intentS, serviceConnection, Context.BIND_AUTO_CREATE);
-        */
+        Util.startForegroundService(App.getInstance(), intentS);
 
         adapter = new PrayersVerticalAdapter(
                 new OnPrayItemClickListener() {
@@ -94,51 +86,10 @@ public class PrayVerticalFragment extends BaseFragment {
                     }
                 },
                 (prays, position) -> {
-                    Timber.e("start player");
-                    Intent intent = new Intent(getContext(), AudioExoPlayerService.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean(Constants.ITEMS_KEY, true);
-                    bundle.putInt(Constants.EXO_POSITION, position);
-                    intent.putExtra(Constants.EXO_BUNDLE_KEY, bundle);
-                    Util.startForegroundService(getContext(), intent);
-/*
-
-                    binding.playerControlView.setPlayer(player);
-                    player.addListener(new Player.EventListener() {
-                        @Override
-                        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                        }
-                    });
-                    binding.playerControlView.setShowShuffleButton(false);
-                    binding.playerControlView.setControlDispatcher(new ControlDispatcher() {
-                        @Override
-                        public boolean dispatchSetPlayWhenReady(Player player, boolean playWhenReady) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean dispatchSeekTo(Player player, int windowIndex, long positionMs) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean dispatchSetRepeatMode(Player player, int repeatMode) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean dispatchSetShuffleModeEnabled(Player player, boolean shuffleModeEnabled) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean dispatchStop(Player player, boolean reset) {
-                            return false;
-                        }
-                    });
-                    binding.playerControlView.setVisibility(View.VISIBLE);
-*/
-
+                    if (Constants.AUDIO_ENABLED){
+                        Timber.e("start player");
+                        startPlaylistFromPosition(position);
+                    }
                 }
         );
 
@@ -157,6 +108,99 @@ public class PrayVerticalFragment extends BaseFragment {
             int[] tabsTitle = new int[]{R.string.pray_morning, R.string.pray_evening};
             tab.setText(tabsTitle[position]);
         }).attach();
+
+        if (Constants.AUDIO_ENABLED) {
+            initPlayer();
+        } else {
+            binding.playerControlView.setVisibility(View.GONE);
+        }
+    }
+
+    private void startPlaylistFromPosition(int position) {
+        Intent intent = new Intent(getContext(), AudioExoPlayerService.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Constants.ITEMS_KEY, true);
+        bundle.putInt(Constants.EXO_POSITION, position);
+        intent.putExtra(Constants.EXO_BUNDLE_KEY, bundle);
+        Util.startForegroundService(getContext(), intent);
+    }
+
+    private void initPlayer() {
+        player = App.getInstance().getExoHelper().getPlayer();
+        msc = App.getInstance().getExoHelper().getMediaSessionConnector();
+        tc = msc.mediaSession.getController().getTransportControls();
+        binding.playerControlView.setPlayer(player);
+        binding.playerControlView.setShowShuffleButton(false);
+        binding.playerControlView.setShowTimeoutMs(0);
+        binding.playerControlView.setVisibility(View.VISIBLE);
+
+        // TODO: 4/21/20 add title is playing
+
+        player.addListener(new Player.EventListener() {
+
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (!playWhenReady && playbackState == Player.STATE_ENDED || playbackState == Player.STATE_IDLE) {
+                }
+                // TODO: 4/21/20 implement IDLE && ENDED
+
+//                            if (mediaList != null)
+//                                binding.playbackTitle.setText(mediaList.get(player.getCurrentWindowIndex()).getTitle());
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+                Timber.e(error, "player error: %s", error.type);
+            }
+        });
+
+        binding.playerControlView.setControlDispatcher(new ControlDispatcher() {
+            @Override
+            public boolean dispatchSetPlayWhenReady(Player player, boolean playWhenReady) {
+                // TODO: 4/21/20 implement IDLE && ENDED
+                switch (player.getPlaybackState()) {
+                    case Player.STATE_IDLE:
+                    case Player.STATE_ENDED: {
+                        startPlaylistFromPosition(0);
+                    }
+                    default: {
+                        if (playWhenReady) {
+                            tc.play();
+                        } else {
+                            tc.pause();
+                        }
+                    }
+                }
+
+                return true;
+            }
+
+            @Override
+            public boolean dispatchSeekTo(Player player, int windowIndex, long positionMs) {
+
+                //skip only in fragment
+                tc.skipToQueueItem(windowIndex);
+                tc.seekTo(positionMs);
+                return true;
+            }
+
+            @Override
+            public boolean dispatchSetRepeatMode(Player player, int repeatMode) {
+                return false;
+            }
+
+            @Override
+            public boolean dispatchSetShuffleModeEnabled(Player player, boolean shuffleModeEnabled) {
+                return false;
+            }
+
+            @Override
+            public boolean dispatchStop(Player player, boolean reset) {
+
+                return false;
+            }
+        });
     }
 
     @Override

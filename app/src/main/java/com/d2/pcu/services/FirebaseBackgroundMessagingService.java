@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.d2.pcu.App;
 import com.d2.pcu.MainActivity;
 import com.d2.pcu.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -29,7 +30,7 @@ public class FirebaseBackgroundMessagingService extends FirebaseMessagingService
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
 
-        // TODO: 2019-11-18 send
+        App.getInstance().getRepositoryInstance().updatePushToken(token);
     }
 
     private void createNotification(String title, String message) {

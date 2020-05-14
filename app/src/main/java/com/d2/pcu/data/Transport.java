@@ -9,9 +9,11 @@ import com.d2.pcu.data.model.calendar.Event;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.data.model.news.NewsItem;
+import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.model.profile.UserState;
 import com.d2.pcu.data.responses.more.MoreResponse;
+import com.d2.pcu.utils.exo.PlayItem;
 import com.d2.pcu.utils.livedata_utils.SingleEvent;
 import com.d2.pcu.utils.livedata_utils.SingleLiveEvent;
 
@@ -25,7 +27,6 @@ public class Transport {
     private MutableLiveData<List<Diocese>> dioceseChannel = new MutableLiveData<>();
 
     private MutableLiveData<UserProfile> userProfileChannel = new MutableLiveData<>();
-
     public MutableLiveData<List<Diocese>> getDioceseChannel() {
         return dioceseChannel;
     }
@@ -37,6 +38,7 @@ public class Transport {
     public MutableLiveData<UserProfile> getUserProfileChannel() {
         return userProfileChannel;
     }
+
 
     // ----------------------------------
     private MutableLiveData<List<BaseTemple>> baseTemplesChannel = new MutableLiveData<>();
@@ -51,6 +53,8 @@ public class Transport {
 
     private MutableLiveData<List<NewsItem>> newsChannel = new MutableLiveData<>();
 
+    private MutableLiveData<List<NotificationHistoryItem>> notificationChannel = new MutableLiveData<>();
+
     private MutableLiveData<MoreResponse> moreChannel = new MutableLiveData<>();
 
     private MutableLiveData<List<Pray>> morningServerPraysChannel = new MutableLiveData<>();
@@ -60,6 +64,8 @@ public class Transport {
     private MutableLiveData<List<Pray>> morningDBPraysChannel = new MutableLiveData<>();
 
     private MutableLiveData<List<Pray>> eveningDBPraysChannel = new MutableLiveData<>();
+
+    private SingleLiveEvent<PlayItem> playItemEvent = new SingleLiveEvent<>();
 
     public MutableLiveData<List<BaseTemple>> getBaseTemplesChannel() {
         return baseTemplesChannel;
@@ -89,6 +95,10 @@ public class Transport {
         return newsChannel;
     }
 
+    public MutableLiveData<List<NotificationHistoryItem>> getNotificationChannel() {
+        return notificationChannel;
+    }
+
     public MutableLiveData<List<Pray>> getMorningServerPraysChannel() {
         return morningServerPraysChannel;
     }
@@ -103,5 +113,9 @@ public class Transport {
 
     public MutableLiveData<List<Pray>> getEveningDBPraysChannel() {
         return eveningDBPraysChannel;
+    }
+
+    public SingleLiveEvent<PlayItem> getPlayItemEvent() {
+        return playItemEvent;
     }
 }

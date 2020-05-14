@@ -14,7 +14,7 @@ import com.d2.pcu.databinding.FragmentItemPrayBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrayHorizontalAdapter extends RecyclerView.Adapter<PrayHorizontalViewHolder> {
+public class PrayHorizontalAdapter extends RecyclerView.Adapter<PrayHorizontalAdapter.PrayHorizontalViewHolder> {
 
     private List<Pray> prays;
 
@@ -49,4 +49,28 @@ public class PrayHorizontalAdapter extends RecyclerView.Adapter<PrayHorizontalVi
     public int getItemCount() {
         return prays == null ? 0 : prays.size();
     }
+
+    public Pray getItemByPosition(int index) {
+        if (prays != null && prays.size() > index) {
+            return prays.get(index);
+        } else {
+            return new Pray();
+        }
+    }
+
+    static class PrayHorizontalViewHolder extends RecyclerView.ViewHolder {
+
+        private FragmentItemPrayBinding binding;
+
+        PrayHorizontalViewHolder(FragmentItemPrayBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        void bind(Pray pray) {
+            binding.setPray(pray);
+        }
+    }
 }
+
+

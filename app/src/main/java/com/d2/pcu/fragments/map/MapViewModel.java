@@ -54,10 +54,12 @@ public class MapViewModel extends AndroidViewModel {
         repository = App.getInstance().getRepositoryInstance();
         locator = new Locator(getApplication().getApplicationContext(), repository.getLastLocation());
         location = locator.getCurrentLocation();
-
         templeLiveData = repository.getTransport().getTempleChannel();
-
         baseTemplesLiveData = repository.getTransport().getBaseTemplesChannel();
+    }
+
+    public void subscribe() {
+
 //                Transformations.switchMap(
 //                repository.getTransport().getBaseTemplesChannel(),
 //                input -> {
@@ -224,10 +226,11 @@ public class MapViewModel extends AndroidViewModel {
 
             for (BaseTemple temple : baseTemplesLiveData.getValue()) {
                 if (temple.getName().contains(query) || temple.getName().toLowerCase().contains(query)) {
-                    templeSuggestions.add(new TempleSuggestion(temple.getName(), temple.getLocation(), temple.getId()));
+                    templeSuggestions.add(new TempleSuggestion(temple.getName(), temple.getLocality(), temple.getId()));
+                } else if(temple.getLocality().toLowerCase().contains(query.toLowerCase())){
+                    templeSuggestions.add(new TempleSuggestion(temple.getName(), temple.getLocality(), temple.getId()));
                 }
             }
-
         }
 
         return templeSuggestions;

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class NewsResponse extends OnMasterResponse {
 
-    @SerializedName("data")
+    @SerializedName("list")
     private List<NewsItem> news;
 
     public List<NewsItem> getNews() {

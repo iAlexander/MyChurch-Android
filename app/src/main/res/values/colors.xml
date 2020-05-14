@@ -10,10 +10,15 @@
     <color name="textColorSecondary">#ffffff</color>
     <color name="textColorGrey">#666666</color>
 
+    <color name="backgroundPlayer">#f4f4f4</color>
+
 <!--  Colors  -->
     <color name="white">#FFFFFFFF</color>
     <color name="app_yellow">#D79F28</color>
     <color name="green">#219654</color>
     <color name="red">#b21225</color>
+    <color name="blue">#017AE5</color>
+
+    <color name="colorDivider">#F2F2F2</color>
 
 </resources>

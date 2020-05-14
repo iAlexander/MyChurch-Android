@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/background"
+    android:elevation="@dimen/pcu_default_elevation"
+    android:orientation="vertical">
+
+    <View android:id="@id/exo_progress_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTrackTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            tools:text="Title song"
+            android:layout_marginStart="@dimen/default_margin"
+            android:textAppearance="@style/AppText.Secondary" />
+
+        <ImageButton
+            android:id="@id/exo_rew"
+            style="@style/ExoMediaButton.Rewind"
+            android:tint="@color/black" />
+
+        <ImageButton
+            android:id="@id/exo_play"
+            style="@style/ExoMediaButton.Play"
+            android:tint="@color/black" />
+
+        <ImageButton
+            android:id="@id/exo_pause"
+            style="@style/ExoMediaButton.Pause"
+            android:tint="@color/black" />
+
+        <ImageButton
+            android:id="@id/exo_ffwd"
+            style="@style/ExoMediaButton.FastForward"
+            android:tint="@color/black" />
+    </LinearLayout>
+</LinearLayout>

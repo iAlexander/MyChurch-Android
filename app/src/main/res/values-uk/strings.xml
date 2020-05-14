@@ -185,4 +185,5 @@
 <!--  Errors  -->
     <string name="field_error_text">Перевірте вірність заповнення - \"%1$s\"</string>
     <string name="playback_channel_name">Playback</string>
+    <string name="notifications">Повiдомлення</string>
 </resources>

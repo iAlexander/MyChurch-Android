@@ -2,11 +2,16 @@ package com.d2.pcu.data.model.pray;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import androidx.annotation.DrawableRes;
 import androidx.room.Entity;
@@ -141,14 +146,16 @@ public class Pray extends MasterDbModel {
 
     public static MediaDescriptionCompat getMediaDescription(Context context, Pray pray) {
         Bundle extras = new Bundle();
-        Bitmap bitmap = getBitmap(context, R.drawable.ic_news_active);
+
+//        Bitmap bitmap = getBitmap(context, R.drawable.ic_no_connection);
+        Bitmap bitmap = getBitmapLogo(context, R.drawable.fg_splash);
         extras.putParcelable(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap);
         extras.putParcelable(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, bitmap);
         return new MediaDescriptionCompat.Builder()
                 .setMediaId(pray.file.name)
                 .setIconBitmap(bitmap)
                 .setTitle(pray.title)
-//                .setDescription(pray.text)
+                .setDescription(pray.text)
                 .setExtras(extras)
                 .build();
     }
@@ -158,13 +165,39 @@ public class Pray extends MasterDbModel {
     }
 
     public Uri getUrl() {
+        if (TextUtils.isEmpty(file.name)) {
+            return Uri.parse(file.name);
+        }
 //        return Uri.parse("https://storage.googleapis.com/automotive-media/Jazz_In_Paris.mp3");
-        if(id==2){
+        if (id == 2) {
             return Uri.parse("https://storage.googleapis.com/automotive-media/Jazz_In_Paris.mp3");
+        }
+
+        if (id == 4) {
+            return Uri.parse("https://storage.googleapis.com/automotive-media/The_Messenger.mp3");
         }
         return new Uri.Builder().scheme("http")
                 .authority(Uri.parse(BuildConfig.API_BASE_URL).getAuthority())
                 .path(file.path).appendPath(file.name)
                 .build();
+    }
+
+    private static Bitmap bitmap;
+
+    private static Bitmap getBitmapLogo(Context context, @DrawableRes int bitmapResource) {
+        if (bitmap != null) return bitmap;
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (wm != null) {
+            wm.getDefaultDisplay().getMetrics(metrics);
+            LayerDrawable ld = (LayerDrawable) context.getDrawable(bitmapResource);
+            if (ld != null) {
+                ld.setBounds(0, 0, metrics.widthPixels, metrics.heightPixels);
+                Bitmap b = Bitmap.createBitmap(metrics.widthPixels, metrics.heightPixels, Bitmap.Config.ARGB_8888);
+                ld.draw(new Canvas(b));
+                bitmap = b;
+            }
+        }
+        return bitmap;
     }
 }
