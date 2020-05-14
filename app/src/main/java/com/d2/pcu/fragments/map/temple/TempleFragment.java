@@ -1,26 +1,20 @@
 package com.d2.pcu.fragments.map.temple;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.d2.pcu.databinding.FragmentCathedralContactBinding;
-import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.Temple;
+import com.d2.pcu.databinding.FragmentCathedralContactBinding;
 import com.d2.pcu.fragments.BaseFragment;
-import com.d2.pcu.listeners.OnLoadingStateChangedListener;
+import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
@@ -30,8 +24,6 @@ public class TempleFragment extends BaseFragment {
     private TempleViewModel viewModel;
     private FragmentCathedralContactBinding binding;
 
-    private OnBackButtonClickListener onBackButtonClickListener;
-    private OnLoadingStateChangedListener onLoadingStateChangedListener;
     private OnAdditionalFuncMapListener onAdditionalFuncMapListener;
 
     private Temple temple;
@@ -52,7 +44,7 @@ public class TempleFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cathedral_contact, container, false);
+        binding = FragmentCathedralContactBinding.inflate(inflater);
 
         return binding.getRoot();
     }
@@ -60,9 +52,9 @@ public class TempleFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(TempleViewModel.class);
-        viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
-        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
+        viewModel = new ViewModelProvider(this).get(TempleViewModel.class);
+
+        setViewModelListeners(viewModel);
 
         binding.setTemple(temple);
         setDataToList();
@@ -80,7 +72,7 @@ public class TempleFragment extends BaseFragment {
         new TabLayoutMediator(binding.templeTabs, binding.templeViewpager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                int[] tabsTitle = {R.string.temple_contacts, R.string.temple_history_descr} ;
+                int[] tabsTitle = {R.string.temple_contacts, R.string.temple_history_descr};
 
                 tab.setText(tabsTitle[position]);
             }
@@ -88,24 +80,14 @@ public class TempleFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
-    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        onBackButtonClickListener = (OnBackButtonClickListener) context;
-        onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
         onAdditionalFuncMapListener = (OnAdditionalFuncMapListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        onBackButtonClickListener = null;
-        onLoadingStateChangedListener = null;
         onAdditionalFuncMapListener = null;
     }
 }

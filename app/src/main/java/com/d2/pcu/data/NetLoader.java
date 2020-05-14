@@ -2,7 +2,6 @@ package com.d2.pcu.data;
 
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
@@ -49,8 +48,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
 public class NetLoader implements DefaultLifecycleObserver {
-
-    private static final String TAG = NetLoader.class.getSimpleName();
 
     private Gson gson;
     private OkHttpClient httpClient;
@@ -428,7 +425,7 @@ public class NetLoader implements DefaultLifecycleObserver {
                     }.getType();
                     JsonObject errorBody = gson.fromJson(response.errorBody().charStream(), type);
                     onFailure(null, new HTTPException(errorBody.toString()));
-                }  else {
+                } else {
                     onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
                 }
             }
@@ -472,8 +469,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
                 int resCode = response.code();
 
-                Log.i(TAG, "changeEmail -> onResponse: " + resCode);
-
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
                 } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
@@ -499,7 +494,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<BoolResponse> call, Throwable t) {
-                Log.i(TAG, "forgotPass -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));
@@ -510,8 +504,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             @Override
             public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
                 int resCode = response.code();
-
-                Log.i(TAG, "changeEmail -> onResponse: " + resCode);
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
@@ -537,7 +529,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<BoolResponse> call, Throwable t) {
-                Log.i(TAG, "forgotPass -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));

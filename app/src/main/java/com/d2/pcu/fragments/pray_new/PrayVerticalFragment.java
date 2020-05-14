@@ -22,6 +22,7 @@ import com.d2.pcu.fragments.pray.OnPrayItemClickListener;
 import com.d2.pcu.fragments.pray.OnRefreshPraysListener;
 import com.d2.pcu.listeners.OnAdditionalFuncPrayersListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
+import com.d2.pcu.listeners.OnNotificationClickListener;
 import com.d2.pcu.services.AudioExoPlayerService;
 import com.d2.pcu.utils.Constants;
 import com.google.android.exoplayer2.ControlDispatcher;
@@ -42,7 +43,6 @@ public class PrayVerticalFragment extends BaseFragment {
     private PrayersVerticalAdapter adapter;
 
     private OnAdditionalFuncPrayersListener onAdditionalFuncPrayersListener;
-    private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
     private MediaSessionConnector msc;
 
@@ -52,7 +52,7 @@ public class PrayVerticalFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_prayers_vertical, container, false);
+        binding = FragmentPrayersVerticalBinding.inflate(inflater);
 
         return binding.getRoot();
     }
@@ -60,9 +60,9 @@ public class PrayVerticalFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         viewModel = new ViewModelProvider(getActivity()).get(PrayViewModel.class);
-        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
+        setViewModelListeners(viewModel);
+        binding.setModel(viewModel);
         viewModel.enableLoading();
 
         Intent intentS = new Intent(getContext(), AudioExoPlayerService.class);
@@ -86,7 +86,7 @@ public class PrayVerticalFragment extends BaseFragment {
                     }
                 },
                 (prays, position) -> {
-                    if (Constants.AUDIO_ENABLED){
+                    if (Constants.AUDIO_ENABLED) {
                         Timber.e("start player");
                         startPlaylistFromPosition(position);
                     }
@@ -207,13 +207,11 @@ public class PrayVerticalFragment extends BaseFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onAdditionalFuncPrayersListener = (OnAdditionalFuncPrayersListener) context;
-        onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
     }
 
     @Override
     public void onDetach() {
-        super.onDetach();
         onAdditionalFuncPrayersListener = null;
-        onLoadingStateChangedListener = null;
+        super.onDetach();
     }
 }

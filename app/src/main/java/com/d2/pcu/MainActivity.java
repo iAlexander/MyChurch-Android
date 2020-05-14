@@ -41,6 +41,8 @@ import com.d2.pcu.utils.Constants;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.FirebaseApp;
 
+import timber.log.Timber;
+
 
 public class MainActivity extends AppCompatActivity implements OnError,
         OnBackButtonClickListener, OnLoadingStateChangedListener, OnCalendarEventItemClickListener,
@@ -48,12 +50,8 @@ public class MainActivity extends AppCompatActivity implements OnError,
         OnCabinetButtonsClickListener, OnDonatesClickListener, OnChatClickListener,
         OnEditProfileDataClickListener, OnNotificationClickListener, InfoDialogListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-
     private ActivityMainBinding binding;
     private NavController navController;
-
-    private int currentFragmentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements OnError,
         navController.addOnDestinationChangedListener(
                 (controller, destination, arguments) -> enableLoading(false)
         );
-//        currentFragmentId = navController.getCurrentDestination().getId();
 
         if (!App.getInstance().getRepositoryInstance().getOnBoardingState()) {
             navController.navigate(R.id.introActivity);
@@ -112,11 +109,6 @@ public class MainActivity extends AppCompatActivity implements OnError,
         });
     }
 
-    //    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//    }
-
     private void setStartScreen() {
         int startId = App.getInstance().getRepositoryInstance().getSelectedStartScreenId();
         if (startId != R.id.resource_unset) {
@@ -134,49 +126,6 @@ public class MainActivity extends AppCompatActivity implements OnError,
         navController.popBackStack();
     }
 
-    /*
-
-        private void setOnMenuClickHandling() {
-            binding.navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    if (currentFragmentId != item.getItemId()) {
-
-                        switch (item.getItemId()) {
-                            case R.id.mapFragment: {
-                                navController.navigate(R.id.mapFragment);
-                                currentFragmentId = R.id.mapFragment;
-                                return true;
-                            }
-                            case R.id.calendarFragment: {
-                                navController.navigate(R.id.calendarFragment);
-                                currentFragmentId = R.id.calendarFragment;
-                                return true;
-                            }
-                            case R.id.newsFragment: {
-                                navController.navigate(R.id.newsFragment);
-                                currentFragmentId = R.id.newsFragment;
-                                return true;
-                            }
-                            case R.id.prayFragment: {
-                                navController.navigate(R.id.prayFragment);
-                                currentFragmentId = R.id.prayFragment;
-                                return true;
-                            }
-                            case R.id.profileFragment: {
-                                navController.navigate(R.id.profileFragment);
-                                currentFragmentId = R.id.profileFragment;
-                                return true;
-                            }
-                        }
-                    }
-
-                    return false;
-                }
-            });
-        }
-
-    */
     @Override
     public void onTempleInfoClick(String serializedTemple, int type) {
         if (type == Constants.TEMPLE_TYPE_CATHEDRAL) {
@@ -295,8 +244,6 @@ public class MainActivity extends AppCompatActivity implements OnError,
             case R.id.viber_btn: {
                 Toast.makeText(getApplicationContext(), "Viber click", Toast.LENGTH_SHORT).show();
 
-//                intent.setData(Uri.parse(""));
-//                startActivity(intent);
                 break;
             }
             case R.id.btnFacebookWeb: {

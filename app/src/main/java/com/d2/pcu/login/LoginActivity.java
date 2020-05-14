@@ -1,13 +1,9 @@
 package com.d2.pcu.login;
 
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -18,12 +14,9 @@ import com.d2.pcu.data.model.profile.UserState;
 import com.d2.pcu.listeners.InfoDialogListener;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
-import com.d2.pcu.login.code_checker.OnCodeSent;
 import com.d2.pcu.login.code_checker.OnErrorChannelCallback;
-import com.d2.pcu.login.password.OnPasswordSetListener;
 import com.d2.pcu.login.user_type.OnUserTypeSelected;
 import com.d2.pcu.login.user_type.UserType;
-import com.d2.pcu.login.phone_checker.OnPhoneSent;
 import com.d2.pcu.ui.utils.OverlayView;
 import com.d2.pcu.ui.utils.UIUtils;
 import com.d2.pcu.utils.Constants;
@@ -148,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onSignedUp(boolean moderating) {
         Toast.makeText(this, "Реєстрація пройшла успішно", Toast.LENGTH_LONG).show();
-        if(moderating){
+        if (moderating) {
             App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.MODERATING);
             saveUserState(UserState.MODERATING);
         } else {

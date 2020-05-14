@@ -10,7 +10,6 @@ import com.d2.pcu.data.model.diocese.Diocese;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.fragments.BaseViewModel;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.login.SignInOnClickListener;
 import com.d2.pcu.login.user_type.UserType;
 
@@ -25,7 +24,6 @@ public class UserProfileViewModel extends BaseViewModel {
 
     private UserProfile userProfile;
 
-    private OnBackButtonClickListener onBackButtonClickListener;
     private OnSaveClickListener onSaveClickListener;
 
     private LiveData<List<BaseTemple>> templesLiveData;
@@ -54,10 +52,6 @@ public class UserProfileViewModel extends BaseViewModel {
 
     void setSignInOnClickListener(SignInOnClickListener signInOnClickListener) {
         this.signInOnClickListener = signInOnClickListener;
-    }
-
-    void setOnBackButtonClickListener(OnBackButtonClickListener onBackButtonClickListener) {
-        this.onBackButtonClickListener = onBackButtonClickListener;
     }
 
     void setOnSaveClickListener(OnSaveClickListener onSaveClickListener) {
@@ -119,12 +113,6 @@ public class UserProfileViewModel extends BaseViewModel {
         }
 
         return new String[0];
-    }
-
-    public void onBackPressed(View view) {
-        if (onBackButtonClickListener != null) {
-            onBackButtonClickListener.onBackButtonPressed();
-        }
     }
 
     public void onSaveClick(View view) {

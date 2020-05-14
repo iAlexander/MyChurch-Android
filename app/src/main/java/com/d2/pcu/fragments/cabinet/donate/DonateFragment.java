@@ -8,27 +8,22 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentDonatesBinding;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
+import com.d2.pcu.fragments.BaseFragment;
 
-public class DonateFragment extends Fragment {
+public class DonateFragment extends BaseFragment {
 
     private FragmentDonatesBinding binding;
     private DonateViewModel viewModel;
 
-    private OnBackButtonClickListener onBackButtonClickListener;
     private OnDonatesClickListener listener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_donates, container, false);
-
+        binding = FragmentDonatesBinding.inflate(inflater);
         return binding.getRoot();
     }
 
@@ -36,9 +31,9 @@ public class DonateFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(this).get(DonateViewModel.class);
+        viewModel = new ViewModelProvider(this).get(DonateViewModel.class);
         viewModel.setListener(listener);
-        viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
+        setViewModelListeners(viewModel);
 
         binding.setModel(viewModel);
     }
@@ -47,13 +42,11 @@ public class DonateFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.listener = (OnDonatesClickListener) context;
-        onBackButtonClickListener = (OnBackButtonClickListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         this.listener = null;
-        onBackButtonClickListener = null;
     }
 }

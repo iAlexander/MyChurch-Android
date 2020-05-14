@@ -1,17 +1,13 @@
 package com.d2.pcu.fragments.notification;
 
-import android.view.View;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
-import com.d2.pcu.data.model.news.NewsItem;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.fragments.BaseViewModel;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +16,6 @@ public class NotificationViewModel extends BaseViewModel {
 
     private final Repository repository;
     private final LiveData<List<NotificationHistoryItem>> notificationLiveData;
-    private OnBackButtonClickListener onBackButtonClickListener;
 
     public NotificationViewModel() {
         repository = App.getInstance().getRepositoryInstance();
@@ -47,21 +42,12 @@ public class NotificationViewModel extends BaseViewModel {
         }
     }
 
-    public void setOnBackButtonClickListener(OnBackButtonClickListener onBackButtonClickListener) {
-        this.onBackButtonClickListener = onBackButtonClickListener;
-    }
-
     public LiveData<List<NotificationHistoryItem>> getNotificationLiveData() {
         return notificationLiveData;
     }
 
-    public void getData(){
+    public void getData() {
         repository.getNotificationHistory();
     }
 
-    public void onBackPressed(View view) {
-        if (onBackButtonClickListener != null) {
-            onBackButtonClickListener.onBackButtonPressed();
-        }
-    }
 }

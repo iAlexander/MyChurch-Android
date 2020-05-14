@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.d2.pcu.MainActivity;
@@ -31,7 +32,7 @@ public class IntroActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro);
 
-        viewModel = ViewModelProviders.of(this).get(IntroViewModel.class);
+        viewModel = new ViewModelProvider(this).get(IntroViewModel.class);
 
         IntroAdapter adapter = new IntroAdapter(
                 this,

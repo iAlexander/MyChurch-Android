@@ -9,15 +9,11 @@ import com.d2.pcu.StartFragments;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.fragments.BaseViewModel;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
-import com.d2.pcu.listeners.OnNotificationClickListener;
 import com.d2.pcu.utils.Constants;
 
 public class ProfileMenuViewModel extends BaseViewModel {
 
-    private OnBackButtonClickListener onBackButtonClickListener;
     private OnEditProfileDataClickListener onEditProfileDataClickListener;
-    private OnNotificationClickListener onNotificationClickListener;
 
     private Repository repository;
 
@@ -34,17 +30,10 @@ public class ProfileMenuViewModel extends BaseViewModel {
         userProfileLiveData = repository.getTransport().getUserProfileChannel();
     }
 
-    void setOnBackButtonClickListener(OnBackButtonClickListener onBackButtonClickListener) {
-        this.onBackButtonClickListener = onBackButtonClickListener;
-    }
-
     void setOnEditProfileDataClickListener(OnEditProfileDataClickListener onEditProfileDataClickListener) {
         this.onEditProfileDataClickListener = onEditProfileDataClickListener;
     }
 
-    void setOnNotificationClickListener(OnNotificationClickListener onNotificationClickListener) {
-        this.onNotificationClickListener = onNotificationClickListener;
-    }
 
     public LiveData<UserProfile> getUserProfileLiveData() {
         return userProfileLiveData;
@@ -57,12 +46,6 @@ public class ProfileMenuViewModel extends BaseViewModel {
 
     int getSelectedDefaultScreen() {
         return selectedDefaultScreen;
-    }
-
-    public void onBackPressed(View view) {
-        if (onBackButtonClickListener != null) {
-            onBackButtonClickListener.onBackButtonPressed();
-        }
     }
 
     public void onEditEmail(View view, ChangeDataType changeDataType) {
@@ -85,12 +68,6 @@ public class ProfileMenuViewModel extends BaseViewModel {
                 StartFragments.PRAY,
                 StartFragments.PROFILE
         };
-    }
-
-    public void onNotificationClick(View view) {
-        if (onNotificationClickListener != null) {
-            onNotificationClickListener.onNotificationClick();
-        }
     }
 
     public enum ChangeDataType {

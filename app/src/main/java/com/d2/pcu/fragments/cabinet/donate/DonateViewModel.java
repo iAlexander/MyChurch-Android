@@ -2,18 +2,11 @@ package com.d2.pcu.fragments.cabinet.donate;
 
 import android.view.View;
 
-import androidx.lifecycle.ViewModel;
+import com.d2.pcu.fragments.BaseViewModel;
 
-import com.d2.pcu.listeners.OnBackButtonClickListener;
-
-public class DonateViewModel extends ViewModel {
+public class DonateViewModel extends BaseViewModel {
 
     private OnDonatesClickListener listener;
-    private OnBackButtonClickListener onBackButtonClickListener;
-
-    void setOnBackButtonClickListener(OnBackButtonClickListener onBackButtonClickListener) {
-        this.onBackButtonClickListener = onBackButtonClickListener;
-    }
 
     void setListener(OnDonatesClickListener listener) {
         this.listener = listener;
@@ -25,9 +18,4 @@ public class DonateViewModel extends ViewModel {
         }
     }
 
-    public void onBackPressed(View view) {
-        if (onBackButtonClickListener != null) {
-            onBackButtonClickListener.onBackButtonPressed();
-        }
-    }
 }

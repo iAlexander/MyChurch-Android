@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.map.temple.Temple;
+import com.d2.pcu.fragments.BaseViewModel;
 import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
@@ -18,13 +19,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Calendar;
 
-public class TempleContactsViewModel extends ViewModel {
+public class TempleContactsViewModel extends BaseViewModel {
 
-    private static final String TAG = TempleContactsViewModel.class.getSimpleName();
-
-    private OnBackButtonClickListener onBackButtonClickListener;
     private OnAdditionalFuncMapListener onAdditionalFuncMapListener;
-    private OnLoadingStateChangedListener onLoadingStateChangedListener;
+
     private Repository repository;
 
     private MutableLiveData<Boolean> isOpen = new MutableLiveData<>();
@@ -45,34 +43,8 @@ public class TempleContactsViewModel extends ViewModel {
         return temple;
     }
 
-    void setOnBackButtonClickListener(OnBackButtonClickListener onBackButtonClickListener) {
-        this.onBackButtonClickListener = onBackButtonClickListener;
-    }
-
     void setOnAdditionalFuncMapListener(OnAdditionalFuncMapListener onAdditionalFuncMapListener) {
         this.onAdditionalFuncMapListener = onAdditionalFuncMapListener;
-    }
-
-    void setOnLoadingStateChangedListener(OnLoadingStateChangedListener onLoadingStateChangedListener) {
-        this.onLoadingStateChangedListener = onLoadingStateChangedListener;
-    }
-
-    void enableLoading() {
-        if (onLoadingStateChangedListener != null) {
-            onLoadingStateChangedListener.enableLoading(true);
-        }
-    }
-
-    void disableLoading() {
-        if (onLoadingStateChangedListener != null) {
-            onLoadingStateChangedListener.enableLoading(false);
-        }
-    }
-
-    public void onBackButtonPressed(View view) {
-        if (onBackButtonClickListener != null) {
-            onBackButtonClickListener.onBackButtonPressed();
-        }
     }
 
     public void onGetDirectionsClick(View view) {

@@ -3,6 +3,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="model"
+            type="com.d2.pcu.fragments.calendar.CalendarViewModel" />
+    </data>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -38,6 +43,7 @@
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="@dimen/small"
                     android:padding="@dimen/small"
+                    android:onClick="@{model::onNotificationClick}"
                     app:srcCompat="@drawable/ic_notifications_none" />
             </LinearLayout>
 

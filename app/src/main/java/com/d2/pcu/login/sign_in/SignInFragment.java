@@ -10,13 +10,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentSignInBinding;
 import com.d2.pcu.fragments.BaseFragment;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.login.OnLoginError;
 import com.d2.pcu.login.SignInOnClickListener;
 
@@ -25,7 +22,6 @@ public class SignInFragment extends BaseFragment {
     private FragmentSignInBinding binding;
     private SignInViewModel viewModel;
 
-    private OnBackButtonClickListener onBackButtonClickListener;
     private SignInOnClickListener signInOnClickListener;
     private OnLoginError onLoginError;
 
@@ -35,7 +31,7 @@ public class SignInFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false);
+        binding = FragmentSignInBinding.inflate(inflater);
         return binding.getRoot();
     }
 
@@ -44,8 +40,13 @@ public class SignInFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.signInEmailEt.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -61,8 +62,13 @@ public class SignInFragment extends BaseFragment {
         });
 
         binding.signInPasswordEt.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -82,8 +88,8 @@ public class SignInFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(SignInViewModel.class);
-        viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
+        viewModel = new ViewModelProvider(getActivity()).get(SignInViewModel.class);
+        setViewModelListeners(viewModel);
         viewModel.setSignInOnClickListener(signInOnClickListener);
         viewModel.setOnLoginError(onLoginError);
 
@@ -103,7 +109,6 @@ public class SignInFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        onBackButtonClickListener = (OnBackButtonClickListener) context;
         signInOnClickListener = (SignInOnClickListener) context;
         onLoginError = (OnLoginError) context;
     }
@@ -111,7 +116,6 @@ public class SignInFragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        onBackButtonClickListener = null;
         signInOnClickListener = null;
         onLoginError = null;
     }

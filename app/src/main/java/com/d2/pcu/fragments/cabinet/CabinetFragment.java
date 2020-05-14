@@ -1,24 +1,23 @@
 package com.d2.pcu.fragments.cabinet;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.d2.pcu.R;
 import com.d2.pcu.databinding.ProfileFragmentBinding;
+import com.d2.pcu.fragments.BaseFragment;
+import com.d2.pcu.listeners.OnNotificationClickListener;
 
-public class CabinetFragment extends Fragment {
+public class CabinetFragment extends BaseFragment {
 
     private ProfileFragmentBinding binding;
     private CabinetViewModel viewModel;
@@ -32,7 +31,7 @@ public class CabinetFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.profile_fragment, container, false);
+        binding = ProfileFragmentBinding.inflate(inflater);
         return binding.getRoot();
     }
 
@@ -41,6 +40,7 @@ public class CabinetFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(CabinetViewModel.class);
         viewModel.setListener(listener);
+        setViewModelListeners(viewModel);
 
         binding.setModel(viewModel);
     }
@@ -53,7 +53,7 @@ public class CabinetFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        super.onDetach();
         this.listener = null;
+        super.onDetach();
     }
 }

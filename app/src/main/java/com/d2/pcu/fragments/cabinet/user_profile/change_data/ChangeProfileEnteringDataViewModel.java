@@ -8,7 +8,6 @@ import com.d2.pcu.data.Repository;
 import com.d2.pcu.fragments.BaseViewModel;
 import com.d2.pcu.fragments.cabinet.user_profile.ProfileMenuViewModel;
 import com.d2.pcu.listeners.InfoDialogListener;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.login.sign_up.UserProfileViewModel;
 import com.d2.pcu.utils.Constants;
 
@@ -21,7 +20,6 @@ public class ChangeProfileEnteringDataViewModel extends BaseViewModel {
     private String oldValue;
     private String newValue;
 
-    private OnBackButtonClickListener onBackButtonClickListener;
     private InfoDialogListener infoDialogListener;
 
     public ChangeProfileEnteringDataViewModel() {
@@ -30,10 +28,6 @@ public class ChangeProfileEnteringDataViewModel extends BaseViewModel {
 
     void setChangeDataType(ProfileMenuViewModel.ChangeDataType changeDataType) {
         this.changeDataType = changeDataType;
-    }
-
-    void setOnBackButtonClickListener(OnBackButtonClickListener onBackButtonClickListener) {
-        this.onBackButtonClickListener = onBackButtonClickListener;
     }
 
     void setInfoDialogListener(InfoDialogListener infoDialogListener) {
@@ -56,12 +50,11 @@ public class ChangeProfileEnteringDataViewModel extends BaseViewModel {
         this.newValue = newValue;
     }
 
+    @Override
     public void onBackPressed(View view) {
         oldValue = "";
         newValue = "";
-        if (onBackButtonClickListener != null) {
-            onBackButtonClickListener.onBackButtonPressed();
-        }
+        super.onBackPressed(view);
     }
 
     public void apply(View view) {
@@ -74,9 +67,7 @@ public class ChangeProfileEnteringDataViewModel extends BaseViewModel {
                             newValue = "";
                             if (infoDialogListener != null) {
                                 infoDialogListener.showInfoDialog(R.string.email_was_change, R.string.understand_text);
-                                if (onBackButtonClickListener != null) {
-                                    onBackButtonClickListener.onBackButtonPressed();
-                                }
+                                onBackPressed(view);
                             }
                         }
                     });
@@ -89,9 +80,7 @@ public class ChangeProfileEnteringDataViewModel extends BaseViewModel {
                             newValue = "";
                             if (infoDialogListener != null) {
                                 infoDialogListener.showInfoDialog(R.string.pass_was_change, R.string.understand_text);
-                                if (onBackButtonClickListener != null) {
-                                    onBackButtonClickListener.onBackButtonPressed();
-                                }
+                                onBackPressed(view);
                             }
                         }
                     });

@@ -41,6 +41,7 @@
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/small"
                 android:padding="@dimen/small"
+                android:onClick="@{model::onNotificationClick}"
                 app:srcCompat="@drawable/ic_notifications_none" />
         </LinearLayout>
 

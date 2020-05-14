@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentUserEnteringDataChangeBinding;
@@ -19,6 +17,7 @@ import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.fragments.cabinet.user_profile.ProfileMenuViewModel;
 import com.d2.pcu.listeners.InfoDialogListener;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
+import com.d2.pcu.listeners.OnNotificationClickListener;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class ChangeProfileEnteringDataFragment extends BaseFragment {
@@ -27,7 +26,6 @@ public class ChangeProfileEnteringDataFragment extends BaseFragment {
     private ChangeProfileEnteringDataViewModel viewModel;
 
     private InfoDialogListener infoDialogListener;
-    private OnBackButtonClickListener onBackButtonClickListener;
 
     private ProfileMenuViewModel.ChangeDataType changeDataType;
 
@@ -43,7 +41,7 @@ public class ChangeProfileEnteringDataFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_entering_data_change, container, false);
+        binding = FragmentUserEnteringDataChangeBinding.inflate(inflater);
 
         return binding.getRoot();
     }
@@ -73,8 +71,8 @@ public class ChangeProfileEnteringDataFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(ChangeProfileEnteringDataViewModel.class);
-        viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
         viewModel.setInfoDialogListener(infoDialogListener);
+        setViewModelListeners(viewModel);
         viewModel.setChangeDataType(changeDataType);
 
         binding.setModel(viewModel);
@@ -84,13 +82,11 @@ public class ChangeProfileEnteringDataFragment extends BaseFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         infoDialogListener = (InfoDialogListener) context;
-        onBackButtonClickListener = (OnBackButtonClickListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         infoDialogListener = null;
-        onBackButtonClickListener = null;
     }
 }

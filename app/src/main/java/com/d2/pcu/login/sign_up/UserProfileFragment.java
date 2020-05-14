@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,10 +39,8 @@ public class UserProfileFragment extends BaseFragment {
     private FragmentUserProfileBinding binding;
     private UserProfileViewModel viewModel;
 
-    private OnBackButtonClickListener onBackButtonClickListener;
     private OnLoginError onLoginError;
     private SignInOnClickListener signInOnClickListener;
-    private OnLoadingStateChangedListener onLoadingStateChangedListener;
 
     private TemplesDialogAdapter templesAdapter;
 
@@ -88,11 +87,10 @@ public class UserProfileFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(UserProfileViewModel.class);
-        viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
+        viewModel = new ViewModelProvider(getActivity()).get(UserProfileViewModel.class);
+        setViewModelListeners(viewModel);
         viewModel.setUserType(userType);
         viewModel.setSignInOnClickListener(signInOnClickListener);
-        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
 
         binding.setModel(viewModel);
 
@@ -471,16 +469,13 @@ public class UserProfileFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        onBackButtonClickListener = (OnBackButtonClickListener) context;
         onLoginError = (OnLoginError) context;
         signInOnClickListener = (SignInOnClickListener) context;
-        onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        onBackButtonClickListener = null;
         onLoginError = null;
         signInOnClickListener = null;
     }

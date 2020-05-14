@@ -1,6 +1,5 @@
 package com.d2.pcu.fragments.calendar.event;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,16 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.calendar.CalendarItem;
 import com.d2.pcu.databinding.FragmentCalendarEventBinding;
 import com.d2.pcu.fragments.BaseFragment;
-import com.d2.pcu.fragments.PhotoAdapter;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.ui.TextToHtmlFormatter;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -32,11 +27,9 @@ public class FragmentCalendarEvent extends BaseFragment {
     private FragmentCalendarEventBinding binding;
     private CalendarEventViewModel viewModel;
 
-    private OnBackButtonClickListener onBackButtonClickListener;
-
     private CalendarItem calendarItem;
 
-    private PhotoAdapter adapter;
+//    private PhotoAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,21 +43,20 @@ public class FragmentCalendarEvent extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar_event, container, false);
-
+        binding = FragmentCalendarEventBinding.inflate(inflater);
         return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(CalendarEventViewModel.class);
+        viewModel = new ViewModelProvider(this).get(CalendarEventViewModel.class);
 
 //        adapter = new PhotoAdapter();
 //        binding.calendarEventPhotoRv.setAdapter(adapter);
 //        binding.calendarEventPhotoRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
+        setViewModelListeners(viewModel);
         viewModel.setCalendarItem(calendarItem);
 
         if (viewModel.getCalendarItem() != null) {
@@ -102,15 +94,4 @@ public class FragmentCalendarEvent extends BaseFragment {
         binding.setModel(viewModel);
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        onBackButtonClickListener = (OnBackButtonClickListener) context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        onBackButtonClickListener = null;
-    }
 }

@@ -18,8 +18,6 @@ import java.util.List;
 
 public class NewsViewModel extends BaseViewModel {
 
-    private OnBackButtonClickListener onBackButtonClickListener;
-
     private Repository repository;
 
     private LiveData<List<NewsItem>> newsLiveData;
@@ -43,10 +41,6 @@ public class NewsViewModel extends BaseViewModel {
         loadNews();
     }
 
-    public void setOnBackButtonClickListener(OnBackButtonClickListener onBackButtonClickListener) {
-        this.onBackButtonClickListener = onBackButtonClickListener;
-    }
-
     public LiveData<List<NewsItem>> getNewsLiveData() {
         return newsLiveData;
     }
@@ -68,9 +62,4 @@ public class NewsViewModel extends BaseViewModel {
         return selectedItem;
     }
 
-    public void onBackPressed(View view) {
-        if (onBackButtonClickListener != null) {
-            onBackButtonClickListener.onBackButtonPressed();
-        }
-    }
 }

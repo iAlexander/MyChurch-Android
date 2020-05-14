@@ -36,7 +36,7 @@
                     android:layout_gravity="start"
                     android:padding="@dimen/small"
                     android:src="@drawable/ic_arrow_back"
-                    android:onClick="@{model::onBackButtonPressed}"/>
+                    android:onClick="@{model::onBackPressed}"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"

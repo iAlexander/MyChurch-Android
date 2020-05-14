@@ -1,6 +1,5 @@
 package com.d2.pcu.fragments.notification;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,14 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentNotificationBinding;
 import com.d2.pcu.fragments.BaseFragment;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
-import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.utils.Constants;
 
 public class NotificationFragment extends BaseFragment {
@@ -23,14 +18,12 @@ public class NotificationFragment extends BaseFragment {
     private FragmentNotificationBinding binding;
     private NotificationViewModel viewModel;
 
-    private OnBackButtonClickListener onBackButtonClickListener;
-    private OnLoadingStateChangedListener onLoadingStateChangedListener;
     private NotificationAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notification, container, false);
+        binding = FragmentNotificationBinding.inflate(inflater);
 
         return binding.getRoot();
     }
@@ -40,8 +33,8 @@ public class NotificationFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = new ViewModelProvider(getActivity()).get(NotificationViewModel.class);
-        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
-        viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
+
+        setViewModelListeners(viewModel);
 
         binding.setModel(viewModel);
 
@@ -65,17 +58,4 @@ public class NotificationFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        onBackButtonClickListener = (OnBackButtonClickListener) context;
-        onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        onBackButtonClickListener = null;
-        onLoadingStateChangedListener = null;
-    }
 }

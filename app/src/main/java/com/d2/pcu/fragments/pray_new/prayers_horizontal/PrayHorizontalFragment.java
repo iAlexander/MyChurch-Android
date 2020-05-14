@@ -1,6 +1,5 @@
 package com.d2.pcu.fragments.pray_new.prayers_horizontal;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -11,16 +10,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.d2.pcu.App;
-import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentPraysHorizontalBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.fragments.pray_new.PrayViewModel;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.services.AudioExoPlayerService;
 import com.d2.pcu.utils.Constants;
 import com.google.android.exoplayer2.ControlDispatcher;
@@ -36,7 +32,6 @@ public class PrayHorizontalFragment extends BaseFragment {
     private PrayHorizontalAdapter adapter;
     private int currentPlaying = -1;
 
-    private OnBackButtonClickListener onBackButtonClickListener;
     private MediaSessionConnector msc;
     private MediaControllerCompat.TransportControls tc;
     private SimpleExoPlayer player;
@@ -44,7 +39,7 @@ public class PrayHorizontalFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_prays_horizontal, container, false);
+        binding = FragmentPraysHorizontalBinding.inflate(inflater);
 
         return binding.getRoot();
     }
@@ -55,10 +50,12 @@ public class PrayHorizontalFragment extends BaseFragment {
 
         adapter = new PrayHorizontalAdapter();
 
-        viewModel = ViewModelProviders.of(getActivity()).get(PrayViewModel.class);
-        viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
+        viewModel = new ViewModelProvider(getActivity()).get(PrayViewModel.class);
+
+        setViewModelListeners(viewModel);
 
         binding.setModel(viewModel);
+
         binding.prayersHorizontalVp.setAdapter(adapter);
 
         if (viewModel.getSelectedType().equals(Constants.PRAY_MORNING)) {
@@ -146,18 +143,6 @@ public class PrayHorizontalFragment extends BaseFragment {
                 return false;
             }
         });
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        onBackButtonClickListener = (OnBackButtonClickListener) context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        onBackButtonClickListener = null;
     }
 
     private void checkPlayerState(int position) {

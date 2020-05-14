@@ -8,11 +8,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
@@ -20,7 +17,7 @@ import com.applandeo.materialcalendarview.utils.DateUtils;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.calendar.CalendarItem;
 import com.d2.pcu.databinding.FragmentCalendarBinding;
-import com.d2.pcu.listeners.OnLoadingStateChangedListener;
+import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.utils.DateFormatter;
 import com.google.gson.Gson;
 
@@ -29,16 +26,11 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import timber.log.Timber;
-
-public class CalendarFragment extends Fragment {
-
-    private static final String TAG = CalendarFragment.class.getSimpleName();
+public class CalendarFragment extends BaseFragment {
 
     private FragmentCalendarBinding binding;
     private CalendarViewModel viewModel;
 
-    private OnLoadingStateChangedListener onLoadingStateChangedListener;
     private OnCalendarEventItemClickListener onCalendarEventItemClickListener;
 
     private DayEventsAdapter adapter;
@@ -51,7 +43,7 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false);
+        binding = FragmentCalendarBinding.inflate(inflater);
 
         return binding.getRoot();
     }
@@ -73,9 +65,11 @@ public class CalendarFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(getActivity()).get(CalendarViewModel.class);
-        viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
+        setViewModelListeners(viewModel);
 
-        Timber.e("getAssembledItemsArray: %s\ngetEventDays: %s", viewModel.getAssembledItemsArray(), viewModel.getEventDays() );
+        binding.setModel(viewModel);
+
+
         if (viewModel.getAssembledItemsArray() == null) {
             viewModel.enableLoading();
             assembleCalendarData();
@@ -117,8 +111,6 @@ public class CalendarFragment extends Fragment {
 
             if (item.getPriority() == 0) {
                 events.add(new EventDay(calendar, R.drawable.dot_red));
-            } else {
-//                events.add(new EventDay(calendar));
             }
         }
 
@@ -129,12 +121,8 @@ public class CalendarFragment extends Fragment {
         if (lastDate != null) {
             try {
                 binding.calendarCv.setDate(lastDate);
-//                List<Calendar> single = new ArrayList<>();
-//                single.add(lastDate);
-//                binding.calendarCv.setSelectedDates(single);
                 setEvents(lastDate);
             } catch (OutOfDateRangeException e) {
-                Timber.e(e, "restore date: %s", e.getMessage());
                 setEvents(binding.calendarCv.getFirstSelectedDate());
             }
         } else {
@@ -143,13 +131,12 @@ public class CalendarFragment extends Fragment {
     }
 
     private void setEvents(Calendar source) {
-this.lastDate = source;
+        this.lastDate = source;
         Calendar calendar = Calendar.getInstance();
         calendar.set(source.get(Calendar.YEAR), source.get(Calendar.MONTH), source.get(Calendar.DATE));
 
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         DateUtils.setMidnight(calendar);
-//        this.lastDate = calendar;
         List<CalendarItem> items = viewModel.getAssembledItemsArray().get(source.getTimeInMillis());
 
         adapter.setDayEvents(items);
@@ -160,14 +147,12 @@ this.lastDate = source;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        onLoadingStateChangedListener = (OnLoadingStateChangedListener) context;
         onCalendarEventItemClickListener = (OnCalendarEventItemClickListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        onLoadingStateChangedListener = null;
         onCalendarEventItemClickListener = null;
     }
 }

@@ -8,34 +8,25 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentUserTypeBinding;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
+import com.d2.pcu.fragments.BaseFragment;
 
-public class UserTypeFragment extends Fragment {
-
-    private static final String TAG = UserTypeFragment.class.getSimpleName();
+public class UserTypeFragment extends BaseFragment {
 
     private UserTypeViewModel viewModel;
     private FragmentUserTypeBinding binding;
 
     private OnUserTypeSelected onUserTypeSelected;
-    private OnBackButtonClickListener onBackButtonClickListener;
 
     public static UserTypeFragment newInstance() {
         return new UserTypeFragment();
     }
 
-
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_type, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentUserTypeBinding.inflate(inflater);
 
         return binding.getRoot();
     }
@@ -48,9 +39,9 @@ public class UserTypeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity()).get(UserTypeViewModel.class);
+        viewModel = new ViewModelProvider(getActivity()).get(UserTypeViewModel.class);
         viewModel.setListener(onUserTypeSelected);
-        viewModel.setOnBackButtonClickListener(onBackButtonClickListener);
+        setViewModelListeners(viewModel);
 
         binding.setModel(viewModel);
     }
@@ -59,13 +50,11 @@ public class UserTypeFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onUserTypeSelected = (OnUserTypeSelected) context;
-        onBackButtonClickListener = (OnBackButtonClickListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         onUserTypeSelected = null;
-        onBackButtonClickListener = null;
     }
 }

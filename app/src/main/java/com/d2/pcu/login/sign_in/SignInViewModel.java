@@ -17,16 +17,11 @@ public class SignInViewModel extends BaseViewModel {
     private String email = "";
     private String password = "";
 
-    private OnBackButtonClickListener onBackButtonClickListener;
     private SignInOnClickListener signInOnClickListener;
     private OnLoginError onLoginError;
 
     public SignInViewModel() {
         repository = App.getInstance().getRepositoryInstance();
-    }
-
-    public void setOnBackButtonClickListener(OnBackButtonClickListener onBackButtonClickListener) {
-        this.onBackButtonClickListener = onBackButtonClickListener;
     }
 
     void setSignInOnClickListener(SignInOnClickListener signInOnClickListener) {
@@ -51,12 +46,6 @@ public class SignInViewModel extends BaseViewModel {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void onBackPressed(View view) {
-        if (onBackButtonClickListener != null) {
-            onBackButtonClickListener.onBackButtonPressed();
-        }
     }
 
     public void signIn(View view) {

@@ -37,7 +37,7 @@
                     android:layout_gravity="start"
                     android:padding="@dimen/small"
                     android:src="@drawable/ic_arrow_back_white"
-                    android:onClick="@{model::onBackButtonPressed}"/>
+                    android:onClick="@{model::onBackPressed}"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -53,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     app:srcCompat="@drawable/ic_notifications_none"
+                    android:onClick="@{model::onNotificationClick}"
                     android:padding="@dimen/default_padding"/>
 
             </androidx.appcompat.widget.Toolbar>

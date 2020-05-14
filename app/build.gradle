@@ -80,7 +80,7 @@ android {
             buildConfigField "boolean", "isAudioEnabled", "false"
             buildConfigField "boolean", "isDebugEnabled", "false"
             buildConfigField "boolean", "isMessengersEnabled", "false"
-            buildConfigField "boolean", "isNotificationEnabled", "false"
+            buildConfigField "boolean", "isNotificationEnabled", "true"
 
             manifestPlaceholders.audioServicesEnabled = "false"
         }
