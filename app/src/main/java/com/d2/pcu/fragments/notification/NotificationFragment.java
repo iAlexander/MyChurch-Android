@@ -10,14 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentNotificationBinding;
 import com.d2.pcu.fragments.BaseFragment;
-import com.d2.pcu.fragments.news.vertical.NewsVerticalAdapter;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
+import com.d2.pcu.utils.Constants;
 
 public class NotificationFragment extends BaseFragment {
 
@@ -46,8 +45,9 @@ public class NotificationFragment extends BaseFragment {
 
         binding.setModel(viewModel);
 
-        viewModel.enableLoading();
+        if (!Constants.NOTIFICATION_ENABLED) return;
 
+        viewModel.enableLoading();
         binding.swipeRefresh.setOnRefreshListener(() -> viewModel.getData());
 
         adapter = new NotificationAdapter().setOnItemClickListener(
@@ -62,6 +62,7 @@ public class NotificationFragment extends BaseFragment {
         });
 
         viewModel.getData();
+
     }
 
     @Override

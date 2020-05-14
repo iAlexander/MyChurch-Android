@@ -7,6 +7,7 @@ public class Constants {
     public static final boolean DONATE_ENABLED = BuildConfig.isDonatEnabled;
     public static final boolean AUDIO_ENABLED = BuildConfig.isAudioEnabled;
     public static final boolean MESSENGERS_ENABLED = BuildConfig.isMessengersEnabled;
+    public static final boolean NOTIFICATION_ENABLED = BuildConfig.isNotificationEnabled;
 
 
 //    public static final String BASE_URL = "http://test.cerkva.asp-win.d2.digital/";
