@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
 
         <variable
             name="model"
@@ -48,6 +49,7 @@
                 android:layout_marginEnd="@dimen/small"
                 android:padding="@dimen/default_margin"
                 android:onClick="@{model::onNotificationClick}"
+                android:visibility="@{model.shouldShowNotification ? View.VISIBLE : View.GONE}"
                 app:srcCompat="@drawable/ic_notifications_none" />
 
         </androidx.appcompat.widget.Toolbar>

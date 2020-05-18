@@ -127,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onEnterClick() {
+        App.getInstance().getNotificationHelper().syncNotification();
         Toast.makeText(this, "Вхід виконано успішно", Toast.LENGTH_LONG).show();
         saveUserState(UserState.AUTHENTICATED);
         App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.AUTHENTICATED);
@@ -140,6 +141,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onSignedUp(boolean moderating) {
+        App.getInstance().getNotificationHelper().syncNotification();
         Toast.makeText(this, "Реєстрація пройшла успішно", Toast.LENGTH_LONG).show();
         if (moderating) {
             App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.MODERATING);

@@ -6,6 +6,7 @@
     >
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="model"
             type="com.d2.pcu.login.sign_up.UserProfileViewModel" />
@@ -46,6 +47,7 @@
                 android:layout_marginEnd="@dimen/small"
                 android:padding="@dimen/small"
                 android:onClick="@{model::onNotificationClick}"
+                android:visibility="@{model.shouldShowNotification ? View.VISIBLE : View.GONE}"
                 app:srcCompat="@drawable/ic_notifications_none" />
         </LinearLayout>
 

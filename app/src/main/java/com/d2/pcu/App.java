@@ -8,6 +8,7 @@ import androidx.room.Room;
 
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.db.AppDatabase;
+import com.d2.pcu.services.NotificationHelper;
 import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.DownloadUtil;
 import com.d2.pcu.utils.exo.ExoHelper;
@@ -22,6 +23,7 @@ public class App extends Application {
     private static App instance;
     private Repository repository;
     private AppDatabase database;
+    private NotificationHelper notificationHelper;
 
     private String firebaseToken;
 
@@ -85,6 +87,14 @@ public class App extends Application {
             exoHelper = new ExoHelper(this);
         }
         return exoHelper;
+    }
+
+    public NotificationHelper getNotificationHelper(){
+        if(notificationHelper==null){
+            notificationHelper = new NotificationHelper(getRepositoryInstance());
+            notificationHelper.syncNotification();
+        }
+        return notificationHelper;
     }
 
     private class CrashReportingTree extends Timber.Tree {

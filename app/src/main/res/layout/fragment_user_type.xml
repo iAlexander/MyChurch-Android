@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="model"
             type="com.d2.pcu.login.user_type.UserTypeViewModel" />
@@ -41,8 +43,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/small"
-                android:padding="@dimen/small"
                 android:onClick="@{model::onNotificationClick}"
+                android:visibility="@{model.shouldShowNotification ? View.VISIBLE : View.GONE}"
+                android:padding="@dimen/small"
                 app:srcCompat="@drawable/ic_notifications_none" />
         </LinearLayout>
 

@@ -5,9 +5,11 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.d2.pcu.App;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.listeners.OnNotificationClickListener;
+import com.d2.pcu.services.NotificationHelper;
 
 public class BaseFragment extends Fragment {
     private OnBackButtonClickListener onBackButtonClickListener;

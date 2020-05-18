@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="newsItem"
             type="com.d2.pcu.data.model.news.NewsItem" />
@@ -47,6 +48,7 @@
                 android:layout_marginEnd="@dimen/small"
                 android:padding="@dimen/small"
                 android:onClick="@{model::onNotificationClick}"
+                android:visibility="@{model.shouldShowNotification ? View.VISIBLE : View.GONE}"
                 app:srcCompat="@drawable/ic_notifications_none" />
         </LinearLayout>
 

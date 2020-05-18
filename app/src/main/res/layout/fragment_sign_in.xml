@@ -51,6 +51,7 @@
                 android:layout_marginEnd="@dimen/small"
                 android:padding="@dimen/small"
                 android:onClick="@{model::onNotificationClick}"
+                android:visibility="@{model.shouldShowNotification ? View.VISIBLE : View.GONE}"
                 app:srcCompat="@drawable/ic_notifications_none" />
         </LinearLayout>
 

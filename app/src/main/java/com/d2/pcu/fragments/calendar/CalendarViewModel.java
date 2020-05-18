@@ -29,12 +29,7 @@ public class CalendarViewModel extends BaseViewModel {
     public CalendarViewModel() {
         repository = App.getInstance().getRepositoryInstance();
 
-        calendarItemsLiveData = Transformations.switchMap(repository.getTransport().getCalendarChannel(), new Function<List<CalendarItem>, LiveData<List<CalendarItem>>>() {
-            @Override
-            public LiveData<List<CalendarItem>> apply(List<CalendarItem> input) {
-                return new MutableLiveData<>(input);
-            }
-        });
+        calendarItemsLiveData = Transformations.switchMap(repository.getTransport().getCalendarChannel(), MutableLiveData::new);
     }
 
     void loadCalendar() {
