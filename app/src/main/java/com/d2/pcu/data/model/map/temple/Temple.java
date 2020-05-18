@@ -3,8 +3,6 @@ package com.d2.pcu.data.model.map.temple;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
-import androidx.databinding.Bindable;
-import androidx.databinding.library.baseAdapters.BR;
 
 import com.d2.pcu.data.model.BaseModel;
 import com.d2.pcu.data.model.PcuFile;
@@ -13,6 +11,7 @@ import com.d2.pcu.data.model.map.temple.diocese.DioceseType;
 import com.d2.pcu.data.model.map.temple.workers.Bishop;
 import com.d2.pcu.data.model.map.temple.workers.Presiding;
 import com.d2.pcu.data.model.map.temple.workers.Priest;
+import com.d2.pcu.utils.DateFormatter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 import com.google.maps.android.clustering.ClusterItem;
@@ -315,12 +314,28 @@ public class Temple extends BaseModel implements ClusterItem {
         return name;
     }
 
-    public String getStreetLocality(){
-        StringBuilder stringBuilder = new StringBuilder();
-        if(!TextUtils.isEmpty(street)) stringBuilder.append(street);
-        if(!TextUtils.isEmpty(street) && !TextUtils.isEmpty(locality)) stringBuilder.append(", ");
-        if(!TextUtils.isEmpty(locality)) stringBuilder.append(locality);
-        return stringBuilder.toString();
+    public String getGalaDayText() {
+        StringBuilder sb = new StringBuilder();
+        if (!TextUtils.isEmpty(sb.append(galaDayTitle))) sb.append(galaDayTitle);
+        String date = DateFormatter.getDayAndMonth(galaDay);
+        if (!TextUtils.isEmpty(date)) {
+            if (sb.length() > 0) sb.append(",\n");
+            sb.append(date);
+        }
+        return sb.toString();
     }
 
+    public String getStreetLocality() {
+        StringBuilder sb = new StringBuilder();
+        if (!TextUtils.isEmpty(locality)) sb.append(locality);
+        if (!TextUtils.isEmpty(district)) {
+            if (sb.length() > 0) sb.append(", ");
+            sb.append(district);
+        }
+        if (!TextUtils.isEmpty(street)) {
+            if (sb.length() > 0) sb.append(", ");
+            sb.append(street);
+        }
+        return sb.toString();
+    }
 }
