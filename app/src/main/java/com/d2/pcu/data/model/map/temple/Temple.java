@@ -315,14 +315,7 @@ public class Temple extends BaseModel implements ClusterItem {
     }
 
     public String getGalaDayText() {
-        StringBuilder sb = new StringBuilder();
-        if (!TextUtils.isEmpty(sb.append(galaDayTitle))) sb.append(galaDayTitle);
-        String date = DateFormatter.getDayAndMonth(galaDay);
-        if (!TextUtils.isEmpty(date)) {
-            if (sb.length() > 0) sb.append(",\n");
-            sb.append(date);
-        }
-        return sb.toString();
+        return DateFormatter.getDayAndMonth(galaDay);
     }
 
     public String getStreetLocality() {

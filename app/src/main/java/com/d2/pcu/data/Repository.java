@@ -38,6 +38,7 @@ import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
 import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
+import com.d2.pcu.fragments.cabinet.donate.pay.LiqWebViewModel;
 import com.d2.pcu.login.OnLoginError;
 import com.d2.pcu.login.sign_up.UserProfileViewModel;
 import com.d2.pcu.login.user_type.UserType;
@@ -750,6 +751,32 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 } catch (JsonSyntaxException ignore) {
                 }
 
+                if (onError != null) {
+                    if (ex instanceof HTTPException) {
+                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
+                    } else {
+                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
+                    }
+                }
+            }
+        });
+    }
+
+    public void postCheckOut(String data, String signature) {
+
+        netLoader.postLiqPay(data, signature, new OnHTTPResult() {
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+
+            }
+
+            @Override
+            public void onSuccessString(String body) {
+                channels.getPaymentChannel().postValue(body);
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
                 if (onError != null) {
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);

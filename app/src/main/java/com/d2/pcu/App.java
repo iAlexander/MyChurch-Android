@@ -43,8 +43,6 @@ public class App extends Application {
         repository = new Repository(this);
         database = Room.databaseBuilder(this, AppDatabase.class, "pcu_database").build();
 
-        Timber.plant(new Timber.DebugTree());
-
         if (Constants.AUDIO_ENABLED) {
             DownloadUtil.init(this);
         }

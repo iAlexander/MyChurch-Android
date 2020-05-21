@@ -7,8 +7,6 @@
 
         <import type="android.view.View" />
 
-        <import type="com.d2.pcu.utils.DateFormatter" />
-
         <variable
             name="temple"
             type="com.d2.pcu.data.model.map.temple.Temple" />

@@ -39,6 +39,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -529,6 +530,26 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<BoolResponse> call, Throwable t) {
+                result.onFail(t);
+            }
+        }));
+    }
+
+    void postLiqPay(String data, String signature, final OnHTTPResult result) {
+        handler.post(() -> api.postCheckOut(data, signature).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                int resCode = response.code();
+
+                if (resCode >= 200 && resCode < 300) {
+                    result.onSuccessString(response.raw().request().url().toString());
+                } else {
+                    onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, @NonNull Throwable t) {
                 result.onFail(t);
             }
         }));

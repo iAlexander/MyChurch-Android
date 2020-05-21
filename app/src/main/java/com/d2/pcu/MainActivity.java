@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements OnError,
                 break;
             }
             case R.id.donates_privat24_btn: {
-                Toast.makeText(getApplicationContext(), "Privat24 click", Toast.LENGTH_SHORT).show();
+                navController.navigate(R.id.liqWebFragment);
                 break;
             }
             case R.id.donates_portmone_btn: {

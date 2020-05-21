@@ -118,4 +118,10 @@ public class Transport {
     public SingleLiveEvent<PlayItem> getPlayItemEvent() {
         return playItemEvent;
     }
+
+    private MutableLiveData<String> paymentChannel = new MutableLiveData<>();
+
+    public MutableLiveData<String> getPaymentChannel() {
+        return paymentChannel;
+    }
 }

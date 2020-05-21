@@ -14,6 +14,8 @@ import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
 
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -119,5 +121,9 @@ public interface AppAPI {
 
     @GET("/notification/history")
     Call<NotificationHistoryResponse> getNotificationHistory(@Header("Authorization") String accessToken);
+
+    @FormUrlEncoded
+    @POST("https://www.liqpay.ua/api/3/checkout")
+    Call<ResponseBody> postCheckOut(@Field("data") String data, @Field("signature") String signature);
 
 }
