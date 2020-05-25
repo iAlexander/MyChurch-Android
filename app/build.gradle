@@ -76,7 +76,7 @@ android {
             versionNameSuffix ""
             buildConfigField "String", "API_BASE_URL", '"http://test.cerkva.asp-win.d2.digital/"'
             buildConfigField "String", "FACEBOOK_URL", '"https://www.facebook.com/Orthodox.in.Ukraine"'
-            buildConfigField "boolean", "isDonatEnabled", "false"
+            buildConfigField "boolean", "isDonatEnabled", "true"
             buildConfigField "boolean", "isAudioEnabled", "false"
             buildConfigField "boolean", "isDebugEnabled", "false"
             buildConfigField "boolean", "isMessengersEnabled", "false"

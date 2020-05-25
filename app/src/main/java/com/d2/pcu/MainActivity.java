@@ -210,24 +210,28 @@ public class MainActivity extends AppCompatActivity implements OnError,
 
         switch (serviceId) {
             case R.id.donates_monobank_btn: {
-                String url = "https://send.monobank.ua/9Y5rJTCoDD";
-                intent.setData(Uri.parse(url));
-
-                startActivity(intent);
+//                String url = "https://send.monobank.ua/9Y5rJTCoDD";
+//                intent.setData(Uri.parse(url));
+//
+//                startActivity(intent);
                 break;
             }
-            case R.id.donates_privat24_btn: {
+            case R.id.donates_liqpay_btn: {
                 navController.navigate(R.id.liqWebFragment);
                 break;
             }
-            case R.id.donates_portmone_btn: {
-                Toast.makeText(getApplicationContext(), "Portmone click", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            case R.id.donate_paypal_btn: {
-                Toast.makeText(getApplicationContext(), "PayPall click", Toast.LENGTH_SHORT).show();
-                break;
-            }
+//            case R.id.donates_privat24_btn: {
+//                navController.navigate(R.id.liqWebFragment);
+//                break;
+//            }
+//            case R.id.donates_portmone_btn: {
+//                Toast.makeText(getApplicationContext(), "Portmone click", Toast.LENGTH_SHORT).show();
+//                break;
+//            }
+//            case R.id.donate_paypal_btn: {
+//                Toast.makeText(getApplicationContext(), "PayPall click", Toast.LENGTH_SHORT).show();
+//                break;
+//            }
         }
     }
 

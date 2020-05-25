@@ -9,7 +9,9 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.d2.pcu.BuildConfig;
 import com.d2.pcu.data.model.profile.UserProfile;
+import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
+import com.d2.pcu.data.responses.OnMasterResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
@@ -19,11 +21,13 @@ import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
 import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
+import com.d2.pcu.data.responses.profile.PaymentUrlResponse;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
 import com.d2.pcu.data.serializers.news.NewsDeserializer;
 import com.d2.pcu.ui.error.HTTPCode;
 import com.d2.pcu.ui.error.HTTPException;
+import com.d2.pcu.ui.error.OnHTTPMasterResult;
 import com.d2.pcu.ui.error.OnHTTPResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -535,21 +539,21 @@ public class NetLoader implements DefaultLifecycleObserver {
         }));
     }
 
-    void postLiqPay(String data, String signature, final OnHTTPResult result) {
-        handler.post(() -> api.postCheckOut(data, signature).enqueue(new Callback<ResponseBody>() {
+    void getPayUrl(String action, String resultUrl, final OnHTTPMasterResult<BoolDataResponse<PaymentUrlResponse>> result) {
+        handler.post(() -> api.getPaymentUrl(action, resultUrl).enqueue(new Callback<BoolDataResponse<PaymentUrlResponse>>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<BoolDataResponse<PaymentUrlResponse>> call, @NonNull Response<BoolDataResponse<PaymentUrlResponse>> response) {
                 int resCode = response.code();
 
                 if (resCode >= 200 && resCode < 300) {
-                    result.onSuccessString(response.raw().request().url().toString());
+                    result.onSuccess(response.body());
                 } else {
                     onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, @NonNull Throwable t) {
+            public void onFailure(Call<BoolDataResponse<PaymentUrlResponse>> call, @NonNull Throwable t) {
                 result.onFail(t);
             }
         }));

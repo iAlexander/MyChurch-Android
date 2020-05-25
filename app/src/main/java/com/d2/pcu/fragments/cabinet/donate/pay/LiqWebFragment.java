@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.d2.pcu.databinding.FragmentLiqWebBinding;
 import com.d2.pcu.fragments.BaseFragment;
+import com.d2.pcu.listeners.InfoDialogListener;
+import com.d2.pcu.utils.Constants;
 
 import timber.log.Timber;
 
@@ -22,6 +24,7 @@ public class LiqWebFragment extends BaseFragment {
 
     private FragmentLiqWebBinding binding;
     private LiqWebViewModel viewModel;
+    private InfoDialogListener infoDialogListener;
 
 
     @Nullable
@@ -35,15 +38,14 @@ public class LiqWebFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(LiqWebViewModel.class);
+        viewModel.setInfoDialogListener(infoDialogListener);
         setViewModelListeners(viewModel);
         binding.setModel(viewModel);
 
         setupWebView();
 
         viewModel.getPaymentData().observe(getViewLifecycleOwner(), s -> {
-            Timber.d("response: %s", s);
             binding.webView.loadUrl(s);
-//            binding.webView.loadData(s, "text/html; charset=UTF-8", null);
         });
 
         viewModel.getForm();
@@ -53,13 +55,13 @@ public class LiqWebFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-//        this.listener = (OnDonatesClickListener) context;
+        infoDialogListener = (InfoDialogListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        this.listener = null;
+        infoDialogListener = null;
     }
 
     private void setupWebView() {
@@ -76,44 +78,15 @@ public class LiqWebFragment extends BaseFragment {
                 return handleUrlResult(url);
 
             }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                Timber.d("finished: %s", url);
-//                hideProgress();
-//                if (url.contains("success")) {
-//                    presenter.logComplete(url.endsWith("/success"));
-//                }
-            }
         });
     }
 
     private boolean handleUrlResult(String url) {
         Timber.d("finished: %s", url);
 
-//        if (!TextUtils.isEmpty(url)) {
-//            if (url.toLowerCase().startsWith(AuthService.HandLink.INVOICE)) {
-//                Uri uri = Uri.parse(url);
-//                Intent it = new Intent(Intent.ACTION_VIEW, uri);
-//                startActivity(it);
-//                return true;
-//            }
-//
-//            switch (url) {
-//                case AuthService.HandLink.PAYMENT_FAILED:
-//                    presenter.subscribe();
-//                    return true;
-//                case AuthService.HandLink.PAYMENT_SUCCESS:
-//                    presenter.goVacancy();
-//                    return true;
-//                case AuthService.HandLink.PAYMENT_SERVICES:
-//                case AuthService.HandLink.PAYMENT_SERVICES_MOBILE:
-//                case AuthService.HandLink.PAYMENT_SERVICES_BUSINESS:
-//                    presenter.onSuccess();
-//                    return true;
-//            }
-//        }
+        if(Constants.PAYMENT_COMPLETE.equals(url)){
+            viewModel.onCompletePayment(binding.getRoot());
+        }
         return false;
     }
 }

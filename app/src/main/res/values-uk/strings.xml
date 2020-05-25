@@ -186,4 +186,6 @@
     <string name="field_error_text">Перевірте вірність заповнення - \"%1$s\"</string>
     <string name="playback_channel_name">Playback</string>
     <string name="notifications">Повiдомлення</string>
+    <string name="thanks_for_donate">Дякуємо за благодійний внесок!</string>
+    <string name="donates_liqpay">LiqPay</string>
 </resources>

@@ -1,6 +1,11 @@
 package com.d2.pcu.utils;
 
+import androidx.annotation.StringDef;
+
 import com.d2.pcu.BuildConfig;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 public class Constants {
 
@@ -52,6 +57,20 @@ public class Constants {
     public static final String SINGLE_TRACK="singleTrack";
     public static final String ITEMS_KEY = "playlist";
     public static final String EXO_POSITION = "exo_track";
+
+
+    @StringDef({
+            PaymentAction.SUBSCRIBE, PaymentAction.DONATE, PaymentAction.PAY, PaymentAction.AUTH
+    })
+    @Retention(RetentionPolicy.CLASS)
+    public @interface PaymentAction {
+        String SUBSCRIBE="subscribe";
+        String DONATE = "paydonate";
+        String PAY = "pay";
+        String AUTH = "auth";
+    }
+
+    public static final String PAYMENT_COMPLETE = "http://pcu.com/success";
 
 
 }

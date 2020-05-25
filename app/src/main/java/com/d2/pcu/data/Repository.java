@@ -26,6 +26,7 @@ import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.NotificationList;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.model.profile.UserState;
+import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
 import com.d2.pcu.data.responses.OnMasterResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
@@ -36,14 +37,15 @@ import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
 import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
+import com.d2.pcu.data.responses.profile.PaymentUrlResponse;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
-import com.d2.pcu.fragments.cabinet.donate.pay.LiqWebViewModel;
 import com.d2.pcu.login.OnLoginError;
 import com.d2.pcu.login.sign_up.UserProfileViewModel;
 import com.d2.pcu.login.user_type.UserType;
 import com.d2.pcu.ui.error.HTTPException;
 import com.d2.pcu.ui.error.OnError;
+import com.d2.pcu.ui.error.OnHTTPMasterResult;
 import com.d2.pcu.ui.error.OnHTTPResult;
 import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.Locator;
@@ -762,17 +764,12 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
-    public void postCheckOut(String data, String signature) {
+    public void getCheckOut(String action, String resultUrl) {
 
-        netLoader.postLiqPay(data, signature, new OnHTTPResult() {
+        netLoader.getPayUrl(action, resultUrl, new OnHTTPMasterResult<BoolDataResponse<PaymentUrlResponse>>() {
             @Override
-            public void onSuccess(OnMasterResponse response) {
-
-            }
-
-            @Override
-            public void onSuccessString(String body) {
-                channels.getPaymentChannel().postValue(body);
+            public void onSuccess(BoolDataResponse<PaymentUrlResponse> response) {
+                channels.getPaymentChannel().postValue(response.getData().getUrl());
             }
 
             @Override

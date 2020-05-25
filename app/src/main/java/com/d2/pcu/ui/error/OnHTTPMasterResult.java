@@ -2,9 +2,9 @@ package com.d2.pcu.ui.error;
 
 import com.d2.pcu.data.responses.OnMasterResponse;
 
-public interface OnHTTPResult {
+public interface OnHTTPMasterResult<T extends OnMasterResponse> {
 
-    void onSuccess(OnMasterResponse response);
+    void onSuccess(T response);
 
     void onFail(Throwable ex);
 }

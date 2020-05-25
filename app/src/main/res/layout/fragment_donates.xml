@@ -91,12 +91,24 @@
             app:layout_constraintTop_toBottomOf="@id/support_body_tv">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/donates_liqpay_btn"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button"
+                android:onClick="@{model::onDonateClick}"
+                android:text="@string/donates_liqpay"
+
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/donates_monobank_btn"
                 style="@style/AppButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button"
                 android:onClick="@{model::onDonateClick}"
+                android:visibility="gone"
                 android:text="@string/donates_monobank"
 
                 android:textAllCaps="false" />
@@ -108,6 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin"
                 android:background="@drawable/bg_button"
+                android:visibility="gone"
                 android:onClick="@{model::onDonateClick}"
                 android:text="@string/donates_privat24"
 
@@ -120,6 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin"
                 android:background="@drawable/bg_button"
+                android:visibility="gone"
                 android:onClick="@{model::onDonateClick}"
                 android:text="@string/donates_portmone"
 
@@ -133,6 +147,7 @@
                 android:layout_marginTop="@dimen/default_margin"
                 android:background="@drawable/bg_button"
                 android:onClick="@{model::onDonateClick}"
+                android:visibility="gone"
                 android:text="@string/donates_paypal"
 
                 android:textAllCaps="false" />
