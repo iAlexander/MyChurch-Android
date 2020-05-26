@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentNewsHorizontalBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.fragments.news.NewsViewModel;
@@ -56,6 +57,8 @@ public class NewsHorizontalFragment extends BaseFragment {
         binding.newsHorizontalVp.setPageTransformer(new ZoomOutTransformer());
 
         binding.setModel(viewModel);
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
+                binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
     }
 
 }

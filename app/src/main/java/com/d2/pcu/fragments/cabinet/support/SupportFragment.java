@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentSupportChatsBinding;
 import com.d2.pcu.fragments.BaseFragment;
 
@@ -36,6 +37,9 @@ public class SupportFragment extends BaseFragment {
         viewModel.setOnChatClickListener(onChatClickListener);
 
         binding.setModel(viewModel);
+
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
+                binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
     }
 
     @Override

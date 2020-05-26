@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentNewsBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.fragments.news.NewsViewModel;
@@ -41,7 +42,9 @@ public class NewsFragment extends BaseFragment {
         viewModel = new ViewModelProvider(getActivity()).get(NewsViewModel.class);
         setViewModelListeners(viewModel);
         binding.setModel(viewModel);
-
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count -> {
+            binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active);
+        });
         viewModel.enableLoading();
 
         adapter = new NewsVerticalAdapter(

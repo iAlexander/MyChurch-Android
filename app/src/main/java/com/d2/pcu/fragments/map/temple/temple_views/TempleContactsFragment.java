@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 
+import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.databinding.FragmentTempleContactsBinding;
 import com.d2.pcu.fragments.BaseFragment;
@@ -69,6 +70,10 @@ public class TempleContactsFragment extends BaseFragment {
         binding.setLifecycleOwner(this);
         binding.setModel(viewModel);
         binding.setTemple(temple);
+
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
+                binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
+
         // adapter.setUrls(temple.getImageUrls());
 
 

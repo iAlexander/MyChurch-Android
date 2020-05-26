@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.d2.pcu.App;
@@ -21,8 +20,6 @@ import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.fragments.pray.OnPrayItemClickListener;
 import com.d2.pcu.fragments.pray.OnRefreshPraysListener;
 import com.d2.pcu.listeners.OnAdditionalFuncPrayersListener;
-import com.d2.pcu.listeners.OnLoadingStateChangedListener;
-import com.d2.pcu.listeners.OnNotificationClickListener;
 import com.d2.pcu.services.AudioExoPlayerService;
 import com.d2.pcu.utils.Constants;
 import com.google.android.exoplayer2.ControlDispatcher;
@@ -63,6 +60,9 @@ public class PrayVerticalFragment extends BaseFragment {
         viewModel = new ViewModelProvider(getActivity()).get(PrayViewModel.class);
         setViewModelListeners(viewModel);
         binding.setModel(viewModel);
+
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
+                binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
         viewModel.enableLoading();
 
         Intent intentS = new Intent(getContext(), AudioExoPlayerService.class);

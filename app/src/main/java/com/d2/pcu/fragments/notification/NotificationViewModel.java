@@ -23,7 +23,7 @@ public class NotificationViewModel extends BaseViewModel {
         repository = App.getInstance().getRepositoryInstance();
 
         notificationLiveData = Transformations.switchMap(
-                repository.getTransport().getNotificationChannel(), input -> {
+                repository.getNotificationLiveData(), input -> {
 
                     Collections.sort(
                             input,

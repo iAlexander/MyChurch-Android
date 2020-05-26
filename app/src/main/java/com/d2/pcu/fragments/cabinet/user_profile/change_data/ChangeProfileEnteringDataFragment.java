@@ -76,6 +76,9 @@ public class ChangeProfileEnteringDataFragment extends BaseFragment {
         viewModel.setChangeDataType(changeDataType);
 
         binding.setModel(viewModel);
+
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
+                binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
     }
 
     @Override

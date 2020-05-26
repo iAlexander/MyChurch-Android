@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentLiqWebBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.listeners.InfoDialogListener;
@@ -41,6 +42,8 @@ public class LiqWebFragment extends BaseFragment {
         viewModel.setInfoDialogListener(infoDialogListener);
         setViewModelListeners(viewModel);
         binding.setModel(viewModel);
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
+                binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
 
         setupWebView();
 

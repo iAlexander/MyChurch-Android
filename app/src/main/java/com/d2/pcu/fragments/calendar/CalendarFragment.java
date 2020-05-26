@@ -69,6 +69,9 @@ public class CalendarFragment extends BaseFragment {
 
         binding.setModel(viewModel);
 
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
+                binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
+
 
         if (viewModel.getAssembledItemsArray() == null) {
             viewModel.enableLoading();

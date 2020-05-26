@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.d2.pcu.R;
@@ -579,6 +580,10 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
+    public LiveData<List<NotificationHistoryItem>> getNotificationLiveData(){
+        return dbLoader.getNotifications();
+    }
+
     public void getNotificationHistory() {
         netLoader.getNotifications(getCredentials(Constants.ACCESS_TOKEN), new OnHTTPMasterResult<BoolDataResponse<NotificationHistory>>() {
             @Override
@@ -591,11 +596,11 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                     channels.getNotificationChannel().postValue(new ArrayList<>());
                 } else {
                     dbLoader.updateAndSaveNotificationToDb(items, isSuccess -> {
-                        if (isSuccess) {
-                            dbLoader.getNotifications(dbModel ->
-                                    channels.getNotificationChannel()
-                                            .postValue(((NotificationList) dbModel).getItems()));
-                        }
+//                        if (isSuccess) {
+//                            dbLoader.getNotifications(dbModel ->
+//                                    channels.getNotificationChannel()
+//                                            .postValue(((NotificationList) dbModel).getItems()));
+//                        }
                     });
                 }
             }
@@ -671,6 +676,14 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 }
             }
         });
+    }
+
+    public LiveData<Integer> getUnreadNotificationCount(){
+        return dbLoader.getUnreadNotificationCount();
+    }
+
+    public void saveNotificationToDb(NotificationHistoryItem item) {
+        dbLoader.saveNotification(item);
     }
 
     public void getUserProfile(String accessToken) {

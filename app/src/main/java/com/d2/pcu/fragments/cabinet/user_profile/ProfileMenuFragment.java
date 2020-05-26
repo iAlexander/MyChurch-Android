@@ -40,6 +40,9 @@ public class ProfileMenuFragment extends BaseFragment {
         viewModel.setOnEditProfileDataClickListener(onEditProfileDataClickListener);
 
         binding.setModel(viewModel);
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
+                binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
+
         setSelectorData();
 
         getDefaultSelectedFragmentName();

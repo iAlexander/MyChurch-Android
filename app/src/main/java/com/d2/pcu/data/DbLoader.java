@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 
 import com.d2.pcu.App;
 import com.d2.pcu.data.db.AppDatabase;
@@ -135,24 +136,29 @@ public class DbLoader implements DefaultLifecycleObserver {
         });
     }
 
-    void getNotifications(OnDbResult result) {
-        handler.post(() -> {
-            List<NotificationHistoryItem> items = database.notificationDao().getAllNotification();
-
-
-            NotificationList list = new NotificationList();
-            if (items != null)
-                list.setItems(items);
-            result.onSuccess(list);
-//            if (items != null) {
-//                NotificationList list = new NotificationList();
-//                list.setItems(items);
+    LiveData<List<NotificationHistoryItem>> getNotifications() {
+        return database.notificationDao().getAllNotification();
+//        handler.post(() -> {
+//            List<NotificationHistoryItem> items = database.notificationDao().getAllNotification().getValue();
 //
-//                result.onSuccess(list);
-//            } else {
-//                result.onFail();
-//            }
-        });
+//
+//            NotificationList list = new NotificationList();
+//            if (items != null)
+//                list.setItems(items);
+//            result.onSuccess(list);
+////            if (items != null) {
+////                NotificationList list = new NotificationList();
+////                list.setItems(items);
+////
+////                result.onSuccess(list);
+////            } else {
+////                result.onFail();
+////            }
+//        });
+    }
+
+    LiveData<Integer> getUnreadNotificationCount() {
+        return database.notificationDao().getUnreadCount();
     }
 
     void getNotification(int id, OnDbResult result) {
@@ -167,7 +173,7 @@ public class DbLoader implements DefaultLifecycleObserver {
         handler.post(() -> {
 
             List<NotificationHistoryItem> upItems = new ListUpdater<NotificationHistoryItem>()
-                    .updateList(database.notificationDao().getAllNotification(), items);
+                    .updateList(database.notificationDao().getAllNotification().getValue(), items);
 
             List<Long> response = database.notificationDao().insert(upItems);
             resultState.onResult(!response.isEmpty());
@@ -195,5 +201,9 @@ public class DbLoader implements DefaultLifecycleObserver {
             item.setRead(true);
             resultState.onResult(database.notificationDao().update(item) >= 1);
         });
+    }
+
+    void saveNotification(NotificationHistoryItem item){
+        handler.post(()-> database.notificationDao().insert(item));
     }
 }

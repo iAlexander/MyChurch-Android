@@ -41,6 +41,9 @@ public class CabinetFragment extends BaseFragment {
         viewModel = new ViewModelProvider(this).get(CabinetViewModel.class);
         viewModel.setListener(listener);
         setViewModelListeners(viewModel);
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count -> {
+            binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active);
+        });
 
         binding.setModel(viewModel);
     }

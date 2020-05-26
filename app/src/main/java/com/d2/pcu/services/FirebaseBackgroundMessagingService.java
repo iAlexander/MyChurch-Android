@@ -13,10 +13,12 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.LiveData;
 
 import com.d2.pcu.App;
 import com.d2.pcu.MainActivity;
 import com.d2.pcu.R;
+import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -47,7 +49,7 @@ public class FirebaseBackgroundMessagingService extends FirebaseMessagingService
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_calendar)
-                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_arrow_down))
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_news_active))
                         .setContentTitle(title)
                         .setContentText(message)
                         .setAutoCancel(true)
@@ -76,11 +78,17 @@ public class FirebaseBackgroundMessagingService extends FirebaseMessagingService
 
         if (remoteMessage.getData().size() > 0) {
             Timber.d("Message data payload: %s", remoteMessage.getData());
+            /* NotificationHistoryItem nhi = new NotificationHistoryItem();
+            nhi.setId(9);
+            nhi.setTitle("from service");
+            nhi.setText(remoteMessage.getNotification().getBody());
+            App.getInstance().getRepositoryInstance().saveNotificationToDb(nhi);*/
         }
 
         if (remoteMessage.getNotification() != null) {
+            Timber.d("notification: \n%s\n%s", remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
             createNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+
         }
     }
-
 }

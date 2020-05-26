@@ -1,5 +1,6 @@
 package com.d2.pcu.data.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -15,10 +16,13 @@ import java.util.List;
 public interface NotificationDao {
 
     @Query("SELECT * FROM notificationhistoryitem")
-    List<NotificationHistoryItem> getAllNotification();
+    LiveData<List<NotificationHistoryItem>> getAllNotification();
 
     @Query("SELECT * FROM notificationhistoryitem WHERE id = :id LIMIT 1")
     NotificationHistoryItem getNotification(int id);
+
+    @Query("SELECT count(*) FROM notificationhistoryitem WHERE read = 0")
+    LiveData<Integer> getUnreadCount();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(NotificationHistoryItem item);

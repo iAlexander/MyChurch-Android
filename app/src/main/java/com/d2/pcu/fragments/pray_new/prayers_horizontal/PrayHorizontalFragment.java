@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.d2.pcu.App;
+import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentPraysHorizontalBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.fragments.pray_new.PrayViewModel;
@@ -55,6 +56,9 @@ public class PrayHorizontalFragment extends BaseFragment {
         setViewModelListeners(viewModel);
 
         binding.setModel(viewModel);
+
+        viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
+                binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
 
         binding.prayersHorizontalVp.setAdapter(adapter);
 
