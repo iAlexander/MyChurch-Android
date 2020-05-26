@@ -3,7 +3,7 @@ package com.d2.pcu.data.responses.profile;
 import com.d2.pcu.data.responses.BoolDataResponse;
 import com.google.gson.annotations.SerializedName;
 
-public class PaymentUrlResponse extends BoolDataResponse<PaymentUrlResponse> {
+public class PaymentUrl extends BoolDataResponse<PaymentUrl> {
 
     @SerializedName("url")
     private String url;

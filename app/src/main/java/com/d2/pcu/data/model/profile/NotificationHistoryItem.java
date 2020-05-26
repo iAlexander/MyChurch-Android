@@ -5,12 +5,15 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.d2.pcu.data.db.MasterDbModel;
+import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.utils.converters.DateDataConverter;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
-public class NotificationHistoryItem {
+public class NotificationHistoryItem extends MasterDbModel {
     //{
     //        "id": 3,
     //        "title": "Поздравляем с храмовым праздником",
@@ -18,9 +21,10 @@ public class NotificationHistoryItem {
     //        "createdAt": "2020-05-12T16:54:46.3391242+03:00"
     //      }
     @PrimaryKey
-    private int id=0;
-    private String title="";
-    private boolean read=false;
+    private int id = 0;
+    private String title = "";
+    private String text = "";
+    private boolean read = false;
     @TypeConverters(DateDataConverter.class)
     private Date createdAt = new Date();
 
@@ -48,6 +52,14 @@ public class NotificationHistoryItem {
         this.title = title;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public boolean isRead() {
         return read;
     }
@@ -62,5 +74,18 @@ public class NotificationHistoryItem {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NotificationHistoryItem that = (NotificationHistoryItem) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -279,6 +279,11 @@ public class MainActivity extends AppCompatActivity implements OnError,
         navController.navigate(R.id.notificationFragment);
     }
 
+//    @Override
+//    public void onNotificationItemClick() {
+//        navController.navigate(R.id.notificationReadFragment);
+//    }
+
     @Override
     public void showInfoDialog(String msg, String btnTitle) {
         UIUtils.assembleModeratingDialog(this, msg, btnTitle).show();

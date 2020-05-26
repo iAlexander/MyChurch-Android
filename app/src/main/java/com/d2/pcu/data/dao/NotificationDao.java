@@ -17,10 +17,13 @@ public interface NotificationDao {
     @Query("SELECT * FROM notificationhistoryitem")
     List<NotificationHistoryItem> getAllNotification();
 
+    @Query("SELECT * FROM notificationhistoryitem WHERE id = :id LIMIT 1")
+    NotificationHistoryItem getNotification(int id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(NotificationHistoryItem item);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     List<Long> insert(List<NotificationHistoryItem> items);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

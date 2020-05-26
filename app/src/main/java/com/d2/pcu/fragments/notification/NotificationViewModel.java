@@ -16,6 +16,8 @@ public class NotificationViewModel extends BaseViewModel {
 
     private final Repository repository;
     private final LiveData<List<NotificationHistoryItem>> notificationLiveData;
+    private final MutableLiveData<NotificationHistoryItem> itemLiveData;
+    private int selectedItem;
 
     public NotificationViewModel() {
         repository = App.getInstance().getRepositoryInstance();
@@ -31,14 +33,21 @@ public class NotificationViewModel extends BaseViewModel {
                     return new MutableLiveData<>(input);
                 }
         );
+
+        itemLiveData = repository.getTransport().getNotificationCardChannel();
+
+        getData();
+
     }
 
     public void setSelectedItem(int selectedItem) {
 //        this.selectedItem = selectedItem;
         if (notificationLiveData.getValue() != null) {
             NotificationHistoryItem item = notificationLiveData.getValue().get(selectedItem);
-            item.setRead(true);
+            this.selectedItem = item.getId();
+            itemLiveData.postValue(item);
             repository.updateNotificationItemAsRead(item);
+            getItemData();
         }
     }
 
@@ -46,8 +55,16 @@ public class NotificationViewModel extends BaseViewModel {
         return notificationLiveData;
     }
 
+    public LiveData<NotificationHistoryItem> getNotificationItemLiveData() {
+       return itemLiveData;
+    }
+
     public void getData() {
         repository.getNotificationHistory();
+    }
+
+    public void getItemData(){
+        repository.getNotificationHistory(selectedItem);
     }
 
 }

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.d2.pcu.databinding.FragmentNotificationBinding;
 import com.d2.pcu.fragments.BaseFragment;
@@ -44,7 +46,13 @@ public class NotificationFragment extends BaseFragment {
         binding.swipeRefresh.setOnRefreshListener(() -> viewModel.getData());
 
         adapter = new NotificationAdapter().setOnItemClickListener(
-                (position) -> viewModel.setSelectedItem(position)
+                (position) -> {
+                    viewModel.setSelectedItem(position);
+                    NavDirections action = NotificationFragmentDirections
+                            .actionNotificationFragmentToNotificationReadFragment();
+
+                    NavHostFragment.findNavController(this).navigate(action);
+                }
         );
 
         binding.notificationsRv.setAdapter(adapter);
@@ -53,9 +61,6 @@ public class NotificationFragment extends BaseFragment {
             adapter.setItems(items);
             viewModel.disableLoading();
         });
-
         viewModel.getData();
-
     }
-
 }

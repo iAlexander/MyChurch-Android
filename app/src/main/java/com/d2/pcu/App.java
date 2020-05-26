@@ -41,7 +41,9 @@ public class App extends Application {
 
         instance = this;
         repository = new Repository(this);
-        database = Room.databaseBuilder(this, AppDatabase.class, "pcu_database").build();
+        database = Room.databaseBuilder(this, AppDatabase.class, "pcu_database")
+                .fallbackToDestructiveMigration()
+                .build();
 
         if (Constants.AUDIO_ENABLED) {
             DownloadUtil.init(this);

@@ -27,6 +27,7 @@ public class Transport {
     private MutableLiveData<List<Diocese>> dioceseChannel = new MutableLiveData<>();
 
     private MutableLiveData<UserProfile> userProfileChannel = new MutableLiveData<>();
+
     public MutableLiveData<List<Diocese>> getDioceseChannel() {
         return dioceseChannel;
     }
@@ -54,6 +55,8 @@ public class Transport {
     private MutableLiveData<List<NewsItem>> newsChannel = new MutableLiveData<>();
 
     private MutableLiveData<List<NotificationHistoryItem>> notificationChannel = new MutableLiveData<>();
+
+    private MutableLiveData<NotificationHistoryItem> notificationCardChannel = new MutableLiveData<>();
 
     private MutableLiveData<MoreResponse> moreChannel = new MutableLiveData<>();
 
@@ -97,6 +100,10 @@ public class Transport {
 
     public MutableLiveData<List<NotificationHistoryItem>> getNotificationChannel() {
         return notificationChannel;
+    }
+
+    public MutableLiveData<NotificationHistoryItem> getNotificationCardChannel() {
+        return notificationCardChannel;
     }
 
     public MutableLiveData<List<Pray>> getMorningServerPraysChannel() {

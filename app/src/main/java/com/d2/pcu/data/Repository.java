@@ -36,8 +36,8 @@ import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
-import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
-import com.d2.pcu.data.responses.profile.PaymentUrlResponse;
+import com.d2.pcu.data.responses.profile.NotificationHistory;
+import com.d2.pcu.data.responses.profile.PaymentUrl;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
 import com.d2.pcu.login.OnLoginError;
@@ -49,12 +49,14 @@ import com.d2.pcu.ui.error.OnHTTPMasterResult;
 import com.d2.pcu.ui.error.OnHTTPResult;
 import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.Locator;
+import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.maps.android.SphericalUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -334,17 +336,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
                 dbLoader.updateAndSaveNewsToDb(items, isSuccess -> {
                     if (isSuccess) {
-                        dbLoader.getNews(new OnDbResult() {
-                            @Override
-                            public void onSuccess(MasterDbModel dbModel) {
-                                channels.getNewsChannel().postValue(((NewsList) dbModel).getItems());
-                            }
-
-                            @Override
-                            public void onFail() {
-                                // TODO: 2020-01-13
-                            }
-                        });
+                        dbLoader.getNews(dbModel ->
+                                channels.getNewsChannel().postValue(((NewsList) dbModel).getItems()));
                     }
                 });
             }
@@ -558,7 +551,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
     public void updatePushToken(String token) {
         String auth = getCredentials(Constants.ACCESS_TOKEN);
-        if(TextUtils.isEmpty(auth)) return;
+        if (TextUtils.isEmpty(auth)) return;
         netLoader.updatePushToken(auth, token, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
@@ -587,26 +580,21 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
     }
 
     public void getNotificationHistory() {
-        netLoader.getNotifications(getCredentials(Constants.ACCESS_TOKEN), new OnHTTPResult() {
+        netLoader.getNotifications(getCredentials(Constants.ACCESS_TOKEN), new OnHTTPMasterResult<BoolDataResponse<NotificationHistory>>() {
             @Override
-            public void onSuccess(OnMasterResponse response) {
-                List<NotificationHistoryItem> items = ((NotificationHistoryResponse) response).getNotificationList();
-                if (items.isEmpty()) {
-                    channels.getNotificationChannel().postValue(items);
+            public void onSuccess(BoolDataResponse<NotificationHistory> response) {
+                List<NotificationHistoryItem> items = new ArrayList<>();
+                if (response.getData() != null) {
+                    items = response.getData().getNotificationList();
+                }
+                if (CollectionUtils.isEmpty(items)) {
+                    channels.getNotificationChannel().postValue(new ArrayList<>());
                 } else {
                     dbLoader.updateAndSaveNotificationToDb(items, isSuccess -> {
                         if (isSuccess) {
-                            dbLoader.getNotifications(new OnDbResult() {
-                                @Override
-                                public void onSuccess(MasterDbModel dbModel) {
-                                    channels.getNotificationChannel().postValue(((NotificationList) dbModel).getItems());
-                                }
-
-                                @Override
-                                public void onFail() {
-                                    Timber.w("fail db");
-                                }
-                            });
+                            dbLoader.getNotifications(dbModel ->
+                                    channels.getNotificationChannel()
+                                            .postValue(((NotificationList) dbModel).getItems()));
                         }
                     });
                 }
@@ -623,6 +611,52 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                     if (newToken != null && !newToken.isEmpty()) {
                         saveCredentials(newToken, Constants.ACCESS_TOKEN);
                         getNotificationHistory();
+                        return;
+                    }
+
+                } catch (JsonSyntaxException ignore) {
+                }
+                if (onError != null) {
+                    if (ex instanceof HTTPException) {
+                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
+                    } else {
+                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getNotificationHistory(int id) {
+        netLoader.getNotificationCard(id, getCredentials(Constants.ACCESS_TOKEN), new OnHTTPMasterResult<BoolDataResponse<NotificationHistoryItem>>() {
+            @Override
+            public void onSuccess(BoolDataResponse<NotificationHistoryItem> response) {
+                NotificationHistoryItem item = response.getData();
+
+                if (item == null) {
+                    channels.getNotificationCardChannel().postValue(null);
+                } else {
+                    dbLoader.updateAndSaveNotificationToDb(item, isSuccess -> {
+                        if (isSuccess) {
+                            dbLoader.getNotification(id, dbModel ->
+                                    channels.getNotificationCardChannel()
+                                            .postValue((NotificationHistoryItem) dbModel));
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                try {
+                    Gson gson = new Gson();
+
+                    JsonObject errorBody = gson.fromJson(ex.getMessage(), JsonObject.class);
+                    String newToken = errorBody.getAsJsonObject().get("data").getAsJsonObject().get("accessToken").getAsString();
+
+                    if (newToken != null && !newToken.isEmpty()) {
+                        saveCredentials(newToken, Constants.ACCESS_TOKEN);
+                        getNotificationHistory(id);
                         return;
                     }
 
@@ -766,9 +800,9 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
     public void getCheckOut(String action, String resultUrl) {
 
-        netLoader.getPayUrl(action, resultUrl, new OnHTTPMasterResult<BoolDataResponse<PaymentUrlResponse>>() {
+        netLoader.getPayUrl(action, resultUrl, new OnHTTPMasterResult<PaymentUrl>() {
             @Override
-            public void onSuccess(BoolDataResponse<PaymentUrlResponse> response) {
+            public void onSuccess(PaymentUrl response) {
                 channels.getPaymentChannel().postValue(response.getData().getUrl());
             }
 

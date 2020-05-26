@@ -13,8 +13,8 @@ public class ListUpdater<T> {
             diffItems.removeAll(oldItems);
 
             if (!diffItems.isEmpty()) {
-                int end = oldItems.size() - diffItems.size();
-                oldItems = oldItems.subList(0, end);
+//                int end = oldItems.size() - diffItems.size();
+//                oldItems = oldItems.subList(0, end);
                 oldItems.addAll(diffItems);
             }
             return oldItems;

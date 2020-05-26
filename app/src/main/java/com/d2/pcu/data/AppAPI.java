@@ -1,5 +1,6 @@
 package com.d2.pcu.data;
 
+import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
@@ -11,12 +12,12 @@ import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
+import com.d2.pcu.data.responses.profile.NotificationHistory;
 import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
-import com.d2.pcu.data.responses.profile.PaymentUrlResponse;
+import com.d2.pcu.data.responses.profile.PaymentUrl;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -121,9 +122,12 @@ public interface AppAPI {
     );
 
     @GET("/notification/history")
-    Call<NotificationHistoryResponse> getNotificationHistory(@Header("Authorization") String accessToken);
+    Call<BoolDataResponse<NotificationHistory>> getNotificationHistory(@Header("Authorization") String accessToken);
+
+    @GET("/notification/card/{id}")
+    Call<BoolDataResponse<NotificationHistoryItem>> getNotificationCard(@Header("Authorization") String accessToken, @Path("id") int id);
 
     @GET("/api/pay/generate-liqpay-url")
-    Call<BoolDataResponse<PaymentUrlResponse>> getPaymentUrl(@Query("actionType") String action, @Query("resultUrl") String resultUrl);
+    Call<PaymentUrl> getPaymentUrl(@Query("actionType") String action, @Query("resultUrl") String resultUrl);
 
 }

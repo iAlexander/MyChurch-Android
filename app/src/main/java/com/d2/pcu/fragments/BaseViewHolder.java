@@ -9,7 +9,7 @@ import com.d2.pcu.fragments.notification.NotificationItemViewHolder;
 
 public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
 
-    private NotificationItemViewHolder.OnItemClickListener onItemClickListener;
+    protected NotificationItemViewHolder.OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener{
         void onItemClick(int position);

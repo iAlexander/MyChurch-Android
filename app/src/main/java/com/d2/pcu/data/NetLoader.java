@@ -8,10 +8,10 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.d2.pcu.BuildConfig;
+import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
-import com.d2.pcu.data.responses.OnMasterResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
@@ -20,8 +20,8 @@ import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
-import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
-import com.d2.pcu.data.responses.profile.PaymentUrlResponse;
+import com.d2.pcu.data.responses.profile.NotificationHistory;
+import com.d2.pcu.data.responses.profile.PaymentUrl;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
 import com.d2.pcu.data.serializers.news.NewsDeserializer;
@@ -43,7 +43,6 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -416,10 +415,10 @@ public class NetLoader implements DefaultLifecycleObserver {
         }));
     }
 
-    void getNotifications(final String accessToken, final OnHTTPResult result) {
-        handler.post(() -> api.getNotificationHistory("Bearer " + accessToken).enqueue(new Callback<NotificationHistoryResponse>() {
+    void getNotifications(final String accessToken, final OnHTTPMasterResult<BoolDataResponse<NotificationHistory>> result) {
+        handler.post(() -> api.getNotificationHistory("Bearer " + accessToken).enqueue(new Callback<BoolDataResponse<NotificationHistory>>() {
             @Override
-            public void onResponse(@NonNull Call<NotificationHistoryResponse> call, Response<NotificationHistoryResponse> response) {
+            public void onResponse(@NonNull Call<BoolDataResponse<NotificationHistory>> call, Response<BoolDataResponse<NotificationHistory>> response) {
                 int resCode = response.code();
 
                 if (resCode >= 200 && resCode < 300) {
@@ -436,7 +435,33 @@ public class NetLoader implements DefaultLifecycleObserver {
             }
 
             @Override
-            public void onFailure(Call<NotificationHistoryResponse> call, @NonNull Throwable t) {
+            public void onFailure(Call<BoolDataResponse<NotificationHistory>> call, @NonNull Throwable t) {
+                result.onFail(t);
+            }
+        }));
+    }
+
+    void getNotificationCard(final int id, final String accessToken, final OnHTTPMasterResult<BoolDataResponse<NotificationHistoryItem>> result) {
+        handler.post(() -> api.getNotificationCard("Bearer " + accessToken, id).enqueue(new Callback<BoolDataResponse<NotificationHistoryItem>>() {
+            @Override
+            public void onResponse(@NonNull Call<BoolDataResponse<NotificationHistoryItem>> call, Response<BoolDataResponse<NotificationHistoryItem>> response) {
+                int resCode = response.code();
+
+                if (resCode >= 200 && resCode < 300) {
+                    result.onSuccess(response.body());
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
+                    JsonObject errorBody = gson.fromJson(response.errorBody().charStream(), type);
+                    onFailure(null, new HTTPException(errorBody.toString()));
+                } else {
+                    onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BoolDataResponse<NotificationHistoryItem>> call, @NonNull Throwable t) {
                 result.onFail(t);
             }
         }));
@@ -539,10 +564,10 @@ public class NetLoader implements DefaultLifecycleObserver {
         }));
     }
 
-    void getPayUrl(String action, String resultUrl, final OnHTTPMasterResult<BoolDataResponse<PaymentUrlResponse>> result) {
-        handler.post(() -> api.getPaymentUrl(action, resultUrl).enqueue(new Callback<BoolDataResponse<PaymentUrlResponse>>() {
+    void getPayUrl(String action, String resultUrl, final OnHTTPMasterResult<PaymentUrl> result) {
+        handler.post(() -> api.getPaymentUrl(action, resultUrl).enqueue(new Callback<PaymentUrl>() {
             @Override
-            public void onResponse(@NonNull Call<BoolDataResponse<PaymentUrlResponse>> call, @NonNull Response<BoolDataResponse<PaymentUrlResponse>> response) {
+            public void onResponse(@NonNull Call<PaymentUrl> call, @NonNull Response<PaymentUrl> response) {
                 int resCode = response.code();
 
                 if (resCode >= 200 && resCode < 300) {
@@ -553,7 +578,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             }
 
             @Override
-            public void onFailure(Call<BoolDataResponse<PaymentUrlResponse>> call, @NonNull Throwable t) {
+            public void onFailure(Call<PaymentUrl> call, @NonNull Throwable t) {
                 result.onFail(t);
             }
         }));

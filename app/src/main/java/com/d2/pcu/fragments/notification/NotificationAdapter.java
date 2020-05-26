@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.databinding.NotificationItemViewBinding;
@@ -30,7 +31,10 @@ public class NotificationAdapter extends BaseAdapter<NotificationHistoryItem, Ba
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         NotificationItemViewBinding binding = NotificationItemViewBinding.inflate(inflater);
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        binding.getRoot().setLayoutParams(lp);
         //DataBindingUtil.inflate(inflater, R.layout.news_item_vertical_view, parent, false);
+
 
         return new NotificationItemViewHolder(binding).setOnItemClickListener(onItemClickListener);
     }
