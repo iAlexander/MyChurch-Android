@@ -50,7 +50,7 @@ public class Constants {
     public static final String PRAY_EVENING = "ВЕЧІРНІ";
 
     public static final String PLAYBACK_CHANNEL_ID = "playback_channel";
-    public static final int PLAYBACK_NOTIFICATION_ID = 11212;
+    public static final int PLAYBACK_NOTIFICATION_ID = 1;
     public static final String MEDIA_SESSION_TAG = "audio_pcu";
     public static final String EXO_BUNDLE_KEY = "exo_bundle";
 

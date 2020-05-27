@@ -169,13 +169,16 @@ public class Pray extends MasterDbModel {
             return Uri.parse(file.name);
         }
 //        return Uri.parse("https://storage.googleapis.com/automotive-media/Jazz_In_Paris.mp3");
-        if (id == 2) {
-            return Uri.parse("https://storage.googleapis.com/automotive-media/Jazz_In_Paris.mp3");
-        }
-
-        if (id == 4) {
-            return Uri.parse("https://storage.googleapis.com/automotive-media/The_Messenger.mp3");
-        }
+//        if (id == 2) {
+//            return Uri.parse("https://storage.googleapis.com/automotive-media/Jazz_In_Paris.mp3");
+//        }
+//        if(id ==3){
+//            return Uri.parse("http://test.cerkva.asp-win.d2.digital/data/prayer/card/37/58/3758f0a83a8a4fd29f064ffa4c8c47b7.mp3");
+//        }
+//
+//        if (id == 4) {
+//            return Uri.parse("https://storage.googleapis.com/automotive-media/The_Messenger.mp3");
+//        }
         return new Uri.Builder().scheme("http")
                 .authority(Uri.parse(BuildConfig.API_BASE_URL).getAuthority())
                 .path(file.path).appendPath(file.name)

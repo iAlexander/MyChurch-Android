@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import com.d2.pcu.R;
+import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.DownloadUtil;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
@@ -13,8 +14,6 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-
-import static com.d2.pcu.utils.Constants.MEDIA_SESSION_TAG;
 
 public final class ExoHelper {
 
@@ -47,7 +46,7 @@ public final class ExoHelper {
     public CacheDataSourceFactory getCacheDataSourceFactory() {
         if (cacheDataSourceFactory == null) {
             DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
-                    Util.getUserAgent(exoContext, exoContext.getString(R.string.app_name)),
+                    Util.getUserAgent(exoContext, /*exoContext.getString(R.string.app_name)*/ "ExoTest"),
                     CONNECT_TIMEOUT_MILLIS, READ_TIMEOUT_MILLIS, true
             );
             DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(exoContext,
@@ -63,7 +62,7 @@ public final class ExoHelper {
 
     public MediaSessionCompat getMediaSession() {
         if (mediaSession == null)
-            mediaSession = new MediaSessionCompat(exoContext, MEDIA_SESSION_TAG);
+            mediaSession = new MediaSessionCompat(exoContext, Constants.MEDIA_SESSION_TAG);
         return mediaSession;
     }
 

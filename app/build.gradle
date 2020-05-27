@@ -112,7 +112,7 @@ ext {
 
     daggerVersion = '2.23.2'
 
-    okhttp3Version = '4.6.0'
+    okhttp3Version = '4.7.2'
 
     jodaTimeVersion = '2.10.1'
 
@@ -148,8 +148,9 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit2Version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2Version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3Version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp3Version"
 
-    implementation "com.google.okhttp:okhttp:20120626"
+//    implementation "com.google.okhttp:okhttp:20120626"
     implementation "com.google.code.gson:gson:$gsonVersion"
 
     testImplementation "junit:junit:4.13"
@@ -168,10 +169,9 @@ dependencies {
 //    implementation "com.google.maps.android:android-maps-utils:0.6.2"
     implementation "com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2"
 
-    implementation ("com.applandeo:material-calendar-view:1.7.0") {
+    implementation("com.applandeo:material-calendar-view:1.7.0") {
         exclude group: 'androidx.appcompat', module: 'appcompat'
     }
-//    implementation project(path: ":Custom-Material-Calendar-View")
 
     //Player
 //    implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
