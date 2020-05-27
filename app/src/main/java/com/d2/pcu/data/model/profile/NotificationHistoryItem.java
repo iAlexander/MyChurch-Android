@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.d2.pcu.data.db.MasterDbModel;
-import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.utils.converters.DateDataConverter;
 
 import java.util.Date;
@@ -14,12 +13,6 @@ import java.util.Objects;
 
 @Entity
 public class NotificationHistoryItem extends MasterDbModel {
-    //{
-    //        "id": 3,
-    //        "title": "Поздравляем с храмовым праздником",
-    //        "read": false,
-    //        "createdAt": "2020-05-12T16:54:46.3391242+03:00"
-    //      }
     @PrimaryKey
     private int id = 0;
     private String title = "";
@@ -87,5 +80,16 @@ public class NotificationHistoryItem extends MasterDbModel {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "NotificationHistoryItem{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", read=" + read +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

@@ -13,7 +13,6 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.LiveData;
 
 import com.d2.pcu.App;
 import com.d2.pcu.MainActivity;
@@ -21,7 +20,10 @@ import com.d2.pcu.R;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.util.Map;
 import java.util.Random;
 
 import timber.log.Timber;
@@ -77,18 +79,18 @@ public class FirebaseBackgroundMessagingService extends FirebaseMessagingService
         super.onMessageReceived(remoteMessage);
 
         if (remoteMessage.getData().size() > 0) {
-            Timber.d("Message data payload: %s", remoteMessage.getData());
-            /* NotificationHistoryItem nhi = new NotificationHistoryItem();
-            nhi.setId(9);
-            nhi.setTitle("from service");
-            nhi.setText(remoteMessage.getNotification().getBody());
-            App.getInstance().getRepositoryInstance().saveNotificationToDb(nhi);*/
+            Map<String, String> map = remoteMessage.getData();
+
+            if (map.containsKey("item")) {
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+                NotificationHistoryItem nhi = gson.fromJson(map.get("item"), NotificationHistoryItem.class);
+                App.getInstance().getRepositoryInstance().saveNotificationToDb(nhi);
+            }
         }
 
         if (remoteMessage.getNotification() != null) {
             Timber.d("notification: \n%s\n%s", remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
             createNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
-
         }
     }
 }

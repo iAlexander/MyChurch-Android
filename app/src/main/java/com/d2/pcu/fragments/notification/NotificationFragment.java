@@ -43,7 +43,10 @@ public class NotificationFragment extends BaseFragment {
         if (!Constants.NOTIFICATION_ENABLED) return;
 
         viewModel.enableLoading();
-        binding.swipeRefresh.setOnRefreshListener(() -> viewModel.getData());
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            viewModel.getData();
+            binding.swipeRefresh.setRefreshing(false);
+        });
 
         adapter = new NotificationAdapter().setOnItemClickListener(
                 (position) -> {
@@ -61,6 +64,5 @@ public class NotificationFragment extends BaseFragment {
             adapter.setItems(items);
             viewModel.disableLoading();
         });
-        viewModel.getData();
     }
 }
