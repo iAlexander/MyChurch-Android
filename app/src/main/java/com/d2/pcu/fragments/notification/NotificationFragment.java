@@ -50,7 +50,7 @@ public class NotificationFragment extends BaseFragment {
 
         adapter = new NotificationAdapter().setOnItemClickListener(
                 (position) -> {
-                    viewModel.setSelectedItem(position);
+                    viewModel.setSelectedItemId(position);
                     NavDirections action = NotificationFragmentDirections
                             .actionNotificationFragmentToNotificationReadFragment();
 

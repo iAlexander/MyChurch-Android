@@ -52,6 +52,7 @@ import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.Locator;
 import com.google.android.gms.common.util.CollectionUtils;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -469,6 +470,19 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 if (accessToken == null || accessToken.isEmpty()) {
                     if (ok) {
                         saveCredentials(email, Constants.USER_EMAIL);
+
+                        // FIXME: 5/28/20 send pushToken
+                        FirebaseInstanceId.getInstance().getInstanceId()
+                                .addOnCompleteListener(task -> {
+                                    if (!task.isSuccessful()) {
+                                        Timber.w(task.getException(), "getInstanceId failed");
+                                    } else if (task.getResult() != null) {
+                                        // Get new Instance ID token
+                                        String firebaseToken = task.getResult().getToken();
+                                        updatePushToken(firebaseToken);
+                                        Timber.d("Firebase Message Token: %s", firebaseToken);
+                                    }
+                                });
                     }
                 } else {
                     saveCredentials(email, Constants.USER_EMAIL);

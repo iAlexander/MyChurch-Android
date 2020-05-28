@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
@@ -39,7 +38,6 @@ import com.d2.pcu.ui.error.fragments.ErrorFragment;
 import com.d2.pcu.ui.utils.UIUtils;
 import com.d2.pcu.utils.Constants;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.FirebaseApp;
 
 import timber.log.Timber;
 
@@ -119,6 +117,26 @@ public class MainActivity extends AppCompatActivity implements OnError,
             navDestinations.setStartDestination(startScreen);
             navController.setGraph(navDestinations);
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private boolean handleIntent(Intent intent) {
+        Timber.d("handle intent");
+        if (intent.hasExtra(Constants.PUSH_NOTIFICATION_ID)) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constants.PUSH_NOTIFICATION_ID, intent.getIntExtra(Constants.PUSH_NOTIFICATION_ID, 0));
+            navController.navigate(R.id.notificationReadFragment, bundle);
+            return true;
+        } else if (intent.hasExtra(Constants.PUSH_NOTIFICATION)) {
+            navController.navigate(R.id.notificationFragment);
+            return true;
+        }
+        return false;
     }
 
     @Override

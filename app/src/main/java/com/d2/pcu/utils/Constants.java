@@ -58,6 +58,8 @@ public class Constants {
     public static final String ITEMS_KEY = "playlist";
     public static final String EXO_POSITION = "exo_track";
 
+    public static final String PUSH_NOTIFICATION = "pushNotification";
+    public static final String PUSH_NOTIFICATION_ID = "pushNotificationId";
 
     @StringDef({
             PaymentAction.SUBSCRIBE, PaymentAction.DONATE, PaymentAction.PAY, PaymentAction.AUTH
