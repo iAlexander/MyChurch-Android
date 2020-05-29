@@ -63,6 +63,10 @@ public class NetLoader implements DefaultLifecycleObserver {
     private Handler handler;
 
     public NetLoader() {
+        handlerThread = new HandlerThread("netLoader");
+        handlerThread.start();
+
+        handler = new Handler(handlerThread.getLooper());
     }
 
     @Override
@@ -102,10 +106,10 @@ public class NetLoader implements DefaultLifecycleObserver {
 
         api = retrofit.create(AppAPI.class);
 
-        handlerThread = new HandlerThread("netLoader");
-        handlerThread.start();
-
-        handler = new Handler(handlerThread.getLooper());
+//        handlerThread = new HandlerThread("netLoader");
+//        handlerThread.start();
+//
+//        handler = new Handler(handlerThread.getLooper());
 
         Timber.d("Created");
     }

@@ -65,8 +65,8 @@ public class PrayVerticalFragment extends BaseFragment {
                 binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
         viewModel.enableLoading();
 
-        Intent intentS = new Intent(getContext(), AudioExoPlayerService.class);
-        Util.startForegroundService(App.getInstance(), intentS);
+//        Intent intentS = new Intent(getContext(), AudioExoPlayerService.class);
+//        Util.startForegroundService(App.getInstance(), intentS);
 
         adapter = new PrayersVerticalAdapter(
                 new OnPrayItemClickListener() {

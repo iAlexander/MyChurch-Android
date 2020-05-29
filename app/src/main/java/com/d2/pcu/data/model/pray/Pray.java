@@ -4,8 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
@@ -14,6 +17,8 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import androidx.annotation.DrawableRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -148,7 +153,7 @@ public class Pray extends MasterDbModel {
         Bundle extras = new Bundle();
 
 //        Bitmap bitmap = getBitmap(context, R.drawable.ic_no_connection);
-        Bitmap bitmap = getBitmapLogo(context, R.drawable.fg_splash);
+        Bitmap bitmap = getBitmapLogo(context, R.drawable.fg_splash_player);
         extras.putParcelable(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap);
         extras.putParcelable(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, bitmap);
         return new MediaDescriptionCompat.Builder()
@@ -201,6 +206,24 @@ public class Pray extends MasterDbModel {
                 bitmap = b;
             }
         }
+        return bitmap;
+    }
+
+    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+//            drawable = (DrawableCompat.wrap(drawable)).mutate();
+//        }
+        if(drawable==null){
+            return null;
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
         return bitmap;
     }
 }

@@ -47,6 +47,8 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter;
 import com.google.android.gms.common.util.CollectionUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +76,7 @@ public class AudioExoPlayerService extends LifecycleService {
         repository.getTransport().getPlayItemEvent().observe(this, playItem -> {
             preparePlayList(playItem.isMorning(), playItem.getPosition());
         });
+
     }
 
     @Override
@@ -186,7 +189,7 @@ public class AudioExoPlayerService extends LifecycleService {
                 Constants.PLAYBACK_NOTIFICATION_ID,
                 new MediaDescriptionAdapter() {
                     @Override
-                    public String getCurrentContentTitle(Player player) {
+                    public String getCurrentContentTitle(@NotNull Player player) {
                         if (prayList.size() > player.getCurrentWindowIndex())
                             return prayList.get(player.getCurrentWindowIndex()).getTitle();
                         else return "";
@@ -194,13 +197,13 @@ public class AudioExoPlayerService extends LifecycleService {
 
                     @Nullable
                     @Override
-                    public PendingIntent createCurrentContentIntent(Player player) {
+                    public PendingIntent createCurrentContentIntent(@NotNull Player player) {
                         return null;
                     }
 
                     @Nullable
                     @Override
-                    public String getCurrentContentText(Player player) {
+                    public String getCurrentContentText(@NotNull Player player) {
                         if (prayList.size() > player.getCurrentWindowIndex())
                             return prayList.get(player.getCurrentWindowIndex()).getText();
                         else return "";
@@ -209,10 +212,12 @@ public class AudioExoPlayerService extends LifecycleService {
                     @Nullable
                     @Override
                     public Bitmap getCurrentLargeIcon(Player player, BitmapCallback callback) {
-                        return Pray.getBitmap(
+                        return Pray.getBitmapFromVectorDrawable(
                                 App.getInstance().getApplicationContext(), R.drawable.ic_news_active);
                     }
                 }, new PlayerNotificationManager.NotificationListener() {
+
+
                     @Override
                     public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
                         stopSelf();
@@ -220,14 +225,27 @@ public class AudioExoPlayerService extends LifecycleService {
 
                     @Override
                     public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
+                        if (ongoing) {
+                            startForeground(notificationId, notification);
+                        }else{
+                            stopForeground(false);
+                        }
 //                        startForeground(notificationId, notification);
                     }
                 }
         );
         playerNotificationManager.setPlayer(player);
-
+        player.addListener(new Player.EventListener() {
+            @Override
+            public void onIsPlayingChanged(boolean isPlaying) {
+                if(!isPlaying){
+                    stopForeground(false);
+                }
+            }
+        });
         mediaSession = exoHelper.getMediaSession();
         mediaSession.setActive(true);
+
 
         playerNotificationManager.setMediaSessionToken(mediaSession.getSessionToken());
 
