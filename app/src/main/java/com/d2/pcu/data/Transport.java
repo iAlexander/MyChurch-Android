@@ -131,4 +131,10 @@ public class Transport {
     public MutableLiveData<String> getPaymentChannel() {
         return paymentChannel;
     }
+
+    private MutableLiveData<String> trackTitle = new MutableLiveData<>();
+
+    public MutableLiveData<String> getTrackTitle() {
+        return trackTitle;
+    }
 }

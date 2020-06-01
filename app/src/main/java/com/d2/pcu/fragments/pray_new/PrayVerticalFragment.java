@@ -201,6 +201,8 @@ public class PrayVerticalFragment extends BaseFragment {
                 return false;
             }
         });
+        binding.tvTrackTitle.setText(null);
+        viewModel.getTrackTitle().observe(getViewLifecycleOwner(), title -> binding.tvTrackTitle.setText(title));
     }
 
     @Override

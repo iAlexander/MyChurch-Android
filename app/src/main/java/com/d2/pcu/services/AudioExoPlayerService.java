@@ -26,6 +26,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleService;
+import androidx.lifecycle.MutableLiveData;
 
 import com.d2.pcu.App;
 import com.d2.pcu.R;
@@ -64,7 +65,7 @@ public class AudioExoPlayerService extends LifecycleService {
     private MediaSessionConnector mediaSessionConnector;
     private Repository repository;
     private List<Pray> mediaList = new ArrayList<>();
-//    private IBinder exoServiceBinder = new ExoServiceBinder();
+    private MutableLiveData<String> trackTitle;
 
     @Override
     public void onCreate() {
@@ -76,6 +77,8 @@ public class AudioExoPlayerService extends LifecycleService {
         repository.getTransport().getPlayItemEvent().observe(this, playItem -> {
             preparePlayList(playItem.isMorning(), playItem.getPosition());
         });
+
+        trackTitle = repository.getTransport().getTrackTitle();
 
     }
 
@@ -161,7 +164,7 @@ public class AudioExoPlayerService extends LifecycleService {
         for (Pray pray : prayList) {
             MediaSource mediaSource = new ProgressiveMediaSource.Factory(exoHelper.getCacheDataSourceFactory(), new Mp3ExtractorsFactory())
                     .createMediaSource(pray.getUrl());
-            Timber.e("url play: %s", pray.getUrl());
+            Timber.d("url play: %s", pray.getUrl());
 
             concatenatingMediaSource.addMediaSource(mediaSource);
         }
@@ -190,9 +193,10 @@ public class AudioExoPlayerService extends LifecycleService {
                 new MediaDescriptionAdapter() {
                     @Override
                     public String getCurrentContentTitle(@NotNull Player player) {
-                        if (prayList.size() > player.getCurrentWindowIndex())
+                        if (prayList.size() > player.getCurrentWindowIndex()) {
+                            trackTitle.postValue(prayList.get(player.getCurrentWindowIndex()).getTitle());
                             return prayList.get(player.getCurrentWindowIndex()).getTitle();
-                        else return "";
+                        } else return "";
                     }
 
                     @Nullable
@@ -204,9 +208,9 @@ public class AudioExoPlayerService extends LifecycleService {
                     @Nullable
                     @Override
                     public String getCurrentContentText(@NotNull Player player) {
-                        if (prayList.size() > player.getCurrentWindowIndex())
+                        if (prayList.size() > player.getCurrentWindowIndex()) {
                             return prayList.get(player.getCurrentWindowIndex()).getText();
-                        else return "";
+                        } else return "";
                     }
 
                     @Nullable
@@ -227,7 +231,7 @@ public class AudioExoPlayerService extends LifecycleService {
                     public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
                         if (ongoing) {
                             startForeground(notificationId, notification);
-                        }else{
+                        } else {
                             stopForeground(false);
                         }
 //                        startForeground(notificationId, notification);
@@ -238,7 +242,7 @@ public class AudioExoPlayerService extends LifecycleService {
         player.addListener(new Player.EventListener() {
             @Override
             public void onIsPlayingChanged(boolean isPlaying) {
-                if(!isPlaying){
+                if (!isPlaying) {
                     stopForeground(false);
                 }
             }
@@ -258,6 +262,5 @@ public class AudioExoPlayerService extends LifecycleService {
         });
 
         mediaSessionConnector.setPlayer(player);
-//        mediaSession.setSessionActivity();
     }
 }

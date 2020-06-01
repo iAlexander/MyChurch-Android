@@ -1,6 +1,7 @@
 package com.d2.pcu.fragments.pray_new;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
@@ -15,6 +16,7 @@ public class PrayViewModel extends BaseViewModel {
 
     private LiveData<List<Pray>> morningPrays;
     private LiveData<List<Pray>> eveningPrays;
+    private MutableLiveData<String> trackTitle;
 
     int selectedItem;
     String selectedType;
@@ -24,6 +26,7 @@ public class PrayViewModel extends BaseViewModel {
 
         morningPrays = repository.getTransport().getMorningServerPraysChannel();
         eveningPrays = repository.getTransport().getEveningServerPraysChannel();
+        trackTitle = repository.getTransport().getTrackTitle();
 
         loadPrays();
     }
@@ -44,6 +47,10 @@ public class PrayViewModel extends BaseViewModel {
 
     public LiveData<List<Pray>> getEveningPrays() {
         return eveningPrays;
+    }
+
+    public MutableLiveData<String> getTrackTitle() {
+        return trackTitle;
     }
 
     public int getSelectedItem() {

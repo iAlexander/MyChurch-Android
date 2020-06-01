@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:paddingTop="@dimen/default_margin"
-    android:paddingBottom="5dp"
     android:background="@color/backgroundPlayer"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="@dimen/default_margin"
+    android:paddingBottom="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,42 +15,49 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageButton android:id="@id/exo_prev"
+        <ImageButton
+            android:id="@id/exo_prev"
             style="@style/ExoMediaButton.Previous"
-            android:tint="@color/black"/>
+            android:tint="@color/black" />
 
-        <ImageButton android:id="@id/exo_rew"
-            android:tint="@color/black"
-            style="@style/ExoMediaButton.Rewind"/>
+        <ImageButton
+            android:id="@id/exo_rew"
+            style="@style/ExoMediaButton.Rewind"
+            android:tint="@color/black" />
 
-        <ImageButton android:id="@id/exo_play"
+        <ImageButton
+            android:id="@id/exo_play"
+            style="@style/ExoMediaButton.Play"
             android:scaleX="1.2"
             android:scaleY="1.2"
-            android:tint="@color/black"
-            style="@style/ExoMediaButton.Play"/>
+            android:tint="@color/black" />
 
-        <ImageButton android:id="@id/exo_pause"
+        <ImageButton
+            android:id="@id/exo_pause"
+            style="@style/ExoMediaButton.Pause"
             android:scaleX="1.2"
             android:scaleY="1.2"
-            android:tint="@color/black"
-            style="@style/ExoMediaButton.Pause"/>
+            android:tint="@color/black" />
 
-        <ImageButton android:id="@id/exo_ffwd"
-            android:tint="@color/black"
-            style="@style/ExoMediaButton.FastForward"/>
+        <ImageButton
+            android:id="@id/exo_ffwd"
+            style="@style/ExoMediaButton.FastForward"
+            android:tint="@color/black" />
 
-        <ImageButton android:id="@id/exo_next"
-            android:tint="@color/black"
-            style="@style/ExoMediaButton.Next"/>
+        <ImageButton
+            android:id="@id/exo_next"
+            style="@style/ExoMediaButton.Next"
+            android:tint="@color/black" />
 
     </LinearLayout>
 
-    <View android:id="@id/exo_progress_placeholder"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
+    <View
+        android:id="@id/exo_progress_placeholder"
         android:layout_width="match_parent"
-        android:layout_height="26dp"/>
+        android:layout_height="26dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/default_margin" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -58,24 +65,26 @@
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin">
 
-        <TextView android:id="@id/exo_position"
+        <TextView
+            android:id="@id/exo_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/AppText.Small"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
+            android:layout_gravity="start"
             android:includeFontPadding="false"
-            tools:text="0:00"
-            android:layout_gravity="start" />
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textAppearance="@style/AppText.Small"
+            tools:text="0:00" />
 
-        <TextView android:id="@id/exo_duration"
+        <TextView
+            android:id="@id/exo_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/AppText.Small"
             android:layout_gravity="end"
+            android:includeFontPadding="false"
             android:paddingLeft="4dp"
-            tools:text="1:45"
             android:paddingRight="4dp"
-            android:includeFontPadding="false" />
+            android:textAppearance="@style/AppText.Small"
+            tools:text="1:45" />
     </FrameLayout>
 </LinearLayout>

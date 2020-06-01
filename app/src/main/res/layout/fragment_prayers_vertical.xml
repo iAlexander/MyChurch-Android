@@ -59,15 +59,43 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <com.google.android.exoplayer2.ui.PlayerControlView
-            android:id="@+id/playerControlView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:bar_height="4dp"
-            app:controller_layout_id="@layout/view_playback_control"
-            app:played_color="@color/colorAccent"
-            app:scrubber_drawable="@null"
-            tools:visibility="visible" />
+            android:layout_height="wrap_content">
+
+            <com.google.android.exoplayer2.ui.PlayerControlView
+                android:id="@+id/playerControlView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:bar_height="4dp"
+                app:controller_layout_id="@layout/view_playback_control"
+                app:played_color="@color/colorAccent"
+                app:scrubber_drawable="@null"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTrackTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textAppearance="@style/AppText.Secondary"
+                    tools:text="Title song" />
+
+                <Space
+                    android:layout_width="213dp"
+                    android:layout_gravity="bottom"
+                    android:layout_height="0dp"/>
+            </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 </layout>
