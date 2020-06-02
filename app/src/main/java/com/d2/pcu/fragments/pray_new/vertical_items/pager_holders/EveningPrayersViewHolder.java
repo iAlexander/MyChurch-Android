@@ -1,7 +1,5 @@
 package com.d2.pcu.fragments.pray_new.vertical_items.pager_holders;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.databinding.ViewPrayersBinding;
 import com.d2.pcu.fragments.pray.OnPrayItemClickListener;
@@ -33,13 +31,10 @@ public class EveningPrayersViewHolder extends PrayBaseViewHolder {
         PrayersItemAdapter adapter = new PrayersItemAdapter(Constants.PRAY_EVENING, onPrayItemClickListener);
         binding.list.setAdapter(adapter);
 
-        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (onRefreshPraysListener != null) {
-                    onRefreshPraysListener.update();
-                    binding.swipeRefresh.setRefreshing(false);
-                }
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            if (onRefreshPraysListener != null) {
+                onRefreshPraysListener.update();
+                binding.swipeRefresh.setRefreshing(false);
             }
         });
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="model"
             type="com.d2.pcu.intro.IntroViewModel" />
@@ -15,7 +15,6 @@
         android:background="@color/white"
         android:padding="@dimen/default_padding">
 
-
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/intro_viewpager"
             android:layout_width="match_parent"
@@ -23,52 +22,47 @@
             app:layout_constraintBottom_toTopOf="@id/tab_dots"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
             android:id="@+id/tab_dots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/intro_viewpager"
-            app:layout_constraintBottom_toTopOf="@id/next_btn"
+            android:layout_marginBottom="@dimen/default_margin"
+            app:dotsColor="@color/colorAccent"
             app:dotsCornerRadius="8dp"
             app:dotsSize="@dimen/small"
             app:dotsSpacing="4dp"
-            app:dotsStrokeWidth="2dp"
-            app:dotsColor="@color/colorAccent"
             app:dotsStrokeColor="@color/dark_gray"
-            android:layout_marginBottom="@dimen/default_margin"/>
+            app:dotsStrokeWidth="2dp"
+            app:layout_constraintBottom_toTopOf="@id/next_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/intro_viewpager" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/intro_skip_tv"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="146dp"
             android:layout_height="46dp"
             android:layout_marginBottom="@dimen/default_margin"
+            android:onClick="@{model::onSkipClick}"
             android:text="@string/skip_text"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/next_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{model::onSkipClick}"
-            android:textAllCaps="false"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/next_btn"
+            style="@style/AppButton"
             android:layout_width="146dp"
             android:layout_height="46dp"
+            android:onClick="@{model::onNextClick}"
             android:text="@string/next_text"
-            style="@style/AppButton"
-            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="@id/intro_skip_tv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/intro_skip_tv"
-            app:layout_constraintTop_toTopOf="@id/intro_skip_tv"
-            android:onClick="@{model::onNextClick}"/>
-
-
+            app:layout_constraintTop_toTopOf="@id/intro_skip_tv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

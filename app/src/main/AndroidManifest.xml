@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.d2.pcu"
     android:installLocation="preferExternal">
 
@@ -16,6 +17,10 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    
     <application
         android:name=".App"
         android:allowBackup="false"
@@ -23,9 +28,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
-        >
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -37,6 +42,7 @@
 
         <service
             android:name=".services.PrayerDownloadService"
+            android:enabled="${audioServicesEnabled}"
             android:exported="false">
             <!-- This is needed for Scheduler -->
             <intent-filter>
@@ -49,33 +55,40 @@
             android:name=".services.FirebaseBackgroundMessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <service
             android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
+            android:enabled="${audioServicesEnabled}"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".services.AudioExoPlayerService"
+            android:enabled="${audioServicesEnabled}" />
 
-        <activity android:name=".intro.IntroActivity"
-            android:theme="@style/AppTheme"
+        <activity
+            android:name=".intro.IntroActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            />
-
-        <activity android:name=".login.LoginActivity"
             android:theme="@style/AppTheme"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".login.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/AppTheme"
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name=".MainActivity"
             android:configChanges="locale"
-            android:theme="@style/AppTheme.Launcher"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Launcher"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -22,7 +21,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Random;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
+import timber.log.Timber;
 
 public class FirebaseBackgroundMessagingService extends FirebaseMessagingService {
 
@@ -75,7 +74,7 @@ public class FirebaseBackgroundMessagingService extends FirebaseMessagingService
         super.onMessageReceived(remoteMessage);
 
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            Timber.d("Message data payload: %s", remoteMessage.getData());
         }
 
         if (remoteMessage.getNotification() != null) {

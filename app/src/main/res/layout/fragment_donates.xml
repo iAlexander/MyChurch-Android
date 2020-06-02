@@ -1,13 +1,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.d2.pcu.fragments.cabinet.donate.DonateViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.cabinet.CabinetFragment">
@@ -27,17 +29,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
                 android:layout_marginEnd="@dimen/small"
-                android:padding="@dimen/default_margin"
                 android:onClick="@{model::onBackPressed}"
+                android:padding="@dimen/default_margin"
                 app:srcCompat="@drawable/ic_arrow_back_white" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                android:text="@string/profile_donate"
                 android:padding="@dimen/default_margin"
-                android:textAppearance="@style/TitleAppTextWhite.Bold" />
+                android:text="@string/profile_donate"
+                android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -53,105 +55,85 @@
             android:id="@+id/support_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/support_chats_toolbar"
+            android:text="@string/donates_title"
+            android:textAppearance="@style/AppText.Big.Bold"
             app:layout_constraintBottom_toTopOf="@id/support_body_tv"
-            android:textAppearance="@style/TitleAppTextBlack.Bold"
-            android:text="@string/donates_title"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/support_chats_toolbar" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/support_body_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/support_title_tv"
-            app:layout_constraintBottom_toTopOf="@id/donates_monobank_btn"
-            android:textAppearance="@style/AppText"
-            android:text="@string/donates_body_text"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
             android:gravity="center"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"/>
-
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/donates_monobank_btn"
-            style="@style/AppButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:background="@drawable/bg_button"
-            android:text="@string/donates_monobank"
-            android:textAllCaps="false"
-
-            android:onClick="@{model::onDonateClick}"
-
-            app:layout_constraintBottom_toTopOf="@id/donates_privat24_btn"
+            android:text="@string/donates_body_text"
+            android:textAppearance="@style/AppText"
+            app:layout_constraintBottom_toTopOf="@id/llPayments"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/support_chats_toolbar"
-            app:layout_constraintVertical_chainStyle="packed"/>
+            app:layout_constraintTop_toBottomOf="@id/support_title_tv" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/donates_privat24_btn"
-            style="@style/AppButton"
+        <LinearLayout
+            android:id="@+id/llPayments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
-            android:background="@drawable/bg_button"
-            android:text="@string/donates_privat24"
-            android:textAllCaps="false"
-
-            android:onClick="@{model::onDonateClick}"
-
-            app:layout_constraintBottom_toTopOf="@id/donates_portmone_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/donates_monobank_btn" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/donates_portmone_btn"
-            style="@style/AppButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
-            android:background="@drawable/bg_button"
-            android:text="@string/donates_portmone"
-            android:textAllCaps="false"
-
-            android:onClick="@{model::onDonateClick}"
-
+            android:padding="@dimen/default_margin"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/donates_privat24_btn"
-            />
+            app:layout_constraintTop_toBottomOf="@id/support_body_tv">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/donate_paypal_btn"
-            style="@style/AppButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
-            android:background="@drawable/bg_button"
-            android:text="@string/donates_paypal"
-            android:textAllCaps="false"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/donates_monobank_btn"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button"
+                android:onClick="@{model::onDonateClick}"
+                android:text="@string/donates_monobank"
 
-            android:onClick="@{model::onDonateClick}"
+                android:textAllCaps="false" />
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/donates_portmone_btn"
-            />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/donates_privat24_btn"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:background="@drawable/bg_button"
+                android:onClick="@{model::onDonateClick}"
+                android:text="@string/donates_privat24"
+
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/donates_portmone_btn"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:background="@drawable/bg_button"
+                android:onClick="@{model::onDonateClick}"
+                android:text="@string/donates_portmone"
+
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/donate_paypal_btn"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:background="@drawable/bg_button"
+                android:onClick="@{model::onDonateClick}"
+                android:text="@string/donates_paypal"
+
+                android:textAllCaps="false" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -47,7 +47,7 @@
             android:id="@+id/intro_item_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TitleAppTextBlack.Bold"
+            android:textAppearance="@style/AppText.Big.Bold"
             android:layout_marginTop="@dimen/default_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

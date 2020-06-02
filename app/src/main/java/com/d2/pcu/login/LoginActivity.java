@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity implements
         OnErrorChannelCallback, OnBackButtonClickListener,
         SignInOnClickListener, OnLoginError, InfoDialogListener {
 
-    private static final String TAG = LoginActivity.class.getSimpleName();
     private NavController navController;
 
     private UserType userType;
@@ -150,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements
         Toast.makeText(this, "Реєстрація пройшла успішно", Toast.LENGTH_LONG).show();
         if (userType == UserType.BELIEVER) {
             App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.AUTHENTICATED);
-            saveUserState(UserState.AUTHENTICATED);
+            saveUserState(UserState.SIGNED_UP);
         } else {
             App.getInstance().getRepositoryInstance().getTransport().getStateSingleEvent().setValue(UserState.MODERATING);
             saveUserState(UserState.MODERATING);

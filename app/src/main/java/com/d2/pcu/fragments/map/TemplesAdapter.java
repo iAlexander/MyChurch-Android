@@ -10,8 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.databinding.ItemMapTempleBinding;
+import com.d2.pcu.utils.Locator;
+import com.google.android.gms.common.util.CollectionUtils;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
@@ -42,6 +48,40 @@ public class TemplesAdapter extends RecyclerView.Adapter<TempleItemViewHolder> {
         this.temples.clear();
         this.temples.addAll(temples);
         notifyDataSetChanged();
+    }
+
+    public void updateDistance(LatLng location) {
+        if (CollectionUtils.isEmpty(temples) || location == null) return;
+        ArrayList<BaseTemple> temp = new ArrayList<>(temples);
+        for (BaseTemple temple : temp) {
+            temple.setDistance(SphericalUtil.computeDistanceBetween(location, temple.getLatLng()) / 1000);
+        }
+
+        Collections.sort(
+                temp,
+                (o1, o2) -> Double.compare(o1.getDistance(), o2.getDistance())
+        );
+        setTemples(temp);
+    }
+
+    public LatLngBounds getNearest(LatLng current) {
+        if (CollectionUtils.isEmpty(temples)) {
+            if (current == null)
+                return new LatLngBounds(Locator.DEFAULT_KYIV, Locator.DEFAULT_KYIV);
+            else return new LatLngBounds(current, current);
+        } else {
+            LatLngBounds bounds = new LatLngBounds(
+                    current == null ? temples.get(0).getLatLng() : current,
+                    temples.get(0).getLatLng()
+            );
+            if (temples.size() > 1) {
+                for (int i = 1; i < temples.size() && temples.get(i).getDistance() < 3; i++) {
+                    bounds = bounds.including(temples.get(i).getLatLng());
+                }
+            }
+
+            return bounds;
+        }
     }
 
     @NonNull

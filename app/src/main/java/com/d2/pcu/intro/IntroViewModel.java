@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.lifecycle.ViewModel;
 
 import com.d2.pcu.App;
+import com.d2.pcu.StartFragments;
 
 public class IntroViewModel extends ViewModel {
 
@@ -31,7 +32,7 @@ public class IntroViewModel extends ViewModel {
         }
     }
 
-    void setSelectedScreenId(int id) {
+    void setSelectedScreenId(@StartFragments int id) {
         App.getInstance().getRepositoryInstance().setSelectedStartScreenId(id);
     }
 

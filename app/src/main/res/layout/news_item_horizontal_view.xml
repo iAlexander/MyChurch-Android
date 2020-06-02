@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin"
                 android:text="@{newsItem.title}"
-                android:textAppearance="@style/TitleAppTextBlack.Bold"
+                android:textAppearance="@style/AppText.Big.Bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/news_item_cv" />
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/big"
                 android:text="@string/news_notice"
-                android:textAppearance="@style/TitleAppTextBlack.Bold"
+                android:textAppearance="@style/AppText.Big.Bold"
                 android:visibility="@{newsItem.notice == null || newsItem.notice.empty ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

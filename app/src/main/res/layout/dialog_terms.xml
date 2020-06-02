@@ -13,17 +13,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:checked="false"
-        android:buttonTint="@color/colorAccent"/>
+        android:buttonTint="@color/colorAccent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/policy_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="@string/agreement_title"
         app:layout_constraintStart_toEndOf="@id/agreement_cx"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/agreement_cx"
-        app:layout_constraintBottom_toBottomOf="@id/agreement_cx"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/apply_into_btn"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/apply_into_btn"
@@ -35,10 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/AppButton"
-        android:textAllCaps="false"
         android:enabled="false"
         android:text="@string/next_btn_text"/>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

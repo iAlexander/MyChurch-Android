@@ -37,33 +37,6 @@
         <item>Personalize information for you</item>
     </string-array>
 
-    <integer-array name="intro_icons">
-        <item>@drawable/intro_map</item>
-        <item>@drawable/intro_calendar</item>
-        <item>@drawable/intro_news</item>
-        <item>@drawable/intro_pray</item>
-        <item>@drawable/intro_profile</item>
-    </integer-array>
-
-    <integer-array name="fragments_ids">
-        <item>@id/mapFragment</item>
-        <item>@id/calendarFragment</item>
-        <item>@id/newsFragment</item>
-        <item>@id/prayFragment</item>
-        <item>@id/profileFragment</item>
-    </integer-array>
-
-    <string-array name="menu_names">
-        <item>@string/map</item>
-        <item>@string/calendar</item>
-        <item>@string/news</item>
-        <item>@string/prayers</item>
-        <item>@string/profile</item>
-    </string-array>
-
-    <string name="profile_save">Save</string>
-
-
     <!--  Errors  -->
     <string name="error_no_connection_title">Connection problem</string>
     <string name="error_no_connection_description">Check your internet connection</string>
@@ -171,6 +144,8 @@
         <item>Член парафіяльної ради</item>
     </string-array>
 
+    <string name="profile_save">Save</string>
+
         <!--  Sign in  -->
     <string name="sign_in_title">Enter to cabinet</string>
     <string name="password_title">Password</string>
@@ -214,6 +189,6 @@
 
 <!--  Errors  -->
     <string name="field_error_text">Check field - %1$s</string>
-
+    <string name="playback_channel_name">Playback</string>
 
 </resources>

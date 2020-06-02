@@ -57,6 +57,8 @@ public class ChangeProfileEnteringDataViewModel extends BaseViewModel {
     }
 
     public void onBackPressed(View view) {
+        oldValue = "";
+        newValue = "";
         if (onBackButtonClickListener != null) {
             onBackButtonClickListener.onBackButtonPressed();
         }
@@ -68,6 +70,8 @@ public class ChangeProfileEnteringDataViewModel extends BaseViewModel {
                     new UserProfileViewModel.OnRequestResult() {
                         @Override
                         public void onSuccess() {
+                            oldValue = "";
+                            newValue = "";
                             if (infoDialogListener != null) {
                                 infoDialogListener.showInfoDialog(R.string.email_was_change, R.string.understand_text);
                                 if (onBackButtonClickListener != null) {
@@ -81,6 +85,8 @@ public class ChangeProfileEnteringDataViewModel extends BaseViewModel {
                     new UserProfileViewModel.OnRequestResult() {
                         @Override
                         public void onSuccess() {
+                            oldValue = "";
+                            newValue = "";
                             if (infoDialogListener != null) {
                                 infoDialogListener.showInfoDialog(R.string.pass_was_change, R.string.understand_text);
                                 if (onBackButtonClickListener != null) {

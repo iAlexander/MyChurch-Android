@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.calendar.CalendarItem;
 import com.d2.pcu.databinding.ViewCalendarEventItemBinding;
+import com.google.android.gms.common.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,41 +18,37 @@ import java.util.Comparator;
 import java.util.List;
 
 public class DayEventsAdapter extends RecyclerView.Adapter<DayEventsViewHolder> {
-    
-    private List<CalendarItem> calendarItems;
 
+    private List<CalendarItem> calendarItems = new ArrayList<>();
     private OnEventClickListener eventClickListener;
-    
+
     DayEventsAdapter(OnEventClickListener onEventClickListener) {
         this.eventClickListener = onEventClickListener;
-        calendarItems = new ArrayList<>();
     }
-    
-    void setDayEvents(List<CalendarItem> events) {
-        Collections.sort(events, new Comparator<CalendarItem>() {
-            @Override
-            public int compare(CalendarItem o1, CalendarItem o2) {
-                return o2.getPriority() - o1.getPriority();
-            }
-        });
 
+    void setDayEvents(List<CalendarItem> events) {
         calendarItems.clear();
-        calendarItems.addAll(events);
+        if (!CollectionUtils.isEmpty(events)) {
+            Collections.sort(events, (o1, o2) -> o2.getPriority() - o1.getPriority());
+            calendarItems.addAll(events);
+        }
+
         notifyDataSetChanged();
     }
-    
+
     @NonNull
     @Override
     public DayEventsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         ViewCalendarEventItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.view_calendar_event_item, parent, false);
-        
         return new DayEventsViewHolder(binding, eventClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DayEventsViewHolder holder, int position) {
+        if (position != holder.getAdapterPosition()) return;
+        if (calendarItems.size() <= position) return;
         holder.bind(calendarItems.get(position));
     }
 

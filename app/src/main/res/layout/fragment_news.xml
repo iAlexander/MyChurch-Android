@@ -5,59 +5,47 @@
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.news.vertical.NewsFragment"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".fragments.news.vertical.NewsFragment">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/news_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/bg_app_color_gradient_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+        <LinearLayout
+            style="@style/AppToolbar"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_weight="1"
                 android:ellipsize="end"
+                android:gravity="center_vertical"
                 android:maxLines="1"
                 android:text="@string/news"
-                android:textAppearance="@style/TitleAppTextWhite.Bold" />
+                android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_notifications_none"
-                android:layout_gravity="end"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/small"
                 android:padding="@dimen/small"
-                android:layout_marginEnd="@dimen/small"/>
-
-        </androidx.appcompat.widget.Toolbar>
+                app:srcCompat="@drawable/ic_notifications_none" />
+        </LinearLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swite_refresh_l"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/news_toolbar"
-            android:clipToPadding="false"
-            android:clipChildren="false">
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
                 android:clipChildren="false"
+                android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-
     </LinearLayout>
-
 </layout>

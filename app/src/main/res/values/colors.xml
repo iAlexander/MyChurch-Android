@@ -8,6 +8,7 @@
 
     <color name="textColorPrimary">#333333</color>
     <color name="textColorSecondary">#ffffff</color>
+    <color name="textColorGrey">#666666</color>
 
 <!--  Colors  -->
     <color name="white">#FFFFFFFF</color>

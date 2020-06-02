@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
+
+import com.d2.pcu.BuildConfig;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
@@ -17,8 +19,8 @@ import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
-import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
+import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
 import com.d2.pcu.data.serializers.news.NewsDeserializer;
 import com.d2.pcu.ui.error.HTTPCode;
@@ -34,18 +36,18 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import timber.log.Timber;
 
 public class NetLoader implements DefaultLifecycleObserver {
 
@@ -70,26 +72,32 @@ public class NetLoader implements DefaultLifecycleObserver {
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
                 .create();
 
-        httpClient = new OkHttpClient.Builder()
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .addInterceptor(chain -> chain.proceed(
                         chain.request()
                                 .newBuilder()
                                 .addHeader("Content-Type", "application/json")
                                 .addHeader("Accept", "application/json")
                                 .build()))
+
                 .followRedirects(true)
                 .followSslRedirects(true)
                 .cache(null)
                 .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .build();
+                .readTimeout(60, TimeUnit.SECONDS);
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor interceptorLog = new HttpLoggingInterceptor();
+            interceptorLog.level(HttpLoggingInterceptor.Level.BODY);
+            builder.addInterceptor(interceptorLog);
+        }
+        httpClient = builder.build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
+                .baseUrl(BuildConfig.API_BASE_URL)
                 .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-
 
 
         api = retrofit.create(AppAPI.class);
@@ -112,8 +120,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             @Override
             public void onResponse(@NonNull Call<BaseTempleResponse> call, @NonNull Response<BaseTempleResponse> response) {
                 int resCode = response.code();
-
-                Log.i(TAG, "getBaseTemplesInfo -> onResponseCode: " + resCode);
+                Timber.d("getBaseTemplesInfo -> onResponseCode: %s", resCode);
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
@@ -135,7 +142,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             public void onResponse(Call<TempleResponse> call, Response<TempleResponse> response) {
                 int resCode = response.code();
 
-                Log.i(TAG, "getTempleById -> onResponseCode: " + resCode);
+                Timber.d("getTempleById -> onResponseCode: %s", resCode);
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
@@ -205,8 +212,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
                 int resCode = response.code();
 
-                Log.i(TAG, "getEventInfo -> onResponse: " + resCode);
-
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
                 } else {
@@ -216,7 +221,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<NewsResponse> call, @NonNull Throwable t) {
-                Log.i(TAG, "getEventInfo -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));
@@ -228,8 +232,6 @@ public class NetLoader implements DefaultLifecycleObserver {
             public void onResponse(@NonNull Call<PrayResponse> call, @NonNull Response<PrayResponse> response) {
                 int resCode = response.code();
 
-                Log.i(TAG, "getPrays -> onResponse: " + resCode);
-
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
                 } else {
@@ -239,7 +241,6 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<PrayResponse> call, @NonNull Throwable t) {
-                Log.i(TAG, "getPrays -> onFailure: " + t.getMessage());
                 result.onFail(t);
             }
         }));
@@ -301,9 +302,10 @@ public class NetLoader implements DefaultLifecycleObserver {
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
-                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()){
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
                     Gson gson = new Gson();
-                    Type type = new TypeToken<JsonObject>() {}.getType();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
 
                     JsonObject error = gson.fromJson(response.errorBody().charStream(), type);
                     StringBuilder stringBuilder = new StringBuilder();
@@ -348,17 +350,18 @@ public class NetLoader implements DefaultLifecycleObserver {
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
-                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()){
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
                     Gson gson = new Gson();
-                    Type type = new TypeToken<JsonObject>() {}.getType();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
 
-                     JsonObject error = gson.fromJson(response.errorBody().charStream(), type);
-                     StringBuilder stringBuilder = new StringBuilder();
-                     JsonArray errors = error.getAsJsonArray("errors");
-                     for (JsonElement object : errors) {
-                         stringBuilder.append(object.getAsJsonObject().get("message")).append("\n");
-                     }
-                     onFailure(null, new HTTPException(stringBuilder.toString()));
+                    JsonObject error = gson.fromJson(response.errorBody().charStream(), type);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    JsonArray errors = error.getAsJsonArray("errors");
+                    for (JsonElement object : errors) {
+                        stringBuilder.append(object.getAsJsonObject().get("message")).append("\n");
+                    }
+                    onFailure(null, new HTTPException(stringBuilder.toString()));
                 } else {
                     onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
                 }
@@ -382,9 +385,10 @@ public class NetLoader implements DefaultLifecycleObserver {
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
-                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()){
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
                     Gson gson = new Gson();
-                    Type type = new TypeToken<JsonObject>() {}.getType();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
 
                     JsonObject error = gson.fromJson(response.errorBody().charStream(), type);
                     StringBuilder stringBuilder = new StringBuilder();
@@ -416,9 +420,10 @@ public class NetLoader implements DefaultLifecycleObserver {
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
-                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()){
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
                     Gson gson = new Gson();
-                    Type type = new TypeToken<JsonObject>() {}.getType();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
                     JsonObject errorBody = gson.fromJson(response.errorBody().charStream(), type);
                     onFailure(null, new HTTPException(errorBody.toString()));
                 } else {
@@ -444,9 +449,10 @@ public class NetLoader implements DefaultLifecycleObserver {
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
-                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()){
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
                     Gson gson = new Gson();
-                    Type type = new TypeToken<JsonObject>() {}.getType();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
                     JsonObject errorBody = gson.fromJson(response.errorBody().charStream(), type);
                     if (errorBody.getAsJsonObject().get("data") != null) {
                         onFailure(null, new HTTPException(errorBody.toString()));
@@ -482,9 +488,10 @@ public class NetLoader implements DefaultLifecycleObserver {
 
                 if (resCode >= 200 && resCode < 300) {
                     result.onSuccess(response.body());
-                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()){
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
                     Gson gson = new Gson();
-                    Type type = new TypeToken<JsonObject>() {}.getType();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
                     JsonObject errorBody = gson.fromJson(response.errorBody().charStream(), type);
                     if (errorBody.getAsJsonObject().get("data").getAsJsonObject().get("accessToken") != null) {
                         onFailure(null, new HTTPException(errorBody.toString()));

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
@@ -14,7 +13,6 @@ import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
@@ -45,7 +43,7 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<BaseTemple> {
     protected void onBeforeClusterRendered(Cluster<BaseTemple> cluster, MarkerOptions markerOptions) {
         iconGenerator.setBackground(ContextCompat.getDrawable(context, R.drawable.map_pin_group));
 
-        iconGenerator.setTextAppearance(R.style.TitleAppTextWhite);
+        iconGenerator.setTextAppearance(R.style.AppText_Big_White);
 
         final Bitmap icon = iconGenerator.makeIcon(String.valueOf(cluster.getSize()));
 

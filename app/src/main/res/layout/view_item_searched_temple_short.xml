@@ -17,30 +17,28 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/small"
-        android:layout_marginTop="@dimen/small"
         android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/small"
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginBottom="@dimen/small"
         android:elevation="@dimen/medium"
-        android:onClick="@{holder::onItemClick}">
+        android:onClick="@{holder::onItemClick}"
+        app:cardCornerRadius="@dimen/small">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:padding="@dimen/default_padding">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/short_temple_title_tv"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{temple.name}"
-                android:textAppearance="@style/AppText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textAppearance="@style/AppText" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -49,11 +47,7 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:textAppearance="@style/AppText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/short_temple_title_tv"
-                android:visibility="gone"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:visibility="gone" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

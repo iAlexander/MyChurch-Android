@@ -1,6 +1,7 @@
 package com.d2.pcu.fragments.news.vertical;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -44,7 +45,7 @@ public class NewsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity()).get(NewsViewModel.class);
+        viewModel = new ViewModelProvider(getActivity()).get(NewsViewModel.class);
         viewModel.setOnLoadingStateChangedListener(onLoadingStateChangedListener);
 
         viewModel.enableLoading();

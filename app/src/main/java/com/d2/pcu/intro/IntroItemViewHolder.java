@@ -29,13 +29,10 @@ public class IntroItemViewHolder extends RecyclerView.ViewHolder {
 
         this.position = position;
 
-        binding.introSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (onItemSetCheckedListener != null) {
-                        onItemSetCheckedListener.onItemSetChecked(position);
-                    }
+        binding.introSwitcher.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                if (onItemSetCheckedListener != null) {
+                    onItemSetCheckedListener.onItemSetChecked(position);
                 }
             }
         });

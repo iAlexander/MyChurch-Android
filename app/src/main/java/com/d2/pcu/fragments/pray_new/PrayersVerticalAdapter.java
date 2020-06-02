@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.databinding.ViewPrayersBinding;
+import com.d2.pcu.fragments.pray.OnPlayClickListener;
 import com.d2.pcu.fragments.pray.OnPrayItemClickListener;
 import com.d2.pcu.fragments.pray.OnRefreshPraysListener;
 import com.d2.pcu.fragments.pray_new.vertical_items.pager_holders.EveningPrayersViewHolder;
@@ -27,6 +28,7 @@ public class PrayersVerticalAdapter extends RecyclerView.Adapter<PrayBaseViewHol
 
     private OnPrayItemClickListener onPrayItemClickListener;
     private OnRefreshPraysListener onRefreshPraysListener;
+    private OnPlayClickListener onPlayClickListener;
 
     private List<Integer> prayers;
 
@@ -35,7 +37,8 @@ public class PrayersVerticalAdapter extends RecyclerView.Adapter<PrayBaseViewHol
 
     PrayersVerticalAdapter(
             OnPrayItemClickListener onPrayItemClickListener,
-            OnRefreshPraysListener onRefreshPraysListener) {
+            OnRefreshPraysListener onRefreshPraysListener,
+            OnPlayClickListener onPlayClickListener) {
 
         prayers = Arrays.asList(VIEW_MORNING, VIEW_EVENING);
 
@@ -46,6 +49,7 @@ public class PrayersVerticalAdapter extends RecyclerView.Adapter<PrayBaseViewHol
 
         this.onPrayItemClickListener = onPrayItemClickListener;
         this.onRefreshPraysListener = onRefreshPraysListener;
+        this.onPlayClickListener = onPlayClickListener;
     }
 
     void setMorningPrays(List<Pray> morningPrays) {
@@ -75,7 +79,7 @@ public class PrayersVerticalAdapter extends RecyclerView.Adapter<PrayBaseViewHol
         switch (viewType) {
             case VIEW_MORNING: {
                 holder = new MorningPrayersViewHolder(
-                        binding, onPrayItemClickListener, onRefreshPraysListener
+                        binding, onPrayItemClickListener, onRefreshPraysListener, onPlayClickListener
                 );
                 break;
             }

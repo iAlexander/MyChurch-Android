@@ -1,15 +1,12 @@
 package com.d2.pcu.fragments.map;
 
 import android.app.Application;
-import android.location.Location;
-import android.util.Log;
+import android.util.DisplayMetrics;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
 
 import com.d2.pcu.App;
 import com.d2.pcu.R;
@@ -19,24 +16,19 @@ import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.utils.CustomClusterRenderer;
 import com.d2.pcu.utils.Locator;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.tasks.Task;
-import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.algo.NonHierarchicalViewBasedAlgorithm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MapViewModel extends AndroidViewModel {
-
-    private static final String TAG = MapViewModel.class.getSimpleName();
-
     private Repository repository;
 
     private MutableLiveData<LatLng> location;
@@ -54,13 +46,14 @@ public class MapViewModel extends AndroidViewModel {
     private TemplesAdapter adapter;
 
     private LiveData<Temple> templeLiveData;
+    private final Locator locator;
 
     public MapViewModel(@NonNull Application application) {
         super(application);
-        Locator locator = new Locator(getApplication().getApplicationContext());
-        location = new MutableLiveData<>(locator.getDefaultKyivLocation());
 
         repository = App.getInstance().getRepositoryInstance();
+        locator = new Locator(getApplication().getApplicationContext(), repository.getLastLocation());
+        location = locator.getCurrentLocation();
 
         templeLiveData = repository.getTransport().getTempleChannel();
 
@@ -71,28 +64,28 @@ public class MapViewModel extends AndroidViewModel {
 //                    return new MutableLiveData<>(input);
 //                });
 
-        baseTemplesLiveData.observe(repository, new Observer<List<BaseTemple>>() {
-            @Override
-            public void onChanged(List<BaseTemple> baseTemples) {
-                adapter.setTemples(baseTemples);
+        baseTemplesLiveData.observe(repository, baseTemples -> {
+            adapter.setTemples(baseTemples);
 
-                if (googleMap != null) {
-                    googleMap.animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                    baseTemples.get(0).getLatLng(), 16f
-                            )
-                    );
-                }
-
-                if (clusterManager != null) {
-                    clusterManager.clearItems();
-                    clusterManager.addItems(baseTemples);
-                }
-                disableLoading();
+            if (googleMap != null) {
+                googleMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                                baseTemples.get(0).getLatLng(), 16f
+                        )
+                );
             }
-        });
 
-        loadData();
+            if (clusterManager != null) {
+                clusterManager.clearItems();
+                clusterManager.addItems(baseTemples);
+                clusterManager.cluster();
+            }
+            disableLoading();
+        });
+        location.observe(repository, latLng -> {
+            repository.setLastLocation(latLng);
+            loadData();
+        });
     }
 
     /**
@@ -119,64 +112,56 @@ public class MapViewModel extends AndroidViewModel {
         return locationPermission;
     }
 
-    GoogleMap getGoogleMap() {
-        return googleMap;
-    }
+    void setGoogleMap(GoogleMap googleMap, DisplayMetrics metrics) {
 
-    void setGoogleMap(GoogleMap googleMap) {
+        this.googleMap = googleMap;
 
-//        if (clusterManager == null) {
-            this.googleMap = googleMap;
+        clusterManager = new ClusterManager<>(
+                getApplication().getApplicationContext(),
+                googleMap
+        );
 
-            clusterManager = new ClusterManager<>(
-                    getApplication().getApplicationContext(),
-                    googleMap
-            );
+        clusterRenderer = new CustomClusterRenderer(
+                getApplication().getApplicationContext(), googleMap, clusterManager
+        );
 
-            clusterManager.getAlgorithm().setMaxDistanceBetweenClusteredItems(150);
+        clusterManager.setAlgorithm(new NonHierarchicalViewBasedAlgorithm<BaseTemple>(
+                metrics.widthPixels, metrics.heightPixels));
+        clusterManager.setRenderer(clusterRenderer);
 
-            clusterRenderer = new CustomClusterRenderer(
-                    getApplication().getApplicationContext(), googleMap, clusterManager
-            );
+        clusterManager.setOnClusterClickListener(cluster -> {
+            LatLngBounds.Builder builder = LatLngBounds.builder();
+            for (ClusterItem item : cluster.getItems()) {
+                builder.include(item.getPosition());
+            }
+            // Get the LatLngBounds
+            final LatLngBounds bounds = builder.build();
 
-
-            clusterManager.setRenderer(clusterRenderer);
-
-            clusterManager
-                    .setOnClusterClickListener(new ClusterManager.OnClusterClickListener<BaseTemple>() {
-                        @Override
-                        public boolean onClusterClick(Cluster<BaseTemple> cluster) {
-                            googleMap
-                                    .animateCamera(
-                                            CameraUpdateFactory.newLatLngZoom(cluster.getPosition(), 9f)
-                                    );
-                            return true;
-                        }
-                    });
-
-            clusterManager
-                    .setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<BaseTemple>() {
-                        @Override
-                        public boolean onClusterItemClick(BaseTemple temple) {
-                            onMarkerStateChange(temple);
-                            getAdapter().scrollToItem(temple);
-
-                            googleMap
-                                    .animateCamera(
-                                            CameraUpdateFactory.newLatLngZoom(temple.getLatLng(), 16f)
-                                    );
-
-                            return true;
-                        }
-                    });
-
-            if (baseTemplesLiveData.getValue() != null) {
-                clusterManager.addItems(baseTemplesLiveData.getValue());
+            // Animate camera to the bounds
+            try {
+               googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            googleMap.setOnMarkerClickListener(clusterManager);
-            googleMap.setOnCameraIdleListener(clusterManager);
-//        }
+            return true;
+        });
+
+        clusterManager.setOnClusterItemClickListener(temple -> {
+            onMarkerStateChange(temple);
+            getAdapter().scrollToItem(temple);
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(temple.getLatLng(), 16f));
+            return true;
+        });
+
+        if (baseTemplesLiveData.getValue() != null) {
+            clusterManager.clearItems();
+            clusterManager.addItems(baseTemplesLiveData.getValue());
+            clusterManager.cluster();
+        }
+
+        googleMap.setOnMarkerClickListener(clusterManager);
+        googleMap.setOnCameraIdleListener(clusterManager);
     }
 
     TemplesAdapter getAdapter() {
@@ -187,10 +172,17 @@ public class MapViewModel extends AndroidViewModel {
         this.adapter = adapter;
     }
 
-    LiveData<LatLng> getLocation() {
+    LatLngBounds getBounds() {
+        LatLng latLng = location.getValue();
+        adapter.updateDistance(location.getValue());
+        return adapter.getNearest(latLng);
+    }
+
+    LiveData<LatLng> getLocationAndCalc() {
+        adapter.updateDistance(location.getValue());
         return location;
     }
-    //
+
 
     /**
      * Enable loading overlayView at main activity
@@ -261,30 +253,12 @@ public class MapViewModel extends AndroidViewModel {
      * Method which if permission granted get location service and change location liveData
      */
     void locationPermissionGranted() {
-        FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(
-                getApplication().getApplicationContext()
-        );
-
-        Task<Location> result = client.getLastLocation();
-        result.addOnSuccessListener(task -> {
-            Location resultLocation = result.getResult();
-
-            LatLng current;
-            {
-                if (resultLocation != null) {
-                    current = new LatLng(resultLocation.getLatitude(), resultLocation.getLongitude());
-                } else {
-                    current = new LatLng(50.4902564, 30.481516);
-                }
-            }
-
-            location.setValue(current);
-        });
-
+        location = locator.getCurrentLocationUpdate();
         locationPermission.setValue(true);
     }
 
     void locationPermissionDenied() {
+        location.setValue(location.getValue());
         locationPermission.setValue(false);
     }
 
@@ -315,4 +289,5 @@ public class MapViewModel extends AndroidViewModel {
 
         lastClusterMarker = temple;
     }
+
 }

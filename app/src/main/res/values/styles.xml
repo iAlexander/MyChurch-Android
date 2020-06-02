@@ -13,66 +13,58 @@
 
     </style>
 
-<!--    <style name="AppTheme.NoActionBar">-->
-<!--        <item name="windowActionBar">false</item>-->
-<!--        <item name="windowNoTitle">true</item>-->
-<!--    </style>-->
+    <!--    <style name="AppTheme.NoActionBar">-->
+    <!--        <item name="windowActionBar">false</item>-->
+    <!--        <item name="windowNoTitle">true</item>-->
+    <!--    </style>-->
 
-    <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+    <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowContentTransitions">true</item>
+
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowBackground">@drawable/fg_splash</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textSize">@dimen/textSizeLarge</item>
         <item name="android:background">@drawable/bg_button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="AppButton.Map">
+        <item name="android:textSize">@dimen/textSizeSmall</item>
     </style>
 
     <style name="NumberPickerStyle">
         <item name="colorControlNormal">@color/colorAccent</item>
     </style>
 
-    <style name="toolbarStyle">
+    <style name="AppToolbar" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:background">@drawable/bg_app_color_gradient_blue</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="AppToolbarFat" parent="AppToolbar">
+        <item name="android:layout_height">@dimen/fat_toolbar</item>
     </style>
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="textAllCaps">false</item>
+        <item name="textAllCaps">true</item>
         <item name="android:textColor">@color/textColorPrimary</item>
-    </style>
-
-    <style name="TitleAppTextBlack" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
-    </style>
-
-    <style name="TitleAppTextWhite" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/textColorSecondary</item>
-    </style>
-
-    <style name="TitleAppTextBlack.Bold.MapItem">
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="TitleAppTextBlack.Bold">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TitleAppTextWhite.Bold">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="LoginEditTextStyle">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AppText" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/textSizeLarge</item>
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
@@ -80,8 +72,48 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="AppText.Title">
+        <item name="android:textSize">@dimen/textSizeTitle</item>
+    </style>
+
+    <style name="AppText.Big">
+        <item name="android:textSize">@dimen/textSizeBig</item>
+    </style>
+
+    <style name="AppText.Large">
+        <item name="android:textSize">@dimen/textSizeLarge</item>
+    </style>
+
+    <style name="AppText.General">
+        <item name="android:textSize">@dimen/textSizeGeneral</item>
+    </style>
+
+    <style name="AppText.Secondary">
+        <item name="android:textSize">@dimen/textSizeSecondary</item>
+    </style>
+
     <style name="AppText.Small">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/textSizeSmall</item>
+    </style>
+
+    <style name="AppText.Small.White">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="AppText.Small.Grey">
+        <item name="android:textColor">@color/textColorGrey</item>
+    </style>
+
+    <style name="AppText.Big.White">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="AppText.Big.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppText.Big.White.Bold">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AppText.Small.Green">
@@ -99,4 +131,18 @@
     <style name="AppText.Small.AccentColor.Bold">
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="AppText.General.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppText.Title.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppText.Large.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
 </resources>

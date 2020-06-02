@@ -2,6 +2,7 @@ package com.d2.pcu.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import com.d2.pcu.R;
+import com.d2.pcu.StartFragments;
 import com.d2.pcu.data.db.MasterDbModel;
 import com.d2.pcu.data.db.OnDbResult;
 import com.d2.pcu.data.db.OnDbResultState;
@@ -26,12 +29,11 @@ import com.d2.pcu.data.responses.OnMasterResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
-import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
-import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
+import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
 import com.d2.pcu.login.OnLoginError;
 import com.d2.pcu.login.sign_up.UserProfileViewModel;
@@ -40,28 +42,25 @@ import com.d2.pcu.ui.error.HTTPException;
 import com.d2.pcu.ui.error.OnError;
 import com.d2.pcu.ui.error.OnHTTPResult;
 import com.d2.pcu.utils.Constants;
-import com.d2.pcu.utils.DistanceCalculator;
+import com.d2.pcu.utils.Locator;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.google.maps.android.SphericalUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class Repository implements LifecycleObserver, LifecycleOwner {
 
     private static final String TAG = Repository.class.getSimpleName();
 
     private LifecycleRegistry lifecycleRegistry;
-
+    private Gson gson;
     private NetLoader netLoader;
     private DbLoader dbLoader;
     private Transport channels;
@@ -137,12 +136,12 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         sharedPreferences.edit().putBoolean(Constants.STATE_ON_BOARDING, state).apply();
     }
 
-    public void setSelectedStartScreenId(int id) {
+    public void setSelectedStartScreenId(@StartFragments int id) {
         sharedPreferences.edit().putInt(Constants.START_SCREEN_ID, id).apply();
     }
 
     public int getSelectedStartScreenId() {
-        return sharedPreferences.getInt(Constants.START_SCREEN_ID, -1);
+        return sharedPreferences.getInt(Constants.START_SCREEN_ID, R.id.resource_unset);
     }
 
     public void saveAgreementApprove(boolean isApply) {
@@ -181,18 +180,38 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         return UserState.fromString(sharedPreferences.getString("isAuth", ""));
     }
 
+    public void setLastLocation(LatLng location) {
+        if (location == null) {
+            sharedPreferences.edit().remove(Constants.LAST_LOCATION).apply();
+        } else {
+            sharedPreferences.edit().putString(Constants.LAST_LOCATION, getGson().toJson(location)).apply();
+        }
+    }
+
+    public LatLng getLastLocation() {
+        LatLng latLng = Locator.DEFAULT_KYIV;
+        String json = sharedPreferences.getString(Constants.LAST_LOCATION, "");
+        if (!TextUtils.isEmpty(json)) {
+            try {
+                latLng = getGson().fromJson(json, LatLng.class);
+            } catch (Exception e) {
+                Timber.e(e, "parse json from sp: %s", e.getMessage());
+            }
+        }
+        return latLng;
+    }
+
     public void getShortTemplesInfo() {
         netLoader.getShortTemplesInfo(new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getShortTemplesInfo -> onSuccess ");
                 channels.getBaseTemplesChannel().postValue(((ShortTemplesInfoResponse) response).getData().getList());
             }
 
             @Override
             public void onFail(Throwable ex) {
+                Timber.e(ex, "getShortTemplesInfo: %s", ex.getMessage());
                 if (onError != null) {
-                    Log.i(TAG, "getShortTemplesInfo -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -207,23 +226,10 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getShortTemplesInfo(new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getShortTemplesInfo -> onSuccess ");
-
                 List<BaseTemple> temples = ((ShortTemplesInfoResponse) response).getData().getList();
 
                 for (BaseTemple temple : temples) {
-                    temple.setDistance(
-                            (DistanceCalculator.distance(
-                                            latLng.latitude,
-                                            temple.getLt(),
-                                            latLng.longitude,
-                                            temple.getLg(),
-                                            0.0,
-                                            0.0
-                                    )
-                                     / 1000
-                            )
-                    );
+                    temple.setDistance(SphericalUtil.computeDistanceBetween(latLng, temple.getLatLng()) / 1000);
                 }
 
                 Collections.sort(
@@ -236,8 +242,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
             @Override
             public void onFail(Throwable ex) {
+                Timber.e(ex, "getShortTemplesInfo: %s", ex.getMessage());
                 if (onError != null) {
-                    Log.i(TAG, "getShortTemplesInfo -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -252,14 +258,13 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getTempleById(id, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getTempleById -> onSuccess ");
                 channels.getTempleChannel().setValue(((TempleResponse) response).getTemple());
             }
 
             @Override
             public void onFail(Throwable ex) {
+                Timber.e(ex, "getTempleById: %s", ex.getMessage());
                 if (onError != null) {
-                    Log.i(TAG, "getTempleById -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -282,8 +287,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
             @Override
             public void onFail(Throwable ex) {
+                Timber.e(ex, "getCalendar: %s", ex.getMessage());
                 if (onError != null) {
-                    Log.i(TAG, "getCalendar -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -298,14 +303,13 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getEventInfo(id, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getEventInfo -> onSuccess ");
                 channels.getEventChannel().postValue(((EventResponse) response).getEvent());
             }
 
             @Override
             public void onFail(Throwable ex) {
+                Timber.e(ex, "getEventInfo: %s", ex.getMessage());
                 if (onError != null) {
-                    Log.i(TAG, "getEventInfo -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -320,35 +324,28 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getNews(length, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getNews -> onSuccess ");
-
                 List<NewsItem> items = ((NewsResponse) response).getNews();
 
-                dbLoader.updateAndSaveNewsToDb(items, new OnDbResultState() {
-                    @Override
-                    public void onResult(boolean isSuccess) {
-                        if (isSuccess) {
-                            dbLoader.getNews(new OnDbResult() {
-                                @Override
-                                public void onSuccess(MasterDbModel dbModel) {
-                                    channels.getNewsChannel().postValue(((NewsList) dbModel).getItems());
-                                }
+                dbLoader.updateAndSaveNewsToDb(items, isSuccess -> {
+                    if (isSuccess) {
+                        dbLoader.getNews(new OnDbResult() {
+                            @Override
+                            public void onSuccess(MasterDbModel dbModel) {
+                                channels.getNewsChannel().postValue(((NewsList) dbModel).getItems());
+                            }
 
-                                @Override
-                                public void onFail() {
-                                    // TODO: 2020-01-13
-                                }
-                            });
-                        }
+                            @Override
+                            public void onFail() {
+                                // TODO: 2020-01-13
+                            }
+                        });
                     }
                 });
-
             }
 
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "getNews -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -360,11 +357,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
     }
 
     public void updateNewsItemAsRead(NewsItem newsItem) {
-        dbLoader.updateReadNewsItem(newsItem, new OnDbResultState() {
-            @Override
-            public void onResult(boolean isSuccess) {
-                // TODO: 2020-01-13
-            }
+        dbLoader.updateReadNewsItem(newsItem, isSuccess -> {
+            // TODO: 2020-01-13
         });
     }
 
@@ -372,8 +366,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getPrays(new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getPrays -> onSuccess ");
-
                 List<Pray> prays = ((PrayResponse) response).getPrayDataWrapper().getPrays();
 
                 List<Pray> morningList = new LinkedList<>();
@@ -381,9 +373,9 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
                 for (Pray pray : prays) {
                     if (pray.getType().equals(Constants.PRAY_EVENING)) {
-                        morningList.add(pray);
-                    } else {
                         eveningList.add(pray);
+                    } else {
+                        morningList.add(pray);
                     }
                 }
 
@@ -394,7 +386,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "getPrays -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -406,11 +397,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
     }
 
     public void savePrayToDb(Pray pray) {
-        dbLoader.savePray(pray, new OnDbResultState() {
-            @Override
-            public void onResult(boolean isSuccess) {
-                // TODO: 2019-12-19
-            }
+        dbLoader.savePray(pray, isSuccess -> {
+            // TODO: 2019-12-19
         });
     }
 
@@ -425,7 +413,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
                     channels.getEveningDBPraysChannel().postValue(((PraysList) dbModel).getPrays());
                 } else {
-                    Log.e(TAG, "onSuccess: PRAYS WRONG TYPE");
+                    Timber.e("onSuccess: PRAYS WRONG TYPE");
                 }
             }
 
@@ -449,14 +437,12 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.getDioceses(new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "getDiocese -> onSuccess ");
                 channels.getDioceseChannel().postValue(((DioceseResponse) response).getDioceseDataWrapper().getDioceseList());
             }
 
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "getDiocese -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -471,8 +457,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.signIn(email, password, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "signIn -> onSuccess ");
-
                 boolean ok = ((ProfileSignUpResponse) response).isOk();
                 String accessToken = ((ProfileSignUpResponse) response).getProfileAccessTokenWrapperResponse().getAccessToken();
 
@@ -491,7 +475,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "signUp -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onLoginErrorListener.onError(ex.getMessage());
                     } else {
@@ -508,8 +491,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.signUp(userProfile, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "signUp Token -> onSuccess ");
-
                 boolean ok = ((ProfileSignUpResponse) response).isOk();
                 String accessToken = ((ProfileSignUpResponse) response).getProfileAccessTokenWrapperResponse().getAccessToken();
 
@@ -528,7 +509,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "signUp -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onLoginErrorListener.onError(ex.getMessage());
                     } else {
@@ -554,7 +534,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 if (onError != null) {
-                    Log.i(TAG, "forgotPass -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onLoginErrorListener.onError(ex.getMessage());
                     } else {
@@ -572,6 +551,10 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onSuccess(OnMasterResponse response) {
                 boolean ok = ((GetUserProfileResponse) response).isOk();
+                UserProfile up = ((GetUserProfileResponse) response).getUserProfile();
+                if (up != null && up.getChurch() != null) {
+                    setLastLocation(((GetUserProfileResponse) response).getUserProfile().getChurch().getLatLng());
+                }
                 getTransport().getUserProfileChannel().postValue(((GetUserProfileResponse) response).getUserProfile());
             }
 
@@ -594,7 +577,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 }
 
                 if (onError != null) {
-                    Log.i(TAG, "getUserProfile -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -610,8 +592,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.changeEmail(newEmail, authHeader, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "changeEmail -> onSuccess ");
-
                 boolean ok = ((BoolResponse) response).isOk();
 
                 if (ok) {
@@ -638,7 +618,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 }
 
                 if (onError != null) {
-                    Log.i(TAG, "changeEmail -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -654,14 +633,11 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         netLoader.changePassword(oldPass, newPass, authHeader, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                Log.i(TAG, "changePassword -> onSuccess ");
-
                 boolean ok = ((BoolResponse) response).isOk();
 
                 if (ok) {
                     onRequestResult.onSuccess();
                 }
-
             }
 
             @Override
@@ -683,7 +659,6 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 }
 
                 if (onError != null) {
-                    Log.i(TAG, "changePassword -> onFail !!!");
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
                     } else {
@@ -694,7 +669,14 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
-//    public void downloadFile(String url, File fileDest) {
+    public Gson getGson() {
+        if (gson == null) {
+            gson = new Gson();
+        }
+        return gson;
+    }
+
+    //    public void downloadFile(String url, File fileDest) {
 //        netLoader.downloadFileSync(url, fileDest);
 //    }
 }

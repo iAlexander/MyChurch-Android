@@ -1,6 +1,7 @@
 package com.d2.pcu.fragments.cabinet;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -38,7 +39,7 @@ public class CabinetFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(CabinetViewModel.class);
+        viewModel = new ViewModelProvider(this).get(CabinetViewModel.class);
         viewModel.setListener(listener);
 
         binding.setModel(viewModel);

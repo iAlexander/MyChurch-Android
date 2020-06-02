@@ -1,5 +1,6 @@
 package com.d2.pcu.fragments;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -20,6 +21,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoItemViewHolder> {
     public void setUrls(List<String> imageUrls) {
         this.imageUrls.clear();
         this.imageUrls.addAll(imageUrls);
+        notifyDataSetChanged();
+    }
+
+    public void setUrl(String url) {
+        this.imageUrls.clear();
+        if (!TextUtils.isEmpty(url))
+            this.imageUrls.add(url);
         notifyDataSetChanged();
     }
 

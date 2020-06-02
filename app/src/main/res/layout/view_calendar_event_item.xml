@@ -34,7 +34,7 @@
             android:id="@+id/calendar_event_title_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TitleAppTextBlack.Bold"
+            android:textAppearance="@style/AppText.Big.Bold"
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="@dimen/default_padding"

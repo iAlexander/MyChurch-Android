@@ -17,53 +17,51 @@
         android:orientation="vertical"
         tools:context=".fragments.cabinet.CabinetFragment">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/support_chats_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="84dp"
-            android:background="@drawable/bg_app_color_gradient_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+        <LinearLayout
+            style="@style/AppToolbar"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
-                android:layout_marginEnd="@dimen/small"
                 android:onClick="@{model::onBackPressed}"
                 android:padding="@dimen/default_margin"
                 app:srcCompat="@drawable/ic_arrow_back_white" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|bottom"
-                android:padding="@dimen/default_margin"
-                android:textAppearance="@style/TitleAppTextWhite.Bold"
-                android:text="@string/profile"/>
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="@string/profile"
+                android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
+                android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/small"
-                android:padding="@dimen/default_margin"
+                android:padding="@dimen/small"
                 app:srcCompat="@drawable/ic_notifications_none" />
+        </LinearLayout>
 
-        </androidx.appcompat.widget.Toolbar>
-
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
+            android:id="@+id/nScroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:paddingBottom="@dimen/default_padding">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -78,7 +76,7 @@
                     android:id="@+id/user_name_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TitleAppTextBlack"
+                    android:textAppearance="@style/AppText.Big"
                     android:backgroundTint="@color/colorPrimaryDark"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -93,7 +91,7 @@
                     android:id="@+id/user_surname_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TitleAppTextBlack"
+                    android:textAppearance="@style/AppText.Big"
                     android:backgroundTint="@color/colorPrimaryDark"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -157,7 +155,7 @@
                     android:id="@+id/user_phone_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TitleAppTextBlack"
+                    android:textAppearance="@style/AppText.Big"
                     android:backgroundTint="@color/colorPrimaryDark"
                     android:inputType="phone"
                     android:maxLength="9"
@@ -175,7 +173,7 @@
                     android:id="@+id/user_email_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TitleAppTextBlack"
+                    android:textAppearance="@style/AppText.Big"
                     android:backgroundTint="@color/colorPrimaryDark"
                     android:inputType="textEmailAddress"/>
 
@@ -263,9 +261,6 @@
 
 
             </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
+        </ScrollView>
     </LinearLayout>
-
 </layout>

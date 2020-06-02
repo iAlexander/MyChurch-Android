@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.text.Html"/>
+
+        <import type="android.text.Html" />
+
         <import type="android.view.View" />
 
         <variable
@@ -20,141 +22,144 @@
         android:orientation="vertical"
         tools:context=".LoginActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/support_chats_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="84dp"
-            android:background="@drawable/bg_app_color_gradient_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+        <LinearLayout
+            style="@style/AppToolbar"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
-                android:layout_marginEnd="@dimen/small"
                 android:onClick="@{model::onBackPressed}"
                 android:padding="@dimen/default_margin"
                 app:srcCompat="@drawable/ic_arrow_back_white" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|bottom"
-                android:padding="@dimen/default_margin"
-                android:textAppearance="@style/TitleAppTextWhite.Bold"
-                android:text="@string/profile"/>
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="@string/profile"
+                android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
+                android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/small"
-                android:padding="@dimen/default_margin"
+                android:padding="@dimen/small"
                 app:srcCompat="@drawable/ic_notifications_none" />
+        </LinearLayout>
 
-        </androidx.appcompat.widget.Toolbar>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:paddingStart="@dimen/default_margin"
-            android:paddingEnd="@dimen/default_margin">
+            android:fillViewport="true">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvText"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/big"
-                android:text="@string/sign_in_title"
-                android:textAppearance="@style/TitleAppTextBlack.Bold"
-                android:gravity="center_horizontal"/>
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/sign_in_email_title_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/big"
-                android:text="@string/email" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/big"
+                    android:gravity="center_horizontal"
+                    android:text="@string/sign_in_title"
+                    android:textAppearance="@style/AppText.Large.Bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/sign_in_email_input_l"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sign_in_email_title_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/big"
+                    android:text="@string/email" />
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/sign_in_email_et"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sign_in_email_input_l"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/sign_in_email_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:inputType="textEmailAddress"
+                        android:text="@={model.email}"
+                        android:textAppearance="@style/AppText.General" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sign_in_password_title_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/big"
+                    android:text="@string/password_title" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/sign_in_password_input_l"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:passwordToggleEnabled="true">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/sign_in_password_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:inputType="textPassword"
+                        android:text="@={model.password}"
+                        android:textAppearance="@style/AppText.General" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btnForgotPass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:onClick="@{model::forgotPass}"
+                    android:text="@{Html.fromHtml(@string/password_reminder)}"
+                    android:textAppearance="@style/AppText.Secondary"
+                    android:textColor="@color/colorAccent"
+                    tools:text="forgot" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/bApply"
+                    style="@style/AppButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin"
-                    android:inputType="textEmailAddress"
-                    android:textAppearance="@style/LoginEditTextStyle"
-                    android:backgroundTint="@color/light_gray"
-                    android:text="@={model.email}"/>
+                    android:enabled="false"
+                    android:onClick="@{model::signIn}"
+                    android:text="@string/sign_in"
+                    android:textAllCaps="false" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/sign_in_password_title_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/big"
-                android:text="@string/password_title" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/sign_in_password_input_l"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/sign_in_password_et"
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:inputType="textPassword"
-                    android:textAppearance="@style/LoginEditTextStyle"
-                    android:backgroundTint="@color/light_gray"
-                    android:text="@={model.password}"/>
+                    android:layout_marginTop="@dimen/big"
+                    android:layout_marginBottom="40dp"
+                    android:gravity="center_horizontal"
+                    android:onClick="@{model::createAcc}"
+                    android:text="@{Html.fromHtml(@string/sign_in_create_profile)}"
+                    android:textAppearance="@style/AppText.Large"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    tools:text="@string/sign_up" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorAccent"
-                android:textSize="14sp"
-                android:text="@{Html.fromHtml(@string/password_reminder)}"
-                android:layout_marginTop="@dimen/default_margin"
-                android:onClick="@{model::forgotPass}"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bApply"
-                style="@style/AppButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                android:enabled="false"
-                android:onClick="@{model::signIn}"
-                android:text="@string/sign_in"
-                android:textAllCaps="false" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorAccent"
-                android:text="@{Html.fromHtml(@string/sign_in_create_profile)}"
-                android:layout_marginTop="@dimen/big"
-                android:textSize="18sp"
-                android:gravity="center_horizontal"
-                android:onClick="@{model::createAcc}"/>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 </layout>
