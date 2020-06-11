@@ -226,12 +226,17 @@ public class UserProfileFragment extends BaseFragment {
         calendar.set(year, month, day);
         userProfile.setBirthday(calendar.getTime());
 
-        Calendar calendarAngel = Calendar.getInstance();
-        int dayA = binding.userProfileBirthdayCv.getDayOfMonth();
-        int monthA = binding.userProfileBirthdayCv.getMonth();
-        int yearA = binding.userProfileBirthdayCv.getYear();
-        calendar.set(yearA, monthA, dayA);
-        userProfile.setAngelday(calendarAngel.getTime());
+        if(binding.tazoimenstvoTitleTv.getVisibility()==View.GONE){
+            userProfile.setAngelday(null);
+        } else {
+            Calendar calendarAngel = Calendar.getInstance();
+            int dayA = binding.userProfileBirthdayCv.getDayOfMonth();
+            int monthA = binding.userProfileBirthdayCv.getMonth();
+            int yearA = binding.userProfileBirthdayCv.getYear();
+            calendar.set(yearA, monthA, dayA);
+            userProfile.setAngelday(calendarAngel.getTime());
+        }
+
 
         userProfile.setEmail(binding.userEmailEt.getEditableText().toString());
 
