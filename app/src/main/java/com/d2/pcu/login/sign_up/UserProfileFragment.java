@@ -380,18 +380,18 @@ public class UserProfileFragment extends BaseFragment {
                     viewModel.valid = false;
                     break ifBlock;
                 }
-//                if(!"Parishioner".equals(userProfile.getMember())){
-                if (userProfile.getChurch().getId() == -1) {
-                    onLoginError.onError(getRes(R.string.temple_name));
-                    viewModel.valid = false;
-                    break ifBlock;
+                if (!"Parishioner".equals(userProfile.getMember())) {
+                    if (userProfile.getChurch().getId() == -1) {
+                        onLoginError.onError(getRes(R.string.temple_name));
+                        viewModel.valid = false;
+                        break ifBlock;
+                    }
+                    if (userProfile.getDiocese().getId() == -1) {
+                        onLoginError.onError(getRes(R.string.diocese));
+                        viewModel.valid = false;
+                        break ifBlock;
+                    }
                 }
-                if (userProfile.getDiocese().getId() == -1) {
-                    onLoginError.onError(getRes(R.string.diocese));
-                    viewModel.valid = false;
-                    break ifBlock;
-                }
-//                }
 
                 viewModel.valid = true;
             }
