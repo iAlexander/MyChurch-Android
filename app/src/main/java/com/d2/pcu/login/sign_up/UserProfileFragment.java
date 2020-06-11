@@ -1,7 +1,6 @@
 package com.d2.pcu.login.sign_up;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,15 +15,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.databinding.FragmentUserProfileBinding;
 import com.d2.pcu.fragments.BaseFragment;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
-import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.login.OnLoginError;
 import com.d2.pcu.login.SignInOnClickListener;
 import com.d2.pcu.login.sign_up.adapters_and_viewholders.TemplesDialogAdapter;
@@ -54,7 +50,7 @@ public class UserProfileFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            userType = UserType.fromString(getArguments().getString(Constants.USER_TYPE));
+            userType = UserType.fromString(getArguments().getString(Constants.USER_TYPE, UserType.BELIEVER.toString()));
         }
     }
 
@@ -109,15 +105,11 @@ public class UserProfileFragment extends BaseFragment {
             }
         }
 
-        binding.churchSelectorD.setOnClickListener(view -> {
-            churchDialog.show();
-        });
+        binding.churchSelectorD.setOnClickListener(view -> churchDialog.show());
 
         churchDialog = assembleTemplesSearchDialog();
 
-        viewModel.getTemplesList().observe(getViewLifecycleOwner(), shortTemples -> {
-            templesAdapter.setTemples(shortTemples);
-        });
+        viewModel.getTemplesList().observe(getViewLifecycleOwner(), shortTemples -> templesAdapter.setTemples(shortTemples));
     }
 
     private void setBelieverProfile() {
@@ -166,47 +158,20 @@ public class UserProfileFragment extends BaseFragment {
                     setTitle(getString(R.string.diocese)).
                     setItems(
                             viewModel.getDioceseNames(),
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    binding.eparhiaBelieverSelectorD.setDialogSelectedText(
-                                            viewModel.getDioceseNames()[which]
-                                    );
+                            (dialog, which) -> {
+                                binding.eparhiaBelieverSelectorD.setDialogSelectedText(
+                                        viewModel.getDioceseNames()[which]
+                                );
 
-                                    viewModel.getUserProfile().setDiocese(
-                                            viewModel.getDioceseList().get(which)
-                                    );
-                                }
+                                viewModel.getUserProfile().setDiocese(
+                                        viewModel.getDioceseList().get(which)
+                                );
                             }
                     );
             builder.create().show();
         });
 
-        viewModel.setOnSaveClickListener(new OnSaveClickListener() {
-            @Override
-            public void onSaveClick() {
-                UserProfile userProfile = viewModel.getUserProfile();
-
-                userProfile.setFirstName(binding.userNameEt.getText().toString());
-                userProfile.setLastName(binding.userSurnameEt.getText().toString());
-
-                Calendar calendar = Calendar.getInstance();
-                int day = binding.userProfileBirthdayCv.getDayOfMonth();
-                int month = binding.userProfileBirthdayCv.getMonth();
-                int year = binding.userProfileBirthdayCv.getYear();
-                calendar.set(year, month, day);
-                userProfile.setBirthday(calendar.getTime());
-
-                userProfile.setAngelday(null);
-
-                userProfile.setEmail(binding.userEmailEt.getText().toString());
-
-                String phone = "380" + binding.userPhoneEt.getText().toString();
-                userProfile.setPhone(phone);
-
-                checkUserProfileValidity();
-            }
-        });
+        viewModel.setOnSaveClickListener(this::saveProfile);
     }
 
     private void setClergyProfile() {
@@ -243,40 +208,37 @@ public class UserProfileFragment extends BaseFragment {
             builder.create().show();
         });
 
-        binding.eparhiaSelectorD.setOnClickListener(view -> {
-            dioceseSelector();
-        });
+        binding.eparhiaSelectorD.setOnClickListener(view -> dioceseSelector());
 
-        viewModel.setOnSaveClickListener(new OnSaveClickListener() {
-            @Override
-            public void onSaveClick() {
-                UserProfile userProfile = viewModel.getUserProfile();
+        viewModel.setOnSaveClickListener(this::saveProfile);
+    }
 
-                userProfile.setFirstName(binding.userNameEt.getText().toString());
-                userProfile.setLastName(binding.userSurnameEt.getText().toString());
+    private void saveProfile() {
+        UserProfile userProfile = viewModel.getUserProfile();
 
-                Calendar calendar = Calendar.getInstance();
-                int day = binding.userProfileBirthdayCv.getDayOfMonth();
-                int month = binding.userProfileBirthdayCv.getMonth();
-                int year = binding.userProfileBirthdayCv.getYear();
-                calendar.set(year, month, day);
-                userProfile.setBirthday(calendar.getTime());
+        userProfile.setFirstName(binding.userNameEt.getEditableText().toString());
+        userProfile.setLastName(binding.userSurnameEt.getEditableText().toString());
 
-                Calendar calendarAngel = Calendar.getInstance();
-                int dayA = binding.userProfileBirthdayCv.getDayOfMonth();
-                int monthA = binding.userProfileBirthdayCv.getMonth();
-                int yearA = binding.userProfileBirthdayCv.getYear();
-                calendar.set(yearA, monthA, dayA);
-                userProfile.setAngelday(calendarAngel.getTime());
+        Calendar calendar = Calendar.getInstance();
+        int day = binding.userProfileBirthdayCv.getDayOfMonth();
+        int month = binding.userProfileBirthdayCv.getMonth();
+        int year = binding.userProfileBirthdayCv.getYear();
+        calendar.set(year, month, day);
+        userProfile.setBirthday(calendar.getTime());
 
-                userProfile.setEmail(binding.userEmailEt.getText().toString());
+        Calendar calendarAngel = Calendar.getInstance();
+        int dayA = binding.userProfileBirthdayCv.getDayOfMonth();
+        int monthA = binding.userProfileBirthdayCv.getMonth();
+        int yearA = binding.userProfileBirthdayCv.getYear();
+        calendar.set(yearA, monthA, dayA);
+        userProfile.setAngelday(calendarAngel.getTime());
 
-                String phone = "380" + binding.userPhoneEt.getText().toString();
-                userProfile.setPhone(phone);
+        userProfile.setEmail(binding.userEmailEt.getEditableText().toString());
 
-                checkUserProfileValidity();
-            }
-        });
+        String phone = "380" + binding.userPhoneEt.getEditableText().toString();
+        userProfile.setPhone(phone);
+
+        checkUserProfileValidity();
     }
 
     private void setBishopProfile() {
@@ -285,9 +247,7 @@ public class UserProfileFragment extends BaseFragment {
                 binding.eparhiaBelieverTitleTv
         );
 
-        binding.eparhiaSelectorD.setOnClickListener(view -> {
-            dioceseSelector();
-        });
+        binding.eparhiaSelectorD.setOnClickListener(view -> dioceseSelector());
 
         binding.sanSelectorD.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -308,36 +268,7 @@ public class UserProfileFragment extends BaseFragment {
             builder.create().show();
         });
 
-        viewModel.setOnSaveClickListener(new OnSaveClickListener() {
-            @Override
-            public void onSaveClick() {
-                UserProfile userProfile = viewModel.getUserProfile();
-
-                userProfile.setFirstName(binding.userNameEt.getText().toString());
-                userProfile.setLastName(binding.userSurnameEt.getText().toString());
-
-                Calendar calendar = Calendar.getInstance();
-                int day = binding.userProfileBirthdayCv.getDayOfMonth();
-                int month = binding.userProfileBirthdayCv.getMonth();
-                int year = binding.userProfileBirthdayCv.getYear();
-                calendar.set(year, month, day);
-                userProfile.setBirthday(calendar.getTime());
-
-                Calendar calendarAngel = Calendar.getInstance();
-                int dayA = binding.userProfileBirthdayCv.getDayOfMonth();
-                int monthA = binding.userProfileBirthdayCv.getMonth();
-                int yearA = binding.userProfileBirthdayCv.getYear();
-                calendar.set(yearA, monthA, dayA);
-                userProfile.setAngelday(calendarAngel.getTime());
-
-                userProfile.setEmail(binding.userEmailEt.getText().toString());
-
-                String phone = "380" + binding.userPhoneEt.getText().toString();
-                userProfile.setPhone(phone);
-
-                checkUserProfileValidity();
-            }
-        });
+        viewModel.setOnSaveClickListener(this::saveProfile);
     }
 
     private void dioceseSelector() {
@@ -442,6 +373,7 @@ public class UserProfileFragment extends BaseFragment {
                     viewModel.valid = false;
                     break ifBlock;
                 }
+//                if(!"Parishioner".equals(userProfile.getMember())){
                 if (userProfile.getChurch().getId() == -1) {
                     onLoginError.onError(getRes(R.string.temple_name));
                     viewModel.valid = false;
@@ -452,6 +384,7 @@ public class UserProfileFragment extends BaseFragment {
                     viewModel.valid = false;
                     break ifBlock;
                 }
+//                }
 
                 viewModel.valid = true;
             }
