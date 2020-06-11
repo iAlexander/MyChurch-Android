@@ -1,17 +1,13 @@
 package com.d2.pcu.fragments.news;
 
-import android.view.View;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
 
 import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.news.NewsItem;
 import com.d2.pcu.fragments.BaseViewModel;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
 
 import java.util.Collections;
 import java.util.List;
