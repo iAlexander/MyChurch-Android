@@ -35,6 +35,6 @@ public class TempleHistoryAndDescriptionViewHolder extends TempleViewHolder {
 
         new LinearSnapHelper().attachToRecyclerView(binding.templeContactsPhotoRv);
 
-        adapter.setUrls(temple.getImageUrls());
+        adapter.setUrls(temple.getImageUrlFromFiles());
     }
 }

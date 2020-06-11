@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.d2.pcu.data.model.BaseModel;
 import com.d2.pcu.data.model.PcuFile;
+import com.d2.pcu.data.model.PcuFileWrap;
 import com.d2.pcu.data.model.map.temple.diocese.Diocese;
 import com.d2.pcu.data.model.map.temple.diocese.DioceseType;
 import com.d2.pcu.data.model.map.temple.workers.Bishop;
@@ -82,8 +83,8 @@ public class Temple extends BaseModel implements ClusterItem {
     private String schedule;
 
     private WorkType workType;
-
-    private List<PcuFile> files;
+    @SerializedName("files")
+    private List<PcuFileWrap> files;
 
     public Temple() {
         this.id = 0;
@@ -291,11 +292,11 @@ public class Temple extends BaseModel implements ClusterItem {
         this.workType = workType;
     }
 
-    public List<PcuFile> getFiles() {
+    public List<PcuFileWrap> getFiles() {
         return files;
     }
 
-    public void setFiles(List<PcuFile> files) {
+    public void setFiles(List<PcuFileWrap> files) {
         this.files = files;
     }
 
@@ -330,5 +331,15 @@ public class Temple extends BaseModel implements ClusterItem {
             sb.append(street);
         }
         return sb.toString();
+    }
+
+    public List<String> getImageUrlFromFiles() {
+        List<String> urls = new ArrayList<>();
+        for (PcuFileWrap pcuFileWrap : files) {
+            if (!TextUtils.isEmpty(pcuFileWrap.getFile().getStringUrl())) {
+                urls.add(pcuFileWrap.getFile().getStringUrl());
+            }
+        }
+        return urls;
     }
 }

@@ -1,11 +1,17 @@
 package com.d2.pcu.data.model;
 
+import android.net.Uri;
+import android.text.TextUtils;
+
+import com.d2.pcu.BuildConfig;
+import com.google.gson.annotations.SerializedName;
+
 public class PcuFile {
-
+    @SerializedName("id")
     private int id;
-
-    private File file;
-
+    @SerializedName("file")
+    private ContentFile file;
+    @SerializedName("title")
     private String title;
 
     private String originalName;
@@ -18,7 +24,7 @@ public class PcuFile {
 
     public PcuFile() {
         id = -1;
-        file = new File();
+        file = new ContentFile();
         title = "";
         originalName = "";
         size = -1;
@@ -34,11 +40,11 @@ public class PcuFile {
         this.id = id;
     }
 
-    public File getFile() {
+    public ContentFile getFile() {
         return file;
     }
 
-    public void setFile(File file) {
+    public void setFile(ContentFile file) {
         this.file = file;
     }
 
@@ -82,11 +88,32 @@ public class PcuFile {
         this.extension = extension;
     }
 
-    protected class File {
+    public Uri getUrl() {
+        if (TextUtils.isEmpty(file.name)) {
+            return Uri.parse(file.name);
+        }
+        return new Uri.Builder().scheme("http")
+                .authority(Uri.parse(BuildConfig.API_BASE_URL).getAuthority())
+                .path(file.path).appendPath(file.name)
+                .build();
+    }
+
+    public String getStringUrl() {
+        if (TextUtils.isEmpty(file.name)) {
+            return file.name;
+        }
+        return new Uri.Builder().scheme("http")
+                .authority(Uri.parse(BuildConfig.API_BASE_URL).getAuthority())
+                .path(file.path).appendPath(file.name)
+                .build().toString();
+    }
+
+
+    protected class ContentFile {
         protected String name;
         protected String path;
 
-        File() {
+        ContentFile() {
             name = "";
             path = "";
         }
