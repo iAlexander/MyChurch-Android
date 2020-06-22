@@ -133,7 +133,9 @@ public class NetLoader implements DefaultLifecycleObserver {
 
     @Override
     public void onDestroy(@NonNull LifecycleOwner owner) {
-        handlerThread.quit();
+        if (handlerThread != null){
+            handlerThread.quit();
+        }
         handler = null;
     }
 
