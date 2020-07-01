@@ -34,7 +34,7 @@ public class BaseTemple extends BaseModel implements ClusterItem {
     private String locality;
 
     public BaseTemple() {
-        id = 0;
+        id = -1;
         name = "";
         distance = 0;
         lt = 0;
