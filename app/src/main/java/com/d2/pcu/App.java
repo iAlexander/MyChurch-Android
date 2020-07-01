@@ -1,6 +1,7 @@
 package com.d2.pcu;
 
 import android.app.Application;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.d2.pcu.services.NotificationHelper;
 import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.DownloadUtil;
 import com.d2.pcu.utils.exo.ExoHelper;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.yariksoffice.lingver.Lingver;
@@ -95,6 +97,13 @@ public class App extends Application {
             notificationHelper.syncNotification();
         }
         return notificationHelper;
+    }
+
+    public void logEvent(String name, String  type){
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(name, type);
+        FirebaseAnalytics.getInstance(this).logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     private class CrashReportingTree extends Timber.Tree {

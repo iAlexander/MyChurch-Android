@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
+import com.d2.pcu.App;
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.databinding.MapFragmentBinding;
@@ -207,6 +208,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
             } else if (newQuery.length() < 3) {
                 return;
             }
+
+            App.getInstance().logEvent("MAP", newQuery);
 
             binding.mapFloatingSearchView.showProgress();
             binding.mapFloatingSearchView.swapSuggestions(viewModel.getBaseTemplesByName(newQuery));
