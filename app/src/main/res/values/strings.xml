@@ -5,7 +5,7 @@
     <string name="pcu_firebase_msg_channel_id" translatable="false">firebase_pcu_msg_id_01</string>
     <string name="app_name_test">test</string>
 
-    <string name="app_name">PCU</string>
+    <string name="app_name">My Church</string>
     <string name="action_settings">Settings</string>
     <string name="map">Map</string>
     <string name="calendar">Calendar</string>

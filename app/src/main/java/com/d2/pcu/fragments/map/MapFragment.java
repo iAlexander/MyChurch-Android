@@ -208,9 +208,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
             } else if (newQuery.length() < 3) {
                 return;
             }
-
             App.getInstance().logEvent("MAP", newQuery);
-
             binding.mapFloatingSearchView.showProgress();
             binding.mapFloatingSearchView.swapSuggestions(viewModel.getBaseTemplesByName(newQuery));
             binding.mapFloatingSearchView.hideProgress();

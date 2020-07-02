@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name_test">test</string>
 
-    <string name="app_name">ПЦУ</string>
+    <string name="app_name">Моя Церква</string>
     <string name="action_settings">Налаштування</string>
     <string name="map">Мапа</string>
     <string name="calendar">Календар</string>

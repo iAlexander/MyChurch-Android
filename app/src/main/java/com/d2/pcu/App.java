@@ -103,6 +103,7 @@ public class App extends Application {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
         bundle.putString(name, type);
+
         FirebaseAnalytics.getInstance(this).logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 

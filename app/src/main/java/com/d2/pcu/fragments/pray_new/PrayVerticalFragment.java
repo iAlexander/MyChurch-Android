@@ -112,7 +112,7 @@ public class PrayVerticalFragment extends BaseFragment {
         if (Constants.AUDIO_ENABLED) {
             initPlayer();
         } else {
-            binding.playerControlView.setVisibility(View.GONE);
+            binding.flPlayerContainer.setVisibility(View.GONE);
         }
     }
 
@@ -132,7 +132,7 @@ public class PrayVerticalFragment extends BaseFragment {
         binding.playerControlView.setPlayer(player);
         binding.playerControlView.setShowShuffleButton(false);
         binding.playerControlView.setShowTimeoutMs(0);
-        binding.playerControlView.setVisibility(View.VISIBLE);
+        binding.flPlayerContainer.setVisibility(View.VISIBLE);
 
         // TODO: 4/21/20 add title is playing
 
