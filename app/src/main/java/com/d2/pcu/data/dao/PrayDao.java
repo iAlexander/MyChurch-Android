@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.d2.pcu.data.model.pray.Pray;
@@ -25,7 +26,7 @@ public interface PrayDao {
     @Query("SELECT * FROM pray where id=:id")
     Pray getPrayById(int id);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertPrays(List<Pray> prays);
 
     @Insert

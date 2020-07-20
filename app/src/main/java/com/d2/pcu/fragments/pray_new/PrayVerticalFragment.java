@@ -63,7 +63,7 @@ public class PrayVerticalFragment extends BaseFragment {
 
         viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
                 binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
-        viewModel.enableLoading();
+//        viewModel.enableLoading();
 
 //        Intent intentS = new Intent(getContext(), AudioExoPlayerService.class);
 //        Util.startForegroundService(App.getInstance(), intentS);
@@ -82,7 +82,7 @@ public class PrayVerticalFragment extends BaseFragment {
                 new OnRefreshPraysListener() {
                     @Override
                     public void update() {
-                        viewModel.loadPrays();
+                        viewModel.forceLoadPrays();
                     }
                 },
                 (prays, position) -> {
@@ -100,6 +100,7 @@ public class PrayVerticalFragment extends BaseFragment {
 
         viewModel.getEveningPrays().observe(getViewLifecycleOwner(), eveningPrays -> {
             adapter.setEveningPrays(eveningPrays);
+            viewModel.disableLoading();
         });
 
         binding.prayersVerticalViewpager.setAdapter(adapter);

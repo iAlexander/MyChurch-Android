@@ -5,7 +5,7 @@ import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
-import com.d2.pcu.data.responses.calendar.CalendarUpdateResponse;
+import com.d2.pcu.data.model.UpdateResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
@@ -14,7 +14,6 @@ import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
 import com.d2.pcu.data.responses.profile.NotificationHistory;
-import com.d2.pcu.data.responses.profile.NotificationHistoryResponse;
 import com.d2.pcu.data.responses.profile.PaymentUrl;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
@@ -47,7 +46,7 @@ public interface AppAPI {
     Call<CalendarResponse> getCalendarInfo();
 
     @GET("gala/last-update")
-    Call<CalendarUpdateResponse> getLastCalendarUpdate();
+    Call<UpdateResponse> getCalendarLastUpdate();
 
     @GET("calendar/{id}")
     Call<EventResponse> getEventInfo(
@@ -56,6 +55,9 @@ public interface AppAPI {
 
     @GET("/church/prayer?n=all")
     Call<PrayResponse> getPrays();
+
+    @GET("church/prayer/last-update")
+    Call<UpdateResponse> getPrayerLastUpdate();
 
     @GET("/pages/news")
     Call<NewsResponse> getNews(

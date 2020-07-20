@@ -25,15 +25,13 @@ import com.d2.pcu.data.model.news.NewsList;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.data.model.pray.PraysList;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
-import com.d2.pcu.data.model.profile.NotificationList;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.model.profile.UserState;
 import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
 import com.d2.pcu.data.responses.OnMasterResponse;
-import com.d2.pcu.data.responses.calendar.CalendarLastUpdate;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
-import com.d2.pcu.data.responses.calendar.CalendarUpdateResponse;
+import com.d2.pcu.data.model.UpdateResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
@@ -300,8 +298,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             public void onSuccess(OnMasterResponse response) {
                 String updateToken = "";
                 if (response != null) {
-                    updateToken = ((CalendarUpdateResponse) response)
-                            .getCalendarLastUpdate()
+                    updateToken = ((UpdateResponse) response)
+                            .getLastUpdate()
                             .getHash();
                 }
                 String lastToken = sharedPreferences.getString(Constants.CALENDAR_UPDATE_TOKEN,"");
@@ -338,7 +336,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                             getCalendarDataWrapper().getCalendarItems();
                 }
                 if (CollectionUtils.isEmpty(items)) {
-                    channels.getNotificationChannel().postValue(new ArrayList<>());
+                    channels.getCalendarChannel().postValue(new ArrayList<>());
                 } else {
                     dbLoader.saveCalendarItems(items, isSuccess -> {
 
@@ -422,25 +420,57 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
-    public void getPrays() {
+    public void checkPrayUpdate(){
+
+        netLoader.getPrayUpdate(new OnHTTPResult() {
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+                String updateToken = "";
+                if (response != null) {
+                    updateToken = ((UpdateResponse) response)
+                            .getLastUpdate()
+                            .getHash();
+                }
+                String lastToken = sharedPreferences.getString(Constants.PRAY_UPDATE_TOKEN,"");
+                if(!Objects.equals(lastToken, updateToken)){
+                    getPrays(updateToken);
+                }
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                Timber.d(ex, "getPrayUpdate: %s", ex.getMessage());
+                if (onError != null) {
+                    if (ex instanceof HTTPException) {
+                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
+                    } else {
+                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getPrays(String updateToken) {
         netLoader.getPrays(new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                List<Pray> prays = ((PrayResponse) response).getPrayDataWrapper().getPrays();
 
-                List<Pray> morningList = new LinkedList<>();
-                List<Pray> eveningList = new LinkedList<>();
+                List<Pray> items = new ArrayList<>();
 
-                for (Pray pray : prays) {
-                    if (pray.getType().equals(Constants.PRAY_EVENING)) {
-                        eveningList.add(pray);
-                    } else {
-                        morningList.add(pray);
-                    }
+                if (response != null) {
+                    items = ((PrayResponse) response).getPrayDataWrapper().getPrays();
+                }
+                if (CollectionUtils.isEmpty(items)) {
+                    channels.getMorningServerPraysChannel().postValue(new ArrayList<>());
+                    channels.getEveningServerPraysChannel().postValue(new ArrayList<>());
+                } else {
+                    dbLoader.savePrays(items);
                 }
 
-                channels.getMorningServerPraysChannel().postValue(morningList);
-                channels.getEveningServerPraysChannel().postValue(eveningList);
+                if(!Constants.PRAY_FORCE_UPDATE.equals(updateToken)){
+                    sharedPreferences.edit().putString(Constants.PRAY_UPDATE_TOKEN, updateToken).apply();
+                }
             }
 
             @Override
@@ -456,41 +486,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
-    public void savePrayToDb(Pray pray) {
-        dbLoader.savePray(pray, isSuccess -> {
-            // TODO: 2019-12-19
-        });
-    }
-
-    public void getPraysFromDb(final String type) {
-        dbLoader.getPrays(type, new OnDbResult() {
-            @Override
-            public void onSuccess(MasterDbModel dbModel) {
-                if (type.equals(Constants.PRAY_MORNING)) {
-
-                    channels.getMorningDBPraysChannel().postValue(((PraysList) dbModel).getPrays());
-                } else if (type.equals(Constants.PRAY_EVENING)) {
-
-                    channels.getEveningDBPraysChannel().postValue(((PraysList) dbModel).getPrays());
-                } else {
-                    Timber.e("onSuccess: PRAYS WRONG TYPE");
-                }
-            }
-
-            @Override
-            public void onFail() {
-                //todo db error ?
-            }
-        });
-    }
-
-    public void removePrayFromDb(Pray pray) {
-        dbLoader.removePray(pray, new OnDbResultState() {
-            @Override
-            public void onResult(boolean isSuccess) {
-                // TODO: 2019-12-19 TOAST ?
-            }
-        });
+    public LiveData<List<Pray>> getPraysLiveData(String type){
+        return dbLoader.getPrays(type);
     }
 
     public void getDiocese() {

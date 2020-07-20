@@ -7,6 +7,7 @@ import com.d2.pcu.App;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.fragments.BaseViewModel;
+import com.d2.pcu.utils.Constants;
 
 import java.util.List;
 
@@ -23,16 +24,22 @@ public class PrayViewModel extends BaseViewModel {
 
     public PrayViewModel() {
         repository = App.getInstance().getRepositoryInstance();
+        morningPrays = repository.getPraysLiveData(Constants.PRAY_MORNING);
+        eveningPrays = repository.getPraysLiveData(Constants.PRAY_EVENING);
 
-        morningPrays = repository.getTransport().getMorningServerPraysChannel();
-        eveningPrays = repository.getTransport().getEveningServerPraysChannel();
+//        morningPrays = repository.getTransport().getMorningServerPraysChannel();
+//        eveningPrays = repository.getTransport().getEveningServerPraysChannel();
         trackTitle = repository.getTransport().getTrackTitle();
 
         loadPrays();
     }
 
     void loadPrays() {
-        repository.getPrays();
+        repository.checkPrayUpdate();
+    }
+
+    void forceLoadPrays() {
+        repository.getPrays(Constants.PRAY_FORCE_UPDATE);
     }
 
 //    @Override

@@ -32,6 +32,8 @@ public class Constants {
     public static final String LAST_LOCATION = "last_location";
     public static final String PUSH_TOKEN = "pushToken";
     public static final String CALENDAR_UPDATE_TOKEN = "calendarToken";
+    public static final String PRAY_UPDATE_TOKEN = "prayToken";
+    public static final String PRAY_FORCE_UPDATE = "prayForce";
 
 
     public static final String START_SCREEN_ID = "startScreen";

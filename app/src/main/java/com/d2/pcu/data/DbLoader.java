@@ -24,10 +24,10 @@ import com.d2.pcu.utils.news.NewsListUpdater;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 
 public class DbLoader implements DefaultLifecycleObserver {
-
-    private static final String TAG = DbLoader.class.getSimpleName();
 
     private AppDatabase database;
 
@@ -42,7 +42,7 @@ public class DbLoader implements DefaultLifecycleObserver {
 
         handler = new Handler(handlerThread.getLooper());
 
-        Log.d(TAG, "Created...");
+        Timber.d("DbLoader Created...");
     }
 
     void saveCalendarItems(List<CalendarItem> items, OnDbResultState resultState) {
@@ -62,11 +62,11 @@ public class DbLoader implements DefaultLifecycleObserver {
         });
 
 
-        handler.post(() -> {
-                    database.calendarDao().insert(items);
-                    resultState.onResult(true);
-                }
-        );
+//        handler.post(() -> {
+//                    database.calendarDao().insert(items);
+//                    resultState.onResult(true);
+//                }
+//        );
     }
 
     LiveData<List<CalendarItem>> getCalendarItems() {
@@ -93,8 +93,24 @@ public class DbLoader implements DefaultLifecycleObserver {
         });
     }
 
-    void savePrays(List<Pray> prays) {
-        handler.post(() -> database.prayDao().insertPrays(prays));
+    void savePrays(List<Pray> items) {
+        handler.post(() -> {
+            List<Pray> dbItems = database.prayDao().getAllPrays();
+            if (dbItems != null) {
+                for (Pray pray : dbItems) {
+                    if (!items.contains(pray)) {
+                        database.prayDao().delete(pray);
+                    }
+                }
+            }
+            database.prayDao().insertPrays(items);
+
+//            database.prayDao().insertPrays(prays)
+        });
+    }
+
+    LiveData<List<Pray>> getPrays(final String type) {
+        return database.prayDao().getAllPraysLiveData(type);
     }
 
     void getPrays(final String type, final OnDbResult result) {

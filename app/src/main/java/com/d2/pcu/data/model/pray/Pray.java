@@ -27,6 +27,8 @@ import com.d2.pcu.BuildConfig;
 import com.d2.pcu.R;
 import com.d2.pcu.data.db.MasterDbModel;
 
+import java.util.Objects;
+
 @Entity
 public class Pray extends MasterDbModel {
 
@@ -225,5 +227,18 @@ public class Pray extends MasterDbModel {
         drawable.draw(canvas);
 
         return bitmap;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pray pray = (Pray) o;
+        return id == pray.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
