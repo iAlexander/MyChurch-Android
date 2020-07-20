@@ -196,4 +196,8 @@
     <string name="thanks_for_donate">Дякуємо за благодійний внесок!</string>
     <string name="donates_liqpay">LiqPay</string>
 
+
+    <string name="txt_copyright">Application developed by D2</string>
+    <string name="btn_logout">Logout</string>
+
 </resources>

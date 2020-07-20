@@ -9,11 +9,13 @@ import com.d2.pcu.StartFragments;
 import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.fragments.BaseViewModel;
+import com.d2.pcu.login.LogoutOnClickListener;
 import com.d2.pcu.utils.Constants;
 
 public class ProfileMenuViewModel extends BaseViewModel {
 
     private OnEditProfileDataClickListener onEditProfileDataClickListener;
+    private LogoutOnClickListener logoutOnClickListener;
 
     private Repository repository;
 
@@ -34,6 +36,9 @@ public class ProfileMenuViewModel extends BaseViewModel {
         this.onEditProfileDataClickListener = onEditProfileDataClickListener;
     }
 
+    public void setLogoutOnClickListener(LogoutOnClickListener logoutOnClickListener) {
+        this.logoutOnClickListener = logoutOnClickListener;
+    }
 
     public LiveData<UserProfile> getUserProfileLiveData() {
         return userProfileLiveData;
@@ -59,6 +64,13 @@ public class ProfileMenuViewModel extends BaseViewModel {
             onEditProfileDataClickListener.onEditEmailOrPasswordClick(changeDataType);
         }
     }
+
+    public void onLogout(View view) {
+        if (logoutOnClickListener != null) {
+            logoutOnClickListener.onLogout();
+        }
+    }
+
 
     int[] collectFragments() {
         return new int[]{

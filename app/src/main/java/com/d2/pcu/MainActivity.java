@@ -33,6 +33,7 @@ import com.d2.pcu.listeners.OnAdditionalFuncPrayersListener;
 import com.d2.pcu.listeners.OnBackButtonClickListener;
 import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.d2.pcu.listeners.OnNotificationClickListener;
+import com.d2.pcu.login.LogoutOnClickListener;
 import com.d2.pcu.ui.error.OnError;
 import com.d2.pcu.ui.error.fragments.ErrorFragment;
 import com.d2.pcu.ui.utils.UIUtils;
@@ -46,10 +47,12 @@ public class MainActivity extends AppCompatActivity implements OnError,
         OnBackButtonClickListener, OnLoadingStateChangedListener, OnCalendarEventItemClickListener,
         OnAdditionalFuncMapListener, OnAdditionalFuncNewsListener, OnAdditionalFuncPrayersListener,
         OnCabinetButtonsClickListener, OnDonatesClickListener, OnChatClickListener,
-        OnEditProfileDataClickListener, OnNotificationClickListener, InfoDialogListener {
+        OnEditProfileDataClickListener, OnNotificationClickListener, InfoDialogListener,
+        LogoutOnClickListener {
 
     private ActivityMainBinding binding;
     private NavController navController;
+    private Repository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnError,
         setStartScreen();
         NavigationUI.setupWithNavController(binding.navigationView, navController);
 
-        Repository repository = App.getInstance().getRepositoryInstance();
+        repository = App.getInstance().getRepositoryInstance();
 
         getLifecycle().addObserver(repository);
         repository.setOnErrorListener(this);
@@ -310,5 +313,13 @@ public class MainActivity extends AppCompatActivity implements OnError,
     @Override
     public void showInfoDialog(int msgId, int btnTitleId) {
         UIUtils.assembleModeratingDialog(this, getString(msgId), getString(btnTitleId)).show();
+    }
+
+    @Override
+    public void onLogout() {
+        if (repository != null) {
+            repository.logout();
+            navController.popBackStack(R.id.profileFragment, false);
+        }
     }
 }

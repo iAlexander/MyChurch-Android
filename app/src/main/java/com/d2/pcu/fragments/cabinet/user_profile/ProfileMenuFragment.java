@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentUserProfileMenuBinding;
 import com.d2.pcu.fragments.BaseFragment;
+import com.d2.pcu.login.LogoutOnClickListener;
 
 public class ProfileMenuFragment extends BaseFragment {
 
@@ -21,6 +22,7 @@ public class ProfileMenuFragment extends BaseFragment {
     private ProfileMenuViewModel viewModel;
 
     private OnEditProfileDataClickListener onEditProfileDataClickListener;
+    private LogoutOnClickListener logoutOnClickListener;
 
     private String selectedName;
 
@@ -38,6 +40,7 @@ public class ProfileMenuFragment extends BaseFragment {
         viewModel = new ViewModelProvider(this).get(ProfileMenuViewModel.class);
         setViewModelListeners(viewModel);
         viewModel.setOnEditProfileDataClickListener(onEditProfileDataClickListener);
+        viewModel.setLogoutOnClickListener(logoutOnClickListener);
 
         binding.setModel(viewModel);
         viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
@@ -84,6 +87,7 @@ public class ProfileMenuFragment extends BaseFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         onEditProfileDataClickListener = (OnEditProfileDataClickListener) context;
+        logoutOnClickListener = (LogoutOnClickListener) context;
     }
 
     @Override

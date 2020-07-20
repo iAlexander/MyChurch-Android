@@ -180,8 +180,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         return sharedPreferences.getString(credential, "");
     }
 
-    public void removeCredentials() {
-        sharedPreferences.edit().putString(Constants.USER_EMAIL, "").apply();
+    public void removeCredentials(String credential) {
+        sharedPreferences.edit().remove(credential).apply();
     }
 
     public void setAuthState(UserState userState) {
@@ -190,6 +190,13 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
     public UserState getAuthState() {
         return UserState.fromString(sharedPreferences.getString("isAuth", ""));
+    }
+
+    public void logout(){
+        sharedPreferences.edit()
+                .remove(Constants.ACCESS_TOKEN)
+                .remove(Constants.USER_EMAIL).apply();
+        setAuthState(UserState.NON_AUTH);
     }
 
     public void setLastLocation(LatLng location) {
