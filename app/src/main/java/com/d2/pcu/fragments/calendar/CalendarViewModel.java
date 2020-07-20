@@ -29,11 +29,12 @@ public class CalendarViewModel extends BaseViewModel {
     public CalendarViewModel() {
         repository = App.getInstance().getRepositoryInstance();
 
-        calendarItemsLiveData = Transformations.switchMap(repository.getTransport().getCalendarChannel(), MutableLiveData::new);
+        calendarItemsLiveData = Transformations.switchMap(repository.getCalendarItemsLiveData(), MutableLiveData::new);
     }
 
     void loadCalendar() {
-        repository.getCalendar();
+        repository.checkCalendarUpdate();
+//        repository.getCalendar();
     }
 
     void assembleCalendarEventsArray() {

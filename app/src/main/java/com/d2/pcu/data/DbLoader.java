@@ -13,12 +13,12 @@ import com.d2.pcu.App;
 import com.d2.pcu.data.db.AppDatabase;
 import com.d2.pcu.data.db.OnDbResult;
 import com.d2.pcu.data.db.OnDbResultState;
+import com.d2.pcu.data.model.calendar.CalendarItem;
 import com.d2.pcu.data.model.news.NewsItem;
 import com.d2.pcu.data.model.news.NewsList;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.data.model.pray.PraysList;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
-import com.d2.pcu.data.model.profile.NotificationList;
 import com.d2.pcu.utils.ListUpdater;
 import com.d2.pcu.utils.news.NewsListUpdater;
 
@@ -43,6 +43,34 @@ public class DbLoader implements DefaultLifecycleObserver {
         handler = new Handler(handlerThread.getLooper());
 
         Log.d(TAG, "Created...");
+    }
+
+    void saveCalendarItems(List<CalendarItem> items, OnDbResultState resultState) {
+
+        handler.post(() -> {
+
+            List<CalendarItem> dbItems = database.calendarDao().getAllItems().getValue();
+            if (dbItems != null) {
+                for (CalendarItem calendarItem : dbItems) {
+                    if (!items.contains(calendarItem)) {
+                        database.calendarDao().delete(calendarItem);
+                    }
+                }
+            }
+            List<Long> response = database.calendarDao().insert(items);
+            resultState.onResult(!response.isEmpty());
+        });
+
+
+        handler.post(() -> {
+                    database.calendarDao().insert(items);
+                    resultState.onResult(true);
+                }
+        );
+    }
+
+    LiveData<List<CalendarItem>> getCalendarItems() {
+            return database.calendarDao().getAllItems();
     }
 
     void savePray(Pray pray, OnDbResultState resultState) {

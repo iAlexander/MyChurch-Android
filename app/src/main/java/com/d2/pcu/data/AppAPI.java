@@ -5,6 +5,7 @@ import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
+import com.d2.pcu.data.responses.calendar.CalendarUpdateResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
@@ -44,6 +45,9 @@ public interface AppAPI {
 
     @GET("gala?n=all")
     Call<CalendarResponse> getCalendarInfo();
+
+    @GET("gala/last-update")
+    Call<CalendarUpdateResponse> getLastCalendarUpdate();
 
     @GET("calendar/{id}")
     Call<EventResponse> getEventInfo(

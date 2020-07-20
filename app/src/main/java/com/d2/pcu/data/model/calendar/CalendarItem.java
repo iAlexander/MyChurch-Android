@@ -3,21 +3,33 @@ package com.d2.pcu.data.model.calendar;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import com.d2.pcu.BuildConfig;
 import com.d2.pcu.data.model.BaseModel;
+import com.d2.pcu.utils.converters.DateDataConverter;
+import com.d2.pcu.utils.converters.EventGroupDataConverter;
+import com.d2.pcu.utils.converters.IconImageDataConverter;
 
 import java.util.Date;
+import java.util.Objects;
 
+@Entity
 public class CalendarItem extends BaseModel {
 
+    @PrimaryKey
     private int id;
 
+    @TypeConverters(EventGroupDataConverter.class)
     private Group group;
 
+    @TypeConverters(IconImageDataConverter.class)
     private IconImage iconImage;
-
+    @TypeConverters(DateDataConverter.class)
     private Date dateOldStyle;
-
+    @TypeConverters(DateDataConverter.class)
     private Date dateNewStyle;
 
     private String name;
@@ -151,5 +163,18 @@ public class CalendarItem extends BaseModel {
                 ", name='" + name + '\'' +
                 ", priority=" + priority +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CalendarItem that = (CalendarItem) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -18,6 +18,7 @@ import com.d2.pcu.StartFragments;
 import com.d2.pcu.data.db.MasterDbModel;
 import com.d2.pcu.data.db.OnDbResult;
 import com.d2.pcu.data.db.OnDbResultState;
+import com.d2.pcu.data.model.calendar.CalendarItem;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.data.model.news.NewsItem;
 import com.d2.pcu.data.model.news.NewsList;
@@ -30,7 +31,9 @@ import com.d2.pcu.data.model.profile.UserState;
 import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
 import com.d2.pcu.data.responses.OnMasterResponse;
+import com.d2.pcu.data.responses.calendar.CalendarLastUpdate;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
+import com.d2.pcu.data.responses.calendar.CalendarUpdateResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
@@ -62,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -273,7 +277,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
             @Override
             public void onFail(Throwable ex) {
-                Timber.e(ex, "getTempleById: %s", ex.getMessage());
+                Timber.d(ex, "getTempleById: %s", ex.getMessage());
                 if (onError != null) {
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
@@ -285,19 +289,68 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
-    public void getCalendar() {
-        netLoader.getCalendarInfo(new OnHTTPResult() {
+    public LiveData<List<CalendarItem>> getCalendarItemsLiveData(){
+        return dbLoader.getCalendarItems();
+    }
+
+    public void checkCalendarUpdate(){
+
+        netLoader.getCalendarUpdate(new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                channels.getCalendarChannel().postValue(
-                        ((CalendarResponse) response).
-                                getCalendarDataWrapper().getCalendarItems()
-                );
+                String updateToken = "";
+                if (response != null) {
+                    updateToken = ((CalendarUpdateResponse) response)
+                            .getCalendarLastUpdate()
+                            .getHash();
+                }
+                String lastToken = sharedPreferences.getString(Constants.CALENDAR_UPDATE_TOKEN,"");
+                if(!Objects.equals(lastToken, updateToken)){
+                    getCalendar(updateToken);
+                }
             }
 
             @Override
             public void onFail(Throwable ex) {
-                Timber.e(ex, "getCalendar: %s", ex.getMessage());
+                Timber.d(ex, "getCalendarUpdate: %s", ex.getMessage());
+                if (onError != null) {
+                    if (ex instanceof HTTPException) {
+                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
+                    } else {
+                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getCalendar(String updateToken) {
+
+
+        netLoader.getCalendarInfo(new OnHTTPResult() {
+
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+                List<CalendarItem> items = new ArrayList<>();
+
+                if (response != null) {
+                    items = ((CalendarResponse) response).
+                            getCalendarDataWrapper().getCalendarItems();
+                }
+                if (CollectionUtils.isEmpty(items)) {
+                    channels.getNotificationChannel().postValue(new ArrayList<>());
+                } else {
+                    dbLoader.saveCalendarItems(items, isSuccess -> {
+
+                    });
+                }
+
+                sharedPreferences.edit().putString(Constants.CALENDAR_UPDATE_TOKEN, updateToken).apply();
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                Timber.d(ex, "getCalendar: %s", ex.getMessage());
                 if (onError != null) {
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
@@ -318,7 +371,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
             @Override
             public void onFail(Throwable ex) {
-                Timber.e(ex, "getEventInfo: %s", ex.getMessage());
+                Timber.d(ex, "getEventInfo: %s", ex.getMessage());
                 if (onError != null) {
                     if (ex instanceof HTTPException) {
                         onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);

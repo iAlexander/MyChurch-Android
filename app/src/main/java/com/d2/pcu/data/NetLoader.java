@@ -17,6 +17,7 @@ import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
+import com.d2.pcu.data.responses.calendar.CalendarUpdateResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
@@ -230,6 +231,31 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<EventResponse> call, @NonNull Throwable t) {
+                result.onFail(t);
+            }
+        }));
+    }
+
+
+    void getCalendarUpdate(final OnHTTPResult result){
+        if (!isOnline()) {
+            result.onFail(new NoInternetConnection("offline"));
+            return;
+        }
+        getHandler().post(() -> api.getLastCalendarUpdate().enqueue(new Callback<CalendarUpdateResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CalendarUpdateResponse> call, @NonNull Response<CalendarUpdateResponse> response) {
+                int resCode = response.code();
+
+                if (resCode >= 200 && resCode < 300) {
+                    result.onSuccess(response.body());
+                } else {
+                    onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CalendarUpdateResponse> call, @NonNull Throwable t) {
                 result.onFail(t);
             }
         }));
