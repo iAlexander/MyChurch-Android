@@ -74,7 +74,7 @@ public class CalendarFragment extends BaseFragment {
 
 
         if (viewModel.getAssembledItemsArray() == null) {
-//            viewModel.enableLoading();
+            viewModel.enableLoading();
             assembleCalendarData();
         } else {
             binding.calendarCv.setEvents(viewModel.getEventDays());
@@ -98,8 +98,8 @@ public class CalendarFragment extends BaseFragment {
 
                 binding.calendarCv.setEvents(viewModel.getEventDays());
                 viewModel.assembleCalendarEventsArray();
-//                viewModel.disableLoading();
                 setCurrentDateInfo();
+                viewModel.disableLoading();
             }
         });
     }
