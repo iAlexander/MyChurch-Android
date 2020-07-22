@@ -52,7 +52,7 @@ public class FirebaseBackgroundMessagingService extends FirebaseMessagingService
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_notification)
 //                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_news_active))
-                        .setColor(getResources().getColor(R.color.colorPrimaryLight))
+                        .setColor(getResources().getColor(R.color.colorAccent))
                         .setContentTitle(title)
                         .setContentText(message)
                         .setAutoCancel(true)
