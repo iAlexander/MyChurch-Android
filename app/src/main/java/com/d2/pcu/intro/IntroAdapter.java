@@ -61,7 +61,8 @@ public class IntroAdapter extends RecyclerView.Adapter<IntroItemViewHolder> {
             for (int i = 0; i < defaultEnabledScreen.size(); i++) {
                 if (defaultEnabledScreen.get(i)) {
                     defaultEnabledScreen.set(i, false);
-                    notifyItemChanged(i);
+                    int finalI = i;
+                    binding.getRoot().post(() -> notifyItemChanged(finalI));
                 }
             }
 
