@@ -12,12 +12,12 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.d2.pcu.App;
 import com.d2.pcu.BuildConfig;
+import com.d2.pcu.data.model.UpdateResponse;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
-import com.d2.pcu.data.model.UpdateResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
@@ -77,6 +77,10 @@ public class NetLoader implements DefaultLifecycleObserver {
 
     @Override
     public void onCreate(@NonNull LifecycleOwner owner) {
+
+        getApi();
+    }
+    private void initNetwork(){
         gson = new GsonBuilder()
                 .registerTypeAdapter(NewsResponse.class, new NewsDeserializer())
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
@@ -108,10 +112,14 @@ public class NetLoader implements DefaultLifecycleObserver {
                 .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+    }
 
-
-        api = retrofit.create(AppAPI.class);
-
+    private AppAPI getApi() {
+        if (api == null) {
+            initNetwork();
+            api = retrofit.create(AppAPI.class);
+        }
+        return api;
     }
 
     private Handler getHandler() {
@@ -134,7 +142,7 @@ public class NetLoader implements DefaultLifecycleObserver {
 
     @Override
     public void onDestroy(@NonNull LifecycleOwner owner) {
-        if (handlerThread != null){
+        if (handlerThread != null) {
             handlerThread.quit();
         }
         handler = null;
@@ -145,7 +153,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getBaseTemplesInfo(lt, lg, 5000).enqueue(new Callback<BaseTempleResponse>() {
+        getHandler().post(() -> getApi().getBaseTemplesInfo(lt, lg, 5000).enqueue(new Callback<BaseTempleResponse>() {
             @Override
             public void onResponse(@NonNull Call<BaseTempleResponse> call, @NonNull Response<BaseTempleResponse> response) {
                 int resCode = response.code();
@@ -169,7 +177,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getTempleById(id).enqueue(new Callback<TempleResponse>() {
+        getHandler().post(() -> getApi().getTempleById(id).enqueue(new Callback<TempleResponse>() {
             @Override
             public void onResponse(Call<TempleResponse> call, Response<TempleResponse> response) {
                 int resCode = response.code();
@@ -193,7 +201,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getCalendarInfo().enqueue(new Callback<CalendarResponse>() {
+        getHandler().post(() -> getApi().getCalendarInfo().enqueue(new Callback<CalendarResponse>() {
             @Override
             public void onResponse(@NonNull Call<CalendarResponse> call, @NonNull Response<CalendarResponse> response) {
                 int resCode = response.code();
@@ -217,7 +225,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getEventInfo(id).enqueue(new Callback<EventResponse>() {
+        getHandler().post(() -> getApi().getEventInfo(id).enqueue(new Callback<EventResponse>() {
             @Override
             public void onResponse(@NonNull Call<EventResponse> call, @NonNull Response<EventResponse> response) {
                 int resCode = response.code();
@@ -237,12 +245,12 @@ public class NetLoader implements DefaultLifecycleObserver {
     }
 
 
-    void getCalendarUpdate(final OnHTTPResult result){
+    void getCalendarUpdate(final OnHTTPResult result) {
         if (!isOnline()) {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getCalendarLastUpdate().enqueue(new Callback<UpdateResponse>() {
+        getHandler().post(() -> getApi().getCalendarLastUpdate().enqueue(new Callback<UpdateResponse>() {
             @Override
             public void onResponse(@NonNull Call<UpdateResponse> call, @NonNull Response<UpdateResponse> response) {
                 int resCode = response.code();
@@ -266,7 +274,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getNews(length, "Date-desc").enqueue(new Callback<NewsResponse>() {
+        getHandler().post(() -> getApi().getNews(length, "Date-desc").enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
                 int resCode = response.code();
@@ -285,12 +293,12 @@ public class NetLoader implements DefaultLifecycleObserver {
         }));
     }
 
-    void getPrayUpdate(final OnHTTPResult result){
+    void getPrayUpdate(final OnHTTPResult result) {
         if (!isOnline()) {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getCalendarLastUpdate().enqueue(new Callback<UpdateResponse>() {
+        getHandler().post(() -> getApi().getCalendarLastUpdate().enqueue(new Callback<UpdateResponse>() {
             @Override
             public void onResponse(@NonNull Call<UpdateResponse> call, @NonNull Response<UpdateResponse> response) {
                 int resCode = response.code();
@@ -314,7 +322,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getPrays().enqueue(new Callback<PrayResponse>() {
+        getHandler().post(() -> getApi().getPrays().enqueue(new Callback<PrayResponse>() {
             @Override
             public void onResponse(@NonNull Call<PrayResponse> call, @NonNull Response<PrayResponse> response) {
                 int resCode = response.code();
@@ -338,7 +346,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getShortTemplesInfo().enqueue(new Callback<ShortTemplesInfoResponse>() {
+        getHandler().post(() -> getApi().getShortTemplesInfo().enqueue(new Callback<ShortTemplesInfoResponse>() {
             @Override
             public void onResponse(Call<ShortTemplesInfoResponse> call, Response<ShortTemplesInfoResponse> response) {
                 int resCode = response.code();
@@ -361,7 +369,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getDioceses("all").enqueue(new Callback<DioceseResponse>() {
+        getHandler().post(() -> getApi().getDioceses("all").enqueue(new Callback<DioceseResponse>() {
             @Override
             public void onResponse(Call<DioceseResponse> call, Response<DioceseResponse> response) {
                 int resCode = response.code();
@@ -384,7 +392,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.signIn(email, password).enqueue(new Callback<ProfileSignUpResponse>() {
+        getHandler().post(() -> getApi().signIn(email, password).enqueue(new Callback<ProfileSignUpResponse>() {
             @Override
             public void onResponse(Call<ProfileSignUpResponse> call, Response<ProfileSignUpResponse> response) {
                 int resCode = response.code();
@@ -420,7 +428,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.signUp(
+        getHandler().post(() -> getApi().signUp(
                 userProfile.getEmail(),
                 userProfile.getPhone(),
                 userProfile.getFirstName(),
@@ -470,7 +478,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.forgotPass(email).enqueue(new Callback<BoolResponse>() {
+        getHandler().post(() -> getApi().forgotPass(email).enqueue(new Callback<BoolResponse>() {
             @Override
             public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
                 int resCode = response.code();
@@ -506,7 +514,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.updatePushToken("Bearer " + accessToken, token).enqueue(new Callback<BoolResponse>() {
+        getHandler().post(() -> getApi().updatePushToken("Bearer " + accessToken, token).enqueue(new Callback<BoolResponse>() {
             @Override
             public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
                 int resCode = response.code();
@@ -542,7 +550,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getNotificationHistory("Bearer " + accessToken).enqueue(new Callback<BoolDataResponse<NotificationHistory>>() {
+        getHandler().post(() -> getApi().getNotificationHistory("Bearer " + accessToken).enqueue(new Callback<BoolDataResponse<NotificationHistory>>() {
             @Override
             public void onResponse(@NonNull Call<BoolDataResponse<NotificationHistory>> call, Response<BoolDataResponse<NotificationHistory>> response) {
                 int resCode = response.code();
@@ -572,7 +580,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getNotificationCard("Bearer " + accessToken, id).enqueue(new Callback<BoolDataResponse<NotificationHistoryItem>>() {
+        getHandler().post(() -> getApi().getNotificationCard("Bearer " + accessToken, id).enqueue(new Callback<BoolDataResponse<NotificationHistoryItem>>() {
             @Override
             public void onResponse(@NonNull Call<BoolDataResponse<NotificationHistoryItem>> call, Response<BoolDataResponse<NotificationHistoryItem>> response) {
                 int resCode = response.code();
@@ -602,7 +610,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getUserProfile(accessToken).enqueue(new Callback<GetUserProfileResponse>() {
+        getHandler().post(() -> getApi().getUserProfile(accessToken).enqueue(new Callback<GetUserProfileResponse>() {
             @Override
             public void onResponse(Call<GetUserProfileResponse> call, Response<GetUserProfileResponse> response) {
                 int resCode = response.code();
@@ -632,7 +640,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.changeEmail(accessToken, email).enqueue(new Callback<BoolResponse>() {
+        getHandler().post(() -> getApi().changeEmail(accessToken, email).enqueue(new Callback<BoolResponse>() {
             @Override
             public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
                 int resCode = response.code();
@@ -672,7 +680,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.changePassword(accessToken, oldPass, newPass).enqueue(new Callback<BoolResponse>() {
+        getHandler().post(() -> getApi().changePassword(accessToken, oldPass, newPass).enqueue(new Callback<BoolResponse>() {
             @Override
             public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
                 int resCode = response.code();
@@ -711,7 +719,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> api.getPaymentUrl(action, resultUrl).enqueue(new Callback<PaymentUrl>() {
+        getHandler().post(() -> getApi().getPaymentUrl(action, resultUrl).enqueue(new Callback<PaymentUrl>() {
             @Override
             public void onResponse(@NonNull Call<PaymentUrl> call, @NonNull Response<PaymentUrl> response) {
                 int resCode = response.code();
