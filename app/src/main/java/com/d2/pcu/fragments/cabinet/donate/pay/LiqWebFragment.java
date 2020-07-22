@@ -19,6 +19,9 @@ import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.listeners.InfoDialogListener;
 import com.d2.pcu.utils.Constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import timber.log.Timber;
 
 public class LiqWebFragment extends BaseFragment {
@@ -48,7 +51,12 @@ public class LiqWebFragment extends BaseFragment {
 
         setupWebView();
 
-        viewModel.getPaymentData().observe(getViewLifecycleOwner(), s -> binding.webView.loadUrl(s));
+        viewModel.getPaymentData().observe(getViewLifecycleOwner(), s ->{
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Accept-Language", "uk");
+
+            binding.webView.loadUrl(s, headers);
+        });
 
         viewModel.getForm();
 
