@@ -41,15 +41,14 @@ public class LiqWebFragment extends BaseFragment {
         viewModel = new ViewModelProvider(this).get(LiqWebViewModel.class);
         viewModel.setInfoDialogListener(infoDialogListener);
         setViewModelListeners(viewModel);
+        viewModel.enableLoading();
         binding.setModel(viewModel);
         viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
                 binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
 
         setupWebView();
 
-        viewModel.getPaymentData().observe(getViewLifecycleOwner(), s -> {
-            binding.webView.loadUrl(s);
-        });
+        viewModel.getPaymentData().observe(getViewLifecycleOwner(), s -> binding.webView.loadUrl(s));
 
         viewModel.getForm();
 
@@ -80,6 +79,12 @@ public class LiqWebFragment extends BaseFragment {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 return handleUrlResult(url);
 
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                viewModel.disableLoading();
+                super.onPageFinished(view, url);
             }
         });
     }
