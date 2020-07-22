@@ -34,7 +34,6 @@ public class NewsViewModel extends BaseViewModel {
                 }
         );
 
-        loadNews();
     }
 
     public LiveData<List<NewsItem>> getNewsLiveData() {

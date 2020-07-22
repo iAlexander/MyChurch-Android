@@ -67,6 +67,8 @@ public class NewsFragment extends BaseFragment {
             adapter.setNews(news);
             viewModel.disableLoading();
         });
+
+        viewModel.loadNews();
     }
 
     @Override

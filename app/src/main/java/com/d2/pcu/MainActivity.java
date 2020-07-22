@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnError,
     private ActivityMainBinding binding;
     private NavController navController;
     private Repository repository;
+    private ErrorFragment errorFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +166,10 @@ public class MainActivity extends AppCompatActivity implements OnError,
 
     @Override
     public void onError(int errorType) {
-        ErrorFragment errorFragment = ErrorFragment.newInstance(errorType);
+        enableLoading(false);
+        if (errorFragment != null && errorFragment.isVisible()) return;
+        errorFragment = ErrorFragment.newInstance(errorType);
+
         errorFragment.show(getSupportFragmentManager(), Constants.ERROR_FRAGMENT_TAG);
     }
 
