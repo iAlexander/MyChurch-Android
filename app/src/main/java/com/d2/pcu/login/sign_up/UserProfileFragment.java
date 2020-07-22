@@ -130,6 +130,7 @@ public class UserProfileFragment extends BaseFragment {
         binding.nameTitleTv.setText(getString(R.string.name));
 
         binding.statusSelectorViryaninD.setOnClickListener(view -> {
+            binding.getRoot().clearFocus();
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.
                     setTitle(getString(R.string.status)).
@@ -153,6 +154,7 @@ public class UserProfileFragment extends BaseFragment {
         });
 
         binding.eparhiaBelieverSelectorD.setOnClickListener(view -> {
+            binding.getRoot().clearFocus();
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.
                     setTitle(getString(R.string.diocese)).
@@ -190,6 +192,7 @@ public class UserProfileFragment extends BaseFragment {
         binding.nameTitleTv.setText(getString(R.string.name));
 
         binding.sanSelectorDuhovenstovD.setOnClickListener(view -> {
+            binding.getRoot().clearFocus();
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.
                     setTitle(getString(R.string.benefice)).
@@ -255,6 +258,7 @@ public class UserProfileFragment extends BaseFragment {
         binding.eparhiaSelectorD.setOnClickListener(view -> dioceseSelector());
 
         binding.sanSelectorD.setOnClickListener(view -> {
+            binding.getRoot().clearFocus();
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.
                     setTitle(getString(R.string.benefice)).
@@ -277,6 +281,7 @@ public class UserProfileFragment extends BaseFragment {
     }
 
     private void dioceseSelector() {
+        binding.getRoot().clearFocus();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.
                 setTitle(getString(R.string.diocese)).
