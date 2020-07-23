@@ -84,6 +84,7 @@ public class IntroActivity extends AppCompatActivity {
         final AppCompatCheckBox checkBox = dialogView.findViewById(R.id.agreement_cx);
 
         builder.setView(dialogView);
+        builder.setCancelable(false);
 
         final AlertDialog dialog = builder.create();
 
