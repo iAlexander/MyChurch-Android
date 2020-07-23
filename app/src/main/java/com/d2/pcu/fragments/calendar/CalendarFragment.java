@@ -26,6 +26,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import timber.log.Timber;
+
 public class CalendarFragment extends BaseFragment {
 
     private FragmentCalendarBinding binding;
@@ -73,7 +75,7 @@ public class CalendarFragment extends BaseFragment {
                 binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
 
 
-        if (viewModel.getAssembledItemsArray() == null) {
+        if (viewModel.getAssembledItemsArray() == null || viewModel.getAssembledItemsArray().size() == 0) {
             viewModel.enableLoading();
             assembleCalendarData();
         } else {
