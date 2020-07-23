@@ -1,89 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="google_apis" translatable="false">AIzaSyCUmvMjpTGt_AIaWORUUUYMggbj8LRmOr0</string>
-<!--    <string name="exo_download_notification_channel_name" translatable="false">AIzaSyCUmvMjOR</string>-->
+    <!--    <string name="exo_download_notification_channel_name" translatable="false">AIzaSyCUmvMjOR</string>-->
 
     <string name="pcu_firebase_msg_channel_id" translatable="false">firebase_pcu_msg_id_01</string>
+
     <string name="app_name_test">test</string>
 
-    <string name="app_name">My Church</string>
-    <string name="action_settings">Settings</string>
-    <string name="map">Map</string>
-    <string name="calendar">Calendar</string>
-    <string name="news">News</string>
-    <string name="prayers">Prayers</string>
-    <string name="profile">Profile</string>
+    <string name="app_name">Моя Церква</string>
+    <string name="action_settings">Налаштування</string>
+    <string name="map">Мапа</string>
+    <string name="calendar">Календар</string>
+    <string name="news">Новини</string>
+    <string name="prayers">Молитви</string>
+    <string name="profile">Кабінет</string>
 
-    <string name="more">More</string>
+    <string name="more">Більше</string>
 
-    <string name="loading_state_text">Loading…</string>
-    <string name="next_text">Next</string>
-    <string name="skip_text">Skip</string>
+    <string name="loading_state_text">Завантаження…</string>
+    <string name="next_text">Далі</string>
+    <string name="skip_text">Пропустити</string>
 
     <!--  Symbols  -->
     <string name="dot">\u00b7</string>
-    <string name="km"> km</string>
-    <string name="ok">OK</string>
-    
+    <string name="km"> км</string>
+    <string name="ok">ОК</string>
+
     <!-- Intro -->
-    <string name="intro_start_screen">Start screen</string>
-    <string name="agreement_title">Agree with <a href="http://test.cerkva.asp-win.d2.digital/privacy-policy-my-church.pdf">Policy</a></string>
-    <string name="not_approve_policy">You can\'t use this app without policy approve</string>
+    <string name="intro_start_screen">Це стартовий екран</string>
+    <string name="agreement_title">Даю згоду на обробку даних згідно <a href="http://test.cerkva.asp-win.d2.digital/privacy-policy-my-church.pdf">Політики конфіденційності</a></string>
+    <string name="not_approve_policy">Ви маєте надати згоду на обробку данних для використання додатку</string>
 
     <string-array name="intro_titles">
-        <item>Show road to closest temple</item>
-        <item>Remind about holidays</item>
-        <item>Inform about news</item>
-        <item>Pray together</item>
-        <item>Personalize information for you</item>
+        <item>Показуємо шлях до найближчого храму</item>
+        <item>Нагадуємо про свята</item>
+        <item>Інформуємо про новини Православної Церкви України</item>
+        <item>Молимося разом</item>
+        <item>Персоналізуємо інформацію для Вас</item>
     </string-array>
 
     <!--  Errors  -->
-    <string name="error_no_connection_title">Connection problem</string>
-    <string name="error_no_connection_description">Check your internet connection</string>
-    <string name="error_server_error_title">Server error</string>
-    <string name="error_server_error_description">Server error connect to support</string>
-    <string name="no_data_text">Sorry, no data</string>
+    <string name="error_no_connection_title">Проблеми з\'єднання</string>
+    <string name="error_no_connection_description">Перевірте підключення до інтернету</string>
+    <string name="error_server_error_title">Помилка серверу</string>
+    <string name="error_server_error_description">Зверніться до підтримки</string>
+    <string name="no_data_text">Вибачте, відсутні данні</string>
 
     <!--  Map  -->
-    <string name="map_distance">Distance</string>
-    <string name="map_more">More</string>
-    <string name="map_search_hint">Search…</string>
-    <string name="map_my_location">My location</string>
+    <string name="map_distance">Відстань</string>
+    <string name="map_more">Більше</string>
+    <string name="map_search_hint">Пошук…</string>
+    <string name="map_my_location">Моя позиція</string>
 
-        <!--  Temple  -->
-    <string name="temple_contacts">Contacts</string>
-    <string name="temple_history_descr">History and description</string>
-    <string name="temple_open">Open now</string>
-    <string name="temple_close">Close now</string>
-    <string name="temple_close_schedule_time">Open at 9–00 and Closing at 19–00</string>
-    <string name="temple_schedule_service">Serving schedule</string>
-    <string name="temple_week_days">mon-fr</string>
-    <string name="temple_weekend_days">st-sun</string>
-    <string name="temple_holidays">holidays</string>
-    <string name="temple_get_directions">Get directions</string>
-    <string name="temple_church_holiday">Holiday of temple:</string>
-    <string name="temple_prior">Prior:</string>
-    <string name="temple_charity">Charity:</string>
-    <string name="temple_phone">Phone:</string>
-    <string name="temple_history_and_description">Description and history</string>
+    <!--  Temple  -->
+    <string name="temple_contacts">Контакти</string>
+    <string name="temple_history_descr">Історія та опис</string>
+    <string name="temple_open">Відчинено</string>
+    <string name="temple_close">Зачинено</string>
+    <string name="temple_close_schedule_time">з 9–00 до 19–00</string>
+    <string name="temple_schedule_service">Розклад богослужіння</string>
+    <string name="temple_week_days">пн-пт</string>
+    <string name="temple_weekend_days">сб-нд</string>
+    <string name="temple_holidays">свята</string>
+    <string name="temple_get_directions">Прокласти маршрут</string>
+    <string name="temple_church_holiday">Храмове Свято:</string>
+    <string name="temple_prior">Настоятель:</string>
+    <string name="temple_charity">Благочинний:</string>
+    <string name="temple_phone">Телефон:</string>
+    <string name="temple_history_and_description">Опис та історія</string>
 
     <!--  Calendar  -->
-        <!--   SingleEvent   -->
-    <string name="event_fasting_true">Fast day</string>
-    <string name="event_fasting_false">There is no post</string>
-    <string name="event_dates">%1$s (%2$s old style)</string>
-    
+    <!--   SingleEvent   -->
+    <string name="event_fasting_true">Пісний день</string>
+    <string name="event_fasting_false">Посту немає</string>
+    <string name="event_dates">%1$s (%2$s за старим стилем)</string>
+
     <!--  Pray  -->
-    <string name="pray_evening">Evening</string>
-    <string name="pray_morning">Morning</string>
-    <string name="pray_favorite">Favorite</string>
-    <string name="pray_item_offline">Offline</string>
+    <string name="pray_evening">Вечірні</string>
+    <string name="pray_morning">Ранкові</string>
+    <string name="pray_favorite">Улюблені</string>
+    <string name="pray_item_offline">Доступно офлайн</string>
 
-    <!--  News -->
-    <string name="news_important">Important!</string>
-    <string name="news_notice">Notice</string>
+    <!-- News -->
+    <string name="news_important">Важливо!</string>
+    <string name="news_notice">Довідка</string>
 
-    <!--  Cabinet  -->
+<!--  Cabinet  -->
     <string name="change_email">Змінити e-mail</string>
     <string name="change_pass">Змінити пароль</string>
 
@@ -96,30 +98,30 @@
     <string name="change_text">Змінити</string>
 
     <!--  Profile  -->
-    <string name="profile_support">Spirit support</string>
-    <string name="profile_donate">Donate</string>
-    
-        <!--  UserProfile  -->
-    <string name="user_profile_title">Profile</string>
-    <string name="cherneche_name">NonPriest Name</string>
-    <string name="name">Name</string>
-    <string name="surname">Surname</string>
-    <string name="benefice">Benefice</string>
-    <string name="birthdate">Birthday date</string>
-    <string name="namesake_date">Day of the namesake</string>
-    <string name="email">E-mail</string>
-    <string name="diocese">Diocese</string>
-    <string name="temple_name">Temple</string>
-    <string name="status">Status</string>
+    <string name="profile_support">Духовна підтримка</string>
+    <string name="profile_donate">Благодійність</string>
 
-    <string name="believer">Believer</string>
-    <string name="сlergy">Clergy</string>
-    <string name="bishop">Bishop</string>
+    <!--  UserProfile  -->
+    <string name="user_profile_title">Профіль</string>
+    <string name="cherneche_name">Чернече ім\'я</string>
+    <string name="name">Ім\'я</string>
+    <string name="surname">Прізвище</string>
+    <string name="benefice">Сан</string>
+    <string name="birthdate">Дата народження</string>
+    <string name="namesake_date">День тезоіменитства</string>
+    <string name="email">Ел. адреса</string>
+    <string name="diocese">Єпархія</string>
+    <string name="temple_name">Храм</string>
+    <string name="status">Статус</string>
 
-    <string name="login_resend_sms_timer">Resend SMS %1$s sec</string>
-    <string name="login_sms_title">code sent in SMS to\n%1$s</string>
+    <string name="believer">Вірянин</string>
+    <string name="сlergy">Духовенство</string>
+    <string name="bishop">Архієрей</string>
 
-    <string name="forgot_pass_success_text">We sent pass on email</string>
+    <string name="login_resend_sms_timer">Відправити повторно через %1$s сек</string>
+    <string name="login_sms_title">Код було відправлено на\n%1$s</string>
+
+    <string name="forgot_pass_success_text">Ми відправили пароль на вказану адресу</string>
 
     <string-array name="priest_state">
         <item>Диякон</item>
@@ -144,36 +146,36 @@
         <item>Член парафіяльної ради</item>
     </string-array>
 
-    <string name="profile_save">Save</string>
+    <string name="profile_save">Зберегти</string>
 
-        <!--  Sign in  -->
-    <string name="sign_in_title">Enter to cabinet</string>
-    <string name="password_title">Password</string>
-    <string name="password_reminder">&lt;u&gt;Remind password&lt;/u&gt;</string>
-    <string name="sign_in_create_profile">&lt;u&gt;Create profile&lt;/u&gt;</string>
-    <string name="sign_in">Enter</string>
+    <!--  Sign in  -->
+    <string name="sign_in_title">Вхід до кабінету</string>
+    <string name="password_title">Пароль</string>
+    <string name="password_reminder">&lt;u&gt;Нагадати пароль&lt;/u&gt;</string>
+    <string name="sign_in_create_profile">&lt;u&gt;Створити профіль&lt;/u&gt;</string>
+    <string name="sign_in">Увійти</string>
 
-        <!--  Sign up  -->
-    <string name="sign_up">Registration</string>
-    <string name="send_code_btn_text">Send code</string>
-    <string name="next_btn_text">Next</string>
-    <string name="enter_phone_number">Enter your phone number</string>
-    <string name="phone_number">Phone number</string>
-    <string name="login_code_length">Code from SMS - 4 numbers</string>
-    <string name="resend_sms">Resend SMS</string>
-    <string name="create_pass">Create password</string>
-    <string name="profile_at_moderating_text">We check your profile. It can take a few days, we notify you when finish it.</string>
+    <!--  Sign up  -->
+    <string name="sign_up">Реєстрація</string>
+    <string name="send_code_btn_text">Відправити код</string>
+    <string name="next_btn_text">Продовжити</string>
+    <string name="enter_phone_number">Введіть номер телефону</string>
+    <string name="phone_number">Номер телефону</string>
+    <string name="login_code_length">Код SMS із 4 цифр</string>
+    <string name="resend_sms">Переслати СМС код</string>
+    <string name="create_pass">Вигадайте пароль</string>
+    <string name="profile_at_moderating_text">Ваш профіль знаходиться на верифікації. Ми перевіремо ваші дані найближчим часом, це може зайняти декілька днів.</string>
 
     <!--  Support chats  -->
-    <string name="support_chats_title">Get support</string>
+    <string name="support_chats_title">Отримати підтримку</string>
     <string name="support_chat_body_text">Доброго дня! Це ваш віртуальний помічник з духовних питань. Оберіть, будь ласка, програму, де вам було б зручно задавати питання.</string>
     <string name="support_chat_body_text_short">Доброго дня! Це ваш віртуальний помічник з духовних питань.</string>
 
     <string name="support_chats_viber" translatable="false">Viber</string>
     <string name="support_chats_telegram" translatable="false">Telegram</string>
     <string name="support_chats_fm" translatable="false">Facebook</string>
-    
-        <!--  Donates  -->
+
+    <!--  Donates  -->
     <string name="donates_title">Пожертвувати кошти через</string>
     <string name="donates_body_text">Не обов\'язково чекати свята Миколая, щоб зробити добру справу. Адже, тільки справжня добра справа йде від серця, і тільки вона може подарувати щастя.</string>
     <string name="donates_monobank">Monobank</string>
@@ -181,7 +183,7 @@
     <string name="donates_portmone">Portmone</string>
     <string name="donates_paypal">PayPal</string>
 
-    <!--  Dialog messages  -->
+<!--  Dialog messages  -->
     <string name="pass_was_send">Пароль від кабінету відправили на пошту <b>%1$s</b></string>
     <string name="pass_was_send_moderating">Пароль від кабінету відправили на пошту <b>%1$s</b>.\n\nПрофіль на верифікації.\nМи перевіремо ваші дані найближчим часом, це може зайняти декілька днів.</string>
     <string name="pass_was_change">Пароль успішно змінено</string>
@@ -190,14 +192,12 @@
     <string name="understand_text">Зрозуміло</string>
 
 <!--  Errors  -->
-    <string name="field_error_text">Check field - %1$s</string>
+    <string name="field_error_text">Перевірте вірність заповнення - \"%1$s\"</string>
     <string name="playback_channel_name">Playback</string>
     <string name="notifications">Повiдомлення</string>
     <string name="thanks_for_donate">Дякуємо за благодійний внесок!</string>
     <string name="donates_liqpay">LiqPay</string>
 
-
-    <string name="txt_copyright">Application developed by D2</string>
-    <string name="btn_logout">Logout</string>
-
+    <string name="txt_copyright">Додаток розроблено в D2</string>
+    <string name="btn_logout">Вийти</string>
 </resources>

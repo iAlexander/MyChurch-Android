@@ -1,10 +1,12 @@
 package com.d2.pcu;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +40,11 @@ import com.d2.pcu.ui.error.OnError;
 import com.d2.pcu.ui.error.fragments.ErrorFragment;
 import com.d2.pcu.ui.utils.UIUtils;
 import com.d2.pcu.utils.Constants;
+import com.d2.pcu.utils.WebViewLocaleHelper;
 import com.google.android.gms.maps.model.LatLng;
+import com.yariksoffice.lingver.Lingver;
+
+import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -54,11 +60,14 @@ public class MainActivity extends AppCompatActivity implements OnError,
     private NavController navController;
     private Repository repository;
     private ErrorFragment errorFragment;
+    private WebViewLocaleHelper webViewLocaleHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+
+        webViewLocaleHelper = new WebViewLocaleHelper();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.navigationView.setItemIconTintList(null);
@@ -242,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements OnError,
                 break;
             }
             case R.id.donates_liqpay_btn: {
+                webViewLocaleHelper.implementWorkaround(this);
                 navController.navigate(R.id.liqWebFragment);
                 break;
             }

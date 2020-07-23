@@ -1,0 +1,198 @@
+<resources>
+
+    <string name="app_name_test">test</string>
+
+    <string name="app_name">My Church</string>
+    <string name="action_settings">Settings</string>
+    <string name="map">Map</string>
+    <string name="calendar">Calendar</string>
+    <string name="news">News</string>
+    <string name="prayers">Prayers</string>
+    <string name="profile">Profile</string>
+
+    <string name="more">More</string>
+
+    <string name="loading_state_text">Loading…</string>
+    <string name="next_text">Next</string>
+    <string name="skip_text">Skip</string>
+
+    <!--  Symbols  -->
+    <string name="dot">\u00b7</string>
+    <string name="km"> km</string>
+    <string name="ok">OK</string>
+    
+    <!-- Intro -->
+    <string name="intro_start_screen">Start screen</string>
+    <string name="agreement_title">Agree with <a href="http://test.cerkva.asp-win.d2.digital/privacy-policy-my-church.pdf">Policy</a></string>
+    <string name="not_approve_policy">You can\'t use this app without policy approve</string>
+
+    <string-array name="intro_titles">
+        <item>Show road to closest temple</item>
+        <item>Remind about holidays</item>
+        <item>Inform about news</item>
+        <item>Pray together</item>
+        <item>Personalize information for you</item>
+    </string-array>
+
+    <!--  Errors  -->
+    <string name="error_no_connection_title">Connection problem</string>
+    <string name="error_no_connection_description">Check your internet connection</string>
+    <string name="error_server_error_title">Server error</string>
+    <string name="error_server_error_description">Server error connect to support</string>
+    <string name="no_data_text">Sorry, no data</string>
+
+    <!--  Map  -->
+    <string name="map_distance">Distance</string>
+    <string name="map_more">More</string>
+    <string name="map_search_hint">Search…</string>
+    <string name="map_my_location">My location</string>
+
+        <!--  Temple  -->
+    <string name="temple_contacts">Contacts</string>
+    <string name="temple_history_descr">History and description</string>
+    <string name="temple_open">Open now</string>
+    <string name="temple_close">Close now</string>
+    <string name="temple_close_schedule_time">Open at 9–00 and Closing at 19–00</string>
+    <string name="temple_schedule_service">Serving schedule</string>
+    <string name="temple_week_days">mon-fr</string>
+    <string name="temple_weekend_days">st-sun</string>
+    <string name="temple_holidays">holidays</string>
+    <string name="temple_get_directions">Get directions</string>
+    <string name="temple_church_holiday">Holiday of temple:</string>
+    <string name="temple_prior">Prior:</string>
+    <string name="temple_charity">Charity:</string>
+    <string name="temple_phone">Phone:</string>
+    <string name="temple_history_and_description">Description and history</string>
+
+    <!--  Calendar  -->
+        <!--   SingleEvent   -->
+    <string name="event_fasting_true">Fast day</string>
+    <string name="event_fasting_false">There is no post</string>
+    <string name="event_dates">%1$s (%2$s old style)</string>
+    
+    <!--  Pray  -->
+    <string name="pray_evening">Evening</string>
+    <string name="pray_morning">Morning</string>
+    <string name="pray_favorite">Favorite</string>
+    <string name="pray_item_offline">Offline</string>
+
+    <!--  News -->
+    <string name="news_important">Important!</string>
+    <string name="news_notice">Notice</string>
+
+    <!--  Cabinet  -->
+    <string name="change_email">Змінити e-mail</string>
+    <string name="change_pass">Змінити пароль</string>
+
+    <string name="old_email_title">Стара адреса</string>
+    <string name="new_email_title">Нова адреса</string>
+
+    <string name="old_pass_title">Старий пароль</string>
+    <string name="new_pass_title">Новий пароль</string>
+
+    <string name="change_text">Змінити</string>
+
+    <!--  Profile  -->
+    <string name="profile_support">Spirit support</string>
+    <string name="profile_donate">Donate</string>
+    
+        <!--  UserProfile  -->
+    <string name="user_profile_title">Profile</string>
+    <string name="cherneche_name">NonPriest Name</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="benefice">Benefice</string>
+    <string name="birthdate">Birthday date</string>
+    <string name="namesake_date">Day of the namesake</string>
+    <string name="email">E-mail</string>
+    <string name="diocese">Diocese</string>
+    <string name="temple_name">Temple</string>
+    <string name="status">Status</string>
+
+    <string name="believer">Believer</string>
+    <string name="сlergy">Clergy</string>
+    <string name="bishop">Bishop</string>
+
+    <string name="login_resend_sms_timer">Resend SMS %1$s sec</string>
+    <string name="login_sms_title">code sent in SMS to\n%1$s</string>
+
+    <string name="forgot_pass_success_text">We sent pass on email</string>
+
+    <string-array name="priest_state">
+        <item>Диякон</item>
+        <item>Протодиякон</item>
+        <item>Ієрей</item>
+        <item>Протоієрей</item>
+        <item>Священник</item>
+        <item>Ієродиякон</item>
+        <item>Ієромонах</item>
+        <item>Ігумен</item>
+        <item>Архімандрит</item>
+    </string-array>
+
+    <string-array name="bishop_benefice">
+        <item>Єпископ</item>
+        <item>Архієпископ</item>
+        <item>Митрополит</item>
+    </string-array>
+
+    <string-array name="believer_benefice">
+        <item>Вірянин</item>
+        <item>Член парафіяльної ради</item>
+    </string-array>
+
+    <string name="profile_save">Save</string>
+
+        <!--  Sign in  -->
+    <string name="sign_in_title">Enter to cabinet</string>
+    <string name="password_title">Password</string>
+    <string name="password_reminder">&lt;u&gt;Remind password&lt;/u&gt;</string>
+    <string name="sign_in_create_profile">&lt;u&gt;Create profile&lt;/u&gt;</string>
+    <string name="sign_in">Enter</string>
+
+        <!--  Sign up  -->
+    <string name="sign_up">Registration</string>
+    <string name="send_code_btn_text">Send code</string>
+    <string name="next_btn_text">Next</string>
+    <string name="enter_phone_number">Enter your phone number</string>
+    <string name="phone_number">Phone number</string>
+    <string name="login_code_length">Code from SMS - 4 numbers</string>
+    <string name="resend_sms">Resend SMS</string>
+    <string name="create_pass">Create password</string>
+    <string name="profile_at_moderating_text">We check your profile. It can take a few days, we notify you when finish it.</string>
+
+    <!--  Support chats  -->
+    <string name="support_chats_title">Get support</string>
+    <string name="support_chat_body_text">Доброго дня! Це ваш віртуальний помічник з духовних питань. Оберіть, будь ласка, програму, де вам було б зручно задавати питання.</string>
+    <string name="support_chat_body_text_short">Доброго дня! Це ваш віртуальний помічник з духовних питань.</string>
+
+
+    
+        <!--  Donates  -->
+    <string name="donates_title">Пожертвувати кошти через</string>
+    <string name="donates_body_text">Не обов\'язково чекати свята Миколая, щоб зробити добру справу. Адже, тільки справжня добра справа йде від серця, і тільки вона може подарувати щастя.</string>
+    <string name="donates_monobank">Monobank</string>
+    <string name="donates_privat24">Privat24</string>
+    <string name="donates_portmone">Portmone</string>
+    <string name="donates_paypal">PayPal</string>
+
+    <!--  Dialog messages  -->
+    <string name="pass_was_send">Пароль від кабінету відправили на пошту <b>%1$s</b></string>
+    <string name="pass_was_send_moderating">Пароль від кабінету відправили на пошту <b>%1$s</b>.\n\nПрофіль на верифікації.\nМи перевіремо ваші дані найближчим часом, це може зайняти декілька днів.</string>
+    <string name="pass_was_change">Пароль успішно змінено</string>
+    <string name="email_was_change">Електронна адреса успішно змінена</string>
+
+    <string name="understand_text">Зрозуміло</string>
+
+<!--  Errors  -->
+    <string name="field_error_text">Check field - %1$s</string>
+    <string name="playback_channel_name">Playback</string>
+    <string name="notifications">Повiдомлення</string>
+    <string name="thanks_for_donate">Дякуємо за благодійний внесок!</string>
+    <string name="donates_liqpay">LiqPay</string>
+
+
+    <string name="txt_copyright">Application developed by D2</string>
+    <string name="btn_logout">Logout</string>
+
+</resources>

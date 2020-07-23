@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="material_calendar_monday">M</string>
-    <string name="material_calendar_tuesday">T</string>
-    <string name="material_calendar_wednesday">W</string>
-    <string name="material_calendar_thursday">T</string>
-    <string name="material_calendar_friday">F</string>
-    <string name="material_calendar_saturday">S</string>
-    <string name="material_calendar_sunday">S</string>
+    <string name="material_calendar_monday">Пн</string>
+    <string name="material_calendar_tuesday">Вт</string>
+    <string name="material_calendar_wednesday">Ср</string>
+    <string name="material_calendar_thursday">Чт</string>
+    <string name="material_calendar_friday">Пт</string>
+    <string name="material_calendar_saturday">Сб</string>
+    <string name="material_calendar_sunday">Нд</string>
 
     <array name="material_calendar_day_abbreviations_array">
         <item>@string/material_calendar_sunday</item>
@@ -19,21 +19,21 @@
     </array>
 
     <array name="material_calendar_months_array">
-        <item>January</item>
-        <item>February</item>
-        <item>March</item>
-        <item>April</item>
-        <item>May</item>
-        <item>June</item>
-        <item>July</item>
-        <item>August</item>
-        <item>September</item>
-        <item>October</item>
-        <item>November</item>
-        <item>December</item>
+        <item>Січень</item>
+        <item>Лютий</item>
+        <item>Березень</item>
+        <item>Квітень</item>
+        <item>Травень</item>
+        <item>Червень</item>
+        <item>Липень</item>
+        <item>Серпень</item>
+        <item>Вересень</item>
+        <item>Жовтень</item>
+        <item>Листопад</item>
+        <item>Грудень</item>
     </array>
 
-    <string name="material_calendar_today_button">Today</string>
-    <string name="material_calendar_positive_button">OK</string>
-    <string name="material_calendar_negative_button">Cancel</string>
+    <string name="material_calendar_today_button">Сьогодні</string>
+    <string name="material_calendar_positive_button">ОК</string>
+    <string name="material_calendar_negative_button">Відмінити</string>
 </resources>
