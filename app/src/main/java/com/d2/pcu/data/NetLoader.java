@@ -298,7 +298,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> getApi().getCalendarLastUpdate().enqueue(new Callback<UpdateResponse>() {
+        getHandler().post(() -> getApi().getPrayerLastUpdate().enqueue(new Callback<UpdateResponse>() {
             @Override
             public void onResponse(@NonNull Call<UpdateResponse> call, @NonNull Response<UpdateResponse> response) {
                 int resCode = response.code();
