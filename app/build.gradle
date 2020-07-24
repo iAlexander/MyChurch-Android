@@ -11,7 +11,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 3
-        versionName "0.1.04"
+        versionName "0.1.05"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
@@ -59,7 +59,7 @@ android {
             dimension "mode"
             applicationIdSuffix ""
             versionNameSuffix "-dev"
-            buildConfigField "String", "API_BASE_URL", '"http://test.cerkva.asp-win.d2.digital/"'
+            buildConfigField "String", "API_BASE_URL", '"https://mobile.pomisna.info/"'
             buildConfigField "String", "FACEBOOK_URL", '"https://www.facebook.com/Orthodox.in.Ukraine"'
             buildConfigField "boolean", "isDonatEnabled", "true"
             buildConfigField "boolean", "isAudioEnabled", "true"
@@ -74,7 +74,7 @@ android {
             dimension "mode"
             applicationIdSuffix ""
             versionNameSuffix ""
-            buildConfigField "String", "API_BASE_URL", '"http://test.cerkva.asp-win.d2.digital/"'
+            buildConfigField "String", "API_BASE_URL", '"https://mobile.pomisna.info/"'
             buildConfigField "String", "FACEBOOK_URL", '"https://www.facebook.com/Orthodox.in.Ukraine"'
             buildConfigField "boolean", "isDonatEnabled", "true"
             buildConfigField "boolean", "isAudioEnabled", "false"
