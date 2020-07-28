@@ -250,4 +250,8 @@ public class DbLoader implements DefaultLifecycleObserver {
     void saveNotification(NotificationHistoryItem item){
         handler.post(()-> database.notificationDao().insert(item));
     }
+
+    void clearNotifications(){
+        handler.post(()->database.notificationDao().deleteAll());
+    }
 }

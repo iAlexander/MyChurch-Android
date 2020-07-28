@@ -38,4 +38,7 @@ public interface NotificationDao {
 
     @Delete
     void delete(List<NotificationHistoryItem> items);
+
+    @Query("DELETE FROM notificationhistoryitem")
+    void deleteAll();
 }

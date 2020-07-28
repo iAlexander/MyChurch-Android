@@ -23,9 +23,7 @@ public final class NotificationHelper {
     }
 
     public void syncNotification() {
-        if (!TextUtils.isEmpty(repository.getCredentials(Constants.ACCESS_TOKEN))) {
-            signIn = true;
-        }
+        signIn = !TextUtils.isEmpty(repository.getCredentials(Constants.ACCESS_TOKEN));
     }
 
     public boolean isSignIn() {

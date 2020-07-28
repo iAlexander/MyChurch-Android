@@ -66,6 +66,7 @@ public class ProfileMenuViewModel extends BaseViewModel {
     }
 
     public void onLogout(View view) {
+        repository.getNotificationHistory();
         if (logoutOnClickListener != null) {
             logoutOnClickListener.onLogout();
         }

@@ -333,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements OnError,
     public void onLogout() {
         if (repository != null) {
             repository.logout();
+            App.getInstance().getNotificationHelper().syncNotification();
             navController.popBackStack(R.id.profileFragment, false);
         }
     }

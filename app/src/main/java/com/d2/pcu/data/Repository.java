@@ -193,6 +193,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
     }
 
     public void logout(){
+        clearNotifications();
         sharedPreferences.edit()
                 .remove(Constants.ACCESS_TOKEN)
                 .remove(Constants.USER_EMAIL).apply();
@@ -755,6 +756,10 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
     public void saveNotificationToDb(NotificationHistoryItem item) {
         dbLoader.saveNotification(item);
+    }
+
+    public void clearNotifications(){
+        dbLoader.clearNotifications();
     }
 
     public void getUserProfile(String accessToken) {
