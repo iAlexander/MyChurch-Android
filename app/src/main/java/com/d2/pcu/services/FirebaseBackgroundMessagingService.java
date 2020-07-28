@@ -77,14 +77,13 @@ public class FirebaseBackgroundMessagingService extends FirebaseMessagingService
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        super.onMessageReceived(remoteMessage);
+
 
         Intent intent = new Intent(this, MainActivity.class);
 
 //        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(Constants.PUSH_NOTIFICATION, "item");
-
         if (remoteMessage.getData().size() > 0) {
             Map<String, String> map = remoteMessage.getData();
 
@@ -100,5 +99,7 @@ public class FirebaseBackgroundMessagingService extends FirebaseMessagingService
             Timber.d("notification: \n%s\n%s", remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
             createNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(), intent);
         }
+
+        super.onMessageReceived(remoteMessage);
     }
 }

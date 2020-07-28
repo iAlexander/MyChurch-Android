@@ -5,10 +5,12 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
@@ -17,6 +19,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.d2.pcu.data.Repository;
+import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.UserState;
 import com.d2.pcu.databinding.ActivityMainBinding;
 import com.d2.pcu.fragments.cabinet.OnCabinetButtonsClickListener;
@@ -42,6 +45,8 @@ import com.d2.pcu.ui.utils.UIUtils;
 import com.d2.pcu.utils.Constants;
 import com.d2.pcu.utils.WebViewLocaleHelper;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.yariksoffice.lingver.Lingver;
 
 import java.util.Locale;
@@ -83,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements OnError,
         }
 
         setStartScreen();
+
         NavigationUI.setupWithNavController(binding.navigationView, navController);
 
         repository = App.getInstance().getRepositoryInstance();
@@ -118,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements OnError,
                     break;
             }
         });
+
+        if (savedInstanceState == null) handleIntent(getIntent());
     }
 
     private void setStartScreen() {
@@ -140,6 +148,12 @@ public class MainActivity extends AppCompatActivity implements OnError,
 
     private boolean handleIntent(Intent intent) {
         Timber.d("handle intent");
+        if (intent.hasExtra("item")) {
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+            NotificationHistoryItem nhi = gson.fromJson(intent.getStringExtra("item"), NotificationHistoryItem.class);
+//            App.getInstance().getRepositoryInstance().saveNotificationToDb(nhi);
+            intent.putExtra(Constants.PUSH_NOTIFICATION_ID, nhi.getId());
+        }
         if (intent.hasExtra(Constants.PUSH_NOTIFICATION_ID)) {
             Bundle bundle = new Bundle();
             bundle.putInt(Constants.PUSH_NOTIFICATION_ID, intent.getIntExtra(Constants.PUSH_NOTIFICATION_ID, 0));
