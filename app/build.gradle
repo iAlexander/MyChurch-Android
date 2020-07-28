@@ -74,8 +74,8 @@ android {
             dimension "mode"
             applicationIdSuffix ""
             versionNameSuffix ""
-            buildConfigField "String", "API_BASE_URL", '"http://test.cerkva.asp-win.d2.digital/"'
-//            buildConfigField "String", "API_BASE_URL", '"https://mobile.pomisna.info/"'
+//            buildConfigField "String", "API_BASE_URL", '"http://test.cerkva.asp-win.d2.digital/"'
+            buildConfigField "String", "API_BASE_URL", '"https://mobile.pomisna.info/"'
             buildConfigField "String", "FACEBOOK_URL", '"https://www.facebook.com/Orthodox.in.Ukraine"'
             buildConfigField "boolean", "isDonatEnabled", "true"
             buildConfigField "boolean", "isAudioEnabled", "false"
