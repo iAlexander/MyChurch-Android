@@ -2,6 +2,7 @@ package com.d2.pcu.login.sign_up;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -373,7 +374,7 @@ public class UserProfileFragment extends BaseFragment {
                     viewModel.valid = false;
                     break ifBlock;
                 }
-                if (userProfile.getEmail().isEmpty()) {
+                if (userProfile.getEmail().isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(userProfile.getEmail()).matches()) {
                     onLoginError.onError(formatter(R.string.email));
                     viewModel.valid = false;
                     break ifBlock;
