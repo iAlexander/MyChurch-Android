@@ -76,7 +76,7 @@ public class UserProfileViewModel extends BaseViewModel {
 
            for (BaseTemple temple : templesLiveData.getValue()) {
 
-               if (temple.getName().toLowerCase().startsWith(query.toLowerCase())) {
+               if (temple.getName().toLowerCase().contains(query.toLowerCase())) {
                    searchedTemplesList.add(temple);
                }
            }
