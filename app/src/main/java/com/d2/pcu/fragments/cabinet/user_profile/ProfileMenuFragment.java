@@ -54,7 +54,10 @@ public class ProfileMenuFragment extends BaseFragment {
         viewModel.getUserProfileLiveData().observe(
                 getViewLifecycleOwner(),
                 userProfile -> {
-                    String fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
+                    String fullName = "";
+                    if(userProfile!=null){
+                        fullName = userProfile.getFirstName() + " " + userProfile.getLastName();
+                    }
                     binding.nameField.setText(fullName);
 //                    binding.tvMember.setText(userProfile.getMember());
                 }
