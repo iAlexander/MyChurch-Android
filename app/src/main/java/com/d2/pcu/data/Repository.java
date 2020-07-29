@@ -3,7 +3,6 @@ package com.d2.pcu.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
@@ -15,15 +14,12 @@ import androidx.lifecycle.OnLifecycleEvent;
 
 import com.d2.pcu.R;
 import com.d2.pcu.StartFragments;
-import com.d2.pcu.data.db.MasterDbModel;
-import com.d2.pcu.data.db.OnDbResult;
-import com.d2.pcu.data.db.OnDbResultState;
+import com.d2.pcu.data.model.UpdateResponse;
 import com.d2.pcu.data.model.calendar.CalendarItem;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.data.model.news.NewsItem;
 import com.d2.pcu.data.model.news.NewsList;
 import com.d2.pcu.data.model.pray.Pray;
-import com.d2.pcu.data.model.pray.PraysList;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.model.profile.UserState;
@@ -31,7 +27,6 @@ import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
 import com.d2.pcu.data.responses.OnMasterResponse;
 import com.d2.pcu.data.responses.calendar.CalendarResponse;
-import com.d2.pcu.data.model.UpdateResponse;
 import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
@@ -61,15 +56,12 @@ import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 import timber.log.Timber;
 
 public class Repository implements LifecycleObserver, LifecycleOwner {
-
-    private static final String TAG = Repository.class.getSimpleName();
 
     private LifecycleRegistry lifecycleRegistry;
     private Gson gson;
@@ -112,7 +104,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         getLifecycle().addObserver(netLoader);
         getLifecycle().addObserver(dbLoader);
 
-        Log.i(TAG, "Created");
+        Timber.i("Repository Created");
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -192,12 +184,38 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         return UserState.fromString(sharedPreferences.getString("isAuth", ""));
     }
 
-    public void logout(){
+    public void logout() {
         clearNotifications();
         sharedPreferences.edit()
                 .remove(Constants.ACCESS_TOKEN)
                 .remove(Constants.USER_EMAIL).apply();
         setAuthState(UserState.NON_AUTH);
+    }
+
+    public void logoutServer() {
+        String auth = getCredentials(Constants.ACCESS_TOKEN);
+        if (!TextUtils.isEmpty(auth)) {
+            netLoader.logout(auth, new OnHTTPResult() {
+                @Override
+                public void onSuccess(OnMasterResponse response) {
+                }
+
+                @Override
+                public void onFail(Throwable ex) {
+                    showError(ex);
+                }
+            });
+        }
+    }
+
+    private void showError(Throwable ex) {
+        if (onError != null) {
+            if (ex instanceof HTTPException) {
+                onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
+            } else {
+                onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
+            }
+        }
     }
 
     public void setLastLocation(LatLng location) {
@@ -231,13 +249,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 Timber.e(ex, "getShortTemplesInfo: %s", ex.getMessage());
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -263,13 +275,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 Timber.e(ex, "getShortTemplesInfo: %s", ex.getMessage());
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -284,22 +290,16 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 Timber.d(ex, "getTempleById: %s", ex.getMessage());
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
 
-    public LiveData<List<CalendarItem>> getCalendarItemsLiveData(){
+    public LiveData<List<CalendarItem>> getCalendarItemsLiveData() {
         return dbLoader.getCalendarItems();
     }
 
-    public void checkCalendarUpdate(){
+    public void checkCalendarUpdate() {
 
         netLoader.getCalendarUpdate(new OnHTTPResult() {
             @Override
@@ -310,8 +310,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                             .getLastUpdate()
                             .getHash();
                 }
-                String lastToken = sharedPreferences.getString(Constants.CALENDAR_UPDATE_TOKEN,"");
-                if(!Objects.equals(lastToken, updateToken)){
+                String lastToken = sharedPreferences.getString(Constants.CALENDAR_UPDATE_TOKEN, "");
+                if (!Objects.equals(lastToken, updateToken)) {
                     getCalendar(updateToken);
                 }
             }
@@ -319,13 +319,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 Timber.d(ex, "getCalendarUpdate: %s", ex.getMessage());
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -357,13 +351,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 Timber.d(ex, "getCalendar: %s", ex.getMessage());
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -378,13 +366,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 Timber.d(ex, "getEventInfo: %s", ex.getMessage());
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -405,13 +387,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
             @Override
             public void onFail(Throwable ex) {
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -428,7 +404,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
-    public void checkPrayUpdate(){
+    public void checkPrayUpdate() {
 
         netLoader.getPrayUpdate(new OnHTTPResult() {
             @Override
@@ -439,8 +415,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                             .getLastUpdate()
                             .getHash();
                 }
-                String lastToken = sharedPreferences.getString(Constants.PRAY_UPDATE_TOKEN,"");
-                if(!Objects.equals(lastToken, updateToken)){
+                String lastToken = sharedPreferences.getString(Constants.PRAY_UPDATE_TOKEN, "");
+                if (!Objects.equals(lastToken, updateToken)) {
                     getPrays(updateToken);
                 }
             }
@@ -448,13 +424,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
             @Override
             public void onFail(Throwable ex) {
                 Timber.d(ex, "getPrayUpdate: %s", ex.getMessage());
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -476,25 +446,19 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                     dbLoader.savePrays(items);
                 }
 
-                if(!Constants.PRAY_FORCE_UPDATE.equals(updateToken)){
+                if (!Constants.PRAY_FORCE_UPDATE.equals(updateToken)) {
                     sharedPreferences.edit().putString(Constants.PRAY_UPDATE_TOKEN, updateToken).apply();
                 }
             }
 
             @Override
             public void onFail(Throwable ex) {
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
 
-    public LiveData<List<Pray>> getPraysLiveData(String type){
+    public LiveData<List<Pray>> getPraysLiveData(String type) {
         return dbLoader.getPrays(type);
     }
 
@@ -507,13 +471,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
             @Override
             public void onFail(Throwable ex) {
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -652,7 +610,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
-    public LiveData<List<NotificationHistoryItem>> getNotificationLiveData(){
+    public LiveData<List<NotificationHistoryItem>> getNotificationLiveData() {
         return dbLoader.getNotifications();
     }
 
@@ -693,13 +651,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
                 } catch (JsonSyntaxException ignore) {
                 }
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -739,18 +691,12 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
                 } catch (JsonSyntaxException ignore) {
                 }
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
 
-    public LiveData<Integer> getUnreadNotificationCount(){
+    public LiveData<Integer> getUnreadNotificationCount() {
         return dbLoader.getUnreadNotificationCount();
     }
 
@@ -758,7 +704,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         dbLoader.saveNotification(item);
     }
 
-    public void clearNotifications(){
+    public void clearNotifications() {
         dbLoader.clearNotifications();
     }
 
@@ -794,13 +740,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 } catch (JsonSyntaxException ignore) {
                 }
 
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -835,13 +775,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 } catch (JsonSyntaxException ignore) {
                 }
 
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -876,13 +810,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
                 } catch (JsonSyntaxException ignore) {
                 }
 
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }
@@ -897,13 +825,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
             @Override
             public void onFail(Throwable ex) {
-                if (onError != null) {
-                    if (ex instanceof HTTPException) {
-                        onError.onError(Constants.ERROR_TYPE_SERVER_ERROR);
-                    } else {
-                        onError.onError(Constants.ERROR_TYPE_NO_CONNECTION);
-                    }
-                }
+                showError(ex);
             }
         });
     }

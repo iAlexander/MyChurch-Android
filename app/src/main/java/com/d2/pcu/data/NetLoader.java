@@ -423,6 +423,40 @@ public class NetLoader implements DefaultLifecycleObserver {
         }));
     }
 
+    void logout(String accessToken, OnHTTPResult result){
+        getHandler().post(()-> getApi().logout(accessToken)
+                .enqueue(new Callback<BoolResponse>() {
+                    @Override
+                    public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
+                        int resCode = response.code();
+
+                        if (resCode >= 200 && resCode < 300) {
+                            result.onSuccess(response.body());
+                        } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
+                            Gson gson = new Gson();
+                            Type type = new TypeToken<JsonObject>() {
+                            }.getType();
+
+                            JsonObject error = gson.fromJson(response.errorBody().charStream(), type);
+                            StringBuilder stringBuilder = new StringBuilder();
+                            JsonArray errors = error.getAsJsonArray("errors");
+                            for (JsonElement object : errors) {
+                                stringBuilder.append(object.getAsJsonObject().get("message")).append("\n");
+                            }
+                            onFailure(null, new HTTPException(stringBuilder.toString()));
+                        } else {
+                            onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BoolResponse> call, Throwable t) {
+                        result.onFail(t);
+                    }
+                })
+        );
+    }
+
     void signUp(UserProfile userProfile, final OnHTTPResult result) {
         if (!isOnline()) {
             result.onFail(new NoInternetConnection("offline"));

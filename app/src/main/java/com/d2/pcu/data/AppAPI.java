@@ -101,6 +101,9 @@ public interface AppAPI {
             @Field("password") String password
     );
 
+    @POST("/account/logout")
+    Call<BoolResponse> logout(@Header("Authorization") String accessToken);
+
     @FormUrlEncoded
     @POST("/account/forgot-password")
     Call<BoolResponse> forgotPass(@Field("login") String email);

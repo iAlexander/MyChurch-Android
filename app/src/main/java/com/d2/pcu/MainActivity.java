@@ -346,6 +346,7 @@ public class MainActivity extends AppCompatActivity implements OnError,
     @Override
     public void onLogout() {
         if (repository != null) {
+            repository.logoutServer();
             repository.logout();
             App.getInstance().getNotificationHelper().syncNotification();
             navController.popBackStack(R.id.profileFragment, false);
