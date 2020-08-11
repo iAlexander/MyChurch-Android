@@ -37,6 +37,7 @@ public class DonateFragment extends BaseFragment {
         setViewModelListeners(viewModel);
 
         binding.setModel(viewModel);
+        viewModel.shouldShowAsUnreadNotification().removeObservers(getViewLifecycleOwner());
         viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
                 binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
     }

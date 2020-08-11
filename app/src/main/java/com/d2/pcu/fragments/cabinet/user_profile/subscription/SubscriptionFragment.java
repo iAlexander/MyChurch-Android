@@ -11,18 +11,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.d2.pcu.R;
 import com.d2.pcu.data.model.profile.SubscriptionStatus;
 import com.d2.pcu.databinding.FragmentSubscriptionBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.fragments.cabinet.donate.OnDonatesClickListener;
-import com.d2.pcu.fragments.notification.NotificationAdapter;
-import com.d2.pcu.fragments.notification.NotificationFragmentDirections;
 import com.d2.pcu.ui.view.ClearErrorTextWatcher;
-import com.d2.pcu.ui.view.DecimalDigitsInputFilter;
+import com.d2.pcu.ui.view.DigitsInputFilter;
 
 public class SubscriptionFragment extends BaseFragment {
 
@@ -59,7 +55,8 @@ public class SubscriptionFragment extends BaseFragment {
             }
         });
 
-        binding.etChargeAmount.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(10, 2)});
+        binding.etChargeAmount.setFilters(new InputFilter[]{new DigitsInputFilter(8, 2, Float.MAX_VALUE)});
+
 
         binding.btnSubscribe.setOnClickListener(v -> {
 
@@ -126,8 +123,8 @@ public class SubscriptionFragment extends BaseFragment {
 
         viewModel.getPaymentHistory().removeObservers(getViewLifecycleOwner());
         viewModel.getPaymentHistory().observe(getViewLifecycleOwner(), list -> {
-                adapter.setItems(list);
-                viewModel.disableLoading();
+            adapter.setItems(list);
+            viewModel.disableLoading();
         });
     }
 

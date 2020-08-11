@@ -46,11 +46,13 @@ public class LiqWebFragment extends BaseFragment {
         setViewModelListeners(viewModel);
         viewModel.enableLoading();
         binding.setModel(viewModel);
+        viewModel.shouldShowAsUnreadNotification().removeObservers(getViewLifecycleOwner());
         viewModel.shouldShowAsUnreadNotification().observe(getViewLifecycleOwner(), count ->
                 binding.ivNotificationBell.setImageResource(count == 0 ? R.drawable.ic_notifications_none : R.drawable.ic_notifications_active));
 
         setupWebView();
 
+        viewModel.getPaymentData().removeObservers(getViewLifecycleOwner());
         viewModel.getPaymentData().observe(getViewLifecycleOwner(), s -> {
             Map<String, String> headers = new HashMap<>();
             headers.put("Accept-Language", "uk");
@@ -74,9 +76,13 @@ public class LiqWebFragment extends BaseFragment {
 
     @Override
     public void onDetach() {
+        binding.webView.clearHistory();
+        binding.webView.loadUrl("");
         super.onDetach();
         infoDialogListener = null;
     }
+
+
 
     private void setupWebView() {
         binding.webView.getSettings().setJavaScriptEnabled(true);
@@ -109,4 +115,6 @@ public class LiqWebFragment extends BaseFragment {
         }
         return false;
     }
+
+
 }

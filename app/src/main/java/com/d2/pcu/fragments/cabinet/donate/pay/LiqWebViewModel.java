@@ -21,6 +21,7 @@ public class LiqWebViewModel extends BaseViewModel {
 
     public LiqWebViewModel() {
         repository = App.getInstance().getRepositoryInstance();
+        repository.getTransport().getPaymentChannel().postValue("");
         paymentData = Transformations.switchMap(repository.getTransport().getPaymentChannel(), MutableLiveData::new);
     }
 
@@ -46,5 +47,10 @@ public class LiqWebViewModel extends BaseViewModel {
             onBackPressed(view);
         }
 
+    }
+
+    @Override
+    public void onBackPressed(View view) {
+        super.onBackPressed(view);
     }
 }
