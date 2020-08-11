@@ -1,5 +1,6 @@
 <resources>
     <declare-styleable name="ButtonWithArrow">
         <attr name="bwaText" format="reference" />
+        <attr name="bwaDescription" format="reference" />
     </declare-styleable>
 </resources>

@@ -53,15 +53,9 @@ public class ProfileMenuViewModel extends BaseViewModel {
         return selectedDefaultScreen;
     }
 
-    public void onEditEmail(View view, ChangeDataType changeDataType) {
+    public void onEditAction(View view, ChangeDataType changeDataType) {
         if (onEditProfileDataClickListener != null) {
-            onEditProfileDataClickListener.onEditEmailOrPasswordClick(changeDataType);
-        }
-    }
-
-    public void onEditPasswordClick(View view, ChangeDataType changeDataType) {
-        if (onEditProfileDataClickListener != null) {
-            onEditProfileDataClickListener.onEditEmailOrPasswordClick(changeDataType);
+            onEditProfileDataClickListener.onEditActionClick(changeDataType);
         }
     }
 
@@ -84,6 +78,6 @@ public class ProfileMenuViewModel extends BaseViewModel {
     }
 
     public enum ChangeDataType {
-        EMAIL, PASSWORD
+        EMAIL, PASSWORD, SUBSCRIPTION
     }
 }

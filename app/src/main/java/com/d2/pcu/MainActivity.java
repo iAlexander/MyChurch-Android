@@ -1,16 +1,12 @@
 package com.d2.pcu;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
@@ -47,9 +43,6 @@ import com.d2.pcu.utils.WebViewLocaleHelper;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.yariksoffice.lingver.Lingver;
-
-import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -285,6 +278,14 @@ public class MainActivity extends AppCompatActivity implements OnError,
     }
 
     @Override
+    public void onDonatesSubscribe(float amount) {
+        webViewLocaleHelper.implementWorkaround(this);
+        Bundle bundle = new Bundle();
+        bundle.putFloat("amount", amount);
+        navController.navigate(R.id.action_subscriptionFragment_to_liqWebFragment, bundle);
+    }
+
+    @Override
     public void onChatClick(int chatId) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
 
@@ -311,16 +312,15 @@ public class MainActivity extends AppCompatActivity implements OnError,
     }
 
     @Override
-    public void onEditEmailOrPasswordClick(ProfileMenuViewModel.ChangeDataType changeDataType) {
-        Bundle arg = new Bundle();
-        arg.putSerializable("changeDataType", changeDataType);
+    public void onEditActionClick(ProfileMenuViewModel.ChangeDataType changeDataType) {
+        if (ProfileMenuViewModel.ChangeDataType.SUBSCRIPTION == changeDataType) {
+            navController.navigate(R.id.subscriptionFragment);
+        } else {
+            Bundle arg = new Bundle();
+            arg.putSerializable("changeDataType", changeDataType);
 
-        navController.navigate(R.id.changeProfileEnteringDataFragment, arg);
-    }
-
-    @Override
-    public void onEditPasswordClick(ProfileMenuViewModel.ChangeDataType changeDataType) {
-        // TODO: 02.04.2020
+            navController.navigate(R.id.changeProfileEnteringDataFragment, arg);
+        }
     }
 
     @Override

@@ -83,6 +83,17 @@
 <!--  Cabinet  -->
     <string name="change_email">Змінити e-mail</string>
     <string name="change_pass">Змінити пароль</string>
+    <string name="charge">Благодійний внесок</string>
+    <string name="charge_description">регулярні платежі</string>
+
+    <string name="finance_instance">Фінансова установа, що приймає платежі</string>
+    <string name="finance_instance_type">LiqPay</string>
+    <string name="finance_subscription_duration">Періодичність платежів складає 1 р/міс. </string>
+
+    <string name="contacts_dropdown"> Контакти юридичної особи</string>
+    <string name="finance_instance_name_holder">Назва установи</string>
+    <string name="finance_instance_name">Православна Церква України</string>
+    <string name="finance_history">Історія платежів</string>
 
     <string name="old_email_title">Стара адреса</string>
     <string name="new_email_title">Нова адреса</string>
@@ -191,4 +202,5 @@
 
     <string name="txt_copyright">Додаток розроблено в D2</string>
     <string name="btn_logout">Вийти</string>
+    <string name="error_wrong_payment_value">Невірно введена сума платежу</string>
 </resources>

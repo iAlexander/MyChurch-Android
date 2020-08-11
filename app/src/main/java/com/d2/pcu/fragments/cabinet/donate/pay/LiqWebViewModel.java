@@ -32,6 +32,10 @@ public class LiqWebViewModel extends BaseViewModel {
         repository.getCheckOut(Constants.PaymentAction.DONATE, Constants.PAYMENT_COMPLETE);
     }
 
+    public void getForm(float amount) {
+        repository.getCheckOutSubscription(Constants.PaymentAction.SUBSCRIBE, Constants.PAYMENT_COMPLETE, amount, repository.getCredentials(Constants.ACCESS_TOKEN));
+    }
+
     public LiveData<String> getPaymentData() {
         return paymentData;
     }

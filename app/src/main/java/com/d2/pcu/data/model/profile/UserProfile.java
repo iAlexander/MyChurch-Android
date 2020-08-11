@@ -33,6 +33,8 @@ public class UserProfile {
 
     private String firebaseToken;
 
+    private String subscriptionStatus = SubscriptionStatus.NOT_SUBSCRIBED;
+
     public UserProfile() {
         firstName = "";
         lastName = "";
@@ -151,5 +153,13 @@ public class UserProfile {
 
     public void setFirebaseToken(String firebaseToken) {
         this.firebaseToken = firebaseToken;
+    }
+
+    public String getSubscriptionStatus() {
+        return subscriptionStatus;
+    }
+
+    public void setSubscriptionStatus(String subscriptionStatus) {
+        this.subscriptionStatus = subscriptionStatus;
     }
 }

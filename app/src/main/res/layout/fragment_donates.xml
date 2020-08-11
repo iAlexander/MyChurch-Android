@@ -15,30 +15,29 @@
         android:layout_height="match_parent"
         tools:context=".fragments.cabinet.CabinetFragment">
 
-        <androidx.appcompat.widget.Toolbar
+        <LinearLayout
+            style="@style/AppToolbar"
             android:id="@+id/support_chats_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="84dp"
-            android:background="@drawable/bg_app_color_gradient_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
-                android:layout_marginEnd="@dimen/small"
                 android:onClick="@{model::onBackPressed}"
                 android:padding="@dimen/default_margin"
                 app:srcCompat="@drawable/ic_arrow_back_white" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|bottom"
-                android:padding="@dimen/default_margin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
                 android:text="@string/profile_donate"
                 android:textAppearance="@style/AppText.Big.White.Bold" />
 
@@ -46,14 +45,13 @@
                 android:id="@+id/ivNotificationBell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
+                android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/small"
-                android:padding="@dimen/default_margin"
                 android:onClick="@{model::onNotificationClick}"
+                android:padding="@dimen/small"
                 android:visibility="@{model.shouldShowNotification ? View.VISIBLE : View.GONE}"
                 app:srcCompat="@drawable/ic_notifications_none" />
-
-        </androidx.appcompat.widget.Toolbar>
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/support_title_tv"

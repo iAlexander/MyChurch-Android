@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "456109909237-l3jlkldnk7dd0n9jfic7dvlelt3a8u0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.d2.pcu",
+            "certificate_hash": "88144d4f706c560bb8ca94dc0b7d1169479d6d6c"
+          }
+        },
+        {
           "client_id": "456109909237-09858ri2ofddj4t2ohfv6m5bqq8c2kar.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -30,6 +38,13 @@
             {
               "client_id": "456109909237-09858ri2ofddj4t2ohfv6m5bqq8c2kar.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "456109909237-gvq3m0l1o2epetaf6uer9i8beb5dmv1g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.alogozinsky.MyChurchD2"
+              }
             }
           ]
         }

@@ -51,15 +51,19 @@ public class LiqWebFragment extends BaseFragment {
 
         setupWebView();
 
-        viewModel.getPaymentData().observe(getViewLifecycleOwner(), s ->{
+        viewModel.getPaymentData().observe(getViewLifecycleOwner(), s -> {
             Map<String, String> headers = new HashMap<>();
             headers.put("Accept-Language", "uk");
 
             binding.webView.loadUrl(s, headers);
         });
 
-        viewModel.getForm();
-
+        Bundle args = getArguments();
+        if (args != null && args.getFloat("amount") > 0) {
+            viewModel.getForm(getArguments().getFloat("amount"));
+        } else {
+            viewModel.getForm();
+        }
     }
 
     @Override
@@ -100,7 +104,7 @@ public class LiqWebFragment extends BaseFragment {
     private boolean handleUrlResult(String url) {
         Timber.d("finished: %s", url);
 
-        if(Constants.PAYMENT_COMPLETE.equals(url)){
+        if (Constants.PAYMENT_COMPLETE.equals(url)) {
             viewModel.onCompletePayment(binding.getRoot());
         }
         return false;

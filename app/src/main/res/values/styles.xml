@@ -40,6 +40,10 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="AppButton.FullWidth" parent="AppButton">
+        <item name="android:background">@drawable/bg_button_rect</item>
+    </style>
+
     <style name="AppButton.Map">
         <item name="android:textSize">@dimen/textSizeSmall</item>
     </style>

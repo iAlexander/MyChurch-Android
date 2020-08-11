@@ -87,15 +87,23 @@
                 android:id="@+id/btnChangeEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{(view) -> model.onEditEmail(view, ChangeDataType.EMAIL)}"
+                android:onClick="@{(view) -> model.onEditAction(view, ChangeDataType.EMAIL)}"
                 app:bwaText="@string/change_email" />
 
             <com.d2.pcu.ui.view.ButtonWithArrow
                 android:id="@+id/btnChangePass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{(view) -> model.onEditEmail(view, ChangeDataType.PASSWORD)}"
+                android:onClick="@{(view) -> model.onEditAction(view, ChangeDataType.PASSWORD)}"
                 app:bwaText="@string/change_pass" />
+
+            <com.d2.pcu.ui.view.ButtonWithArrow
+                android:id="@+id/btnCharge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{(view) -> model.onEditAction(view, ChangeDataType.SUBSCRIPTION)}"
+                app:bwaText="@string/charge"
+                app:bwaDescription="@string/charge_description"/>
 
 
             <androidx.appcompat.widget.AppCompatTextView

@@ -52,7 +52,7 @@
         android:id="@+id/prayFragment"
         android:name="com.d2.pcu.fragments.pray.PrayFragment"
         android:label="@string/prayers"
-        tools:layout="@layout/more_fragment" >
+        tools:layout="@layout/fragment_pray" >
         <action
             android:id="@+id/action_prayFragment_to_prayItemFragment"
             app:destination="@id/prayItemFragment" />
@@ -182,4 +182,15 @@
         android:id="@+id/changeProfileEnteringDataFragment"
         android:name="com.d2.pcu.fragments.cabinet.user_profile.change_data.ChangeProfileEnteringDataFragment"
         android:label="ChangeProfileEnteringDataFragment" />
+
+    <fragment
+        android:id="@+id/subscriptionFragment"
+        android:name="com.d2.pcu.fragments.cabinet.user_profile.subscription.SubscriptionFragment"
+        tools:layout="@layout/fragment_subscription"
+        android:label="SubscriptionFragment" >
+        <action
+            android:id="@+id/action_subscriptionFragment_to_liqWebFragment"
+            app:destination="@id/liqWebFragment" />
+    </fragment>
+
 </navigation>

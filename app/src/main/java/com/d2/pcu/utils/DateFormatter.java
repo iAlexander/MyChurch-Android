@@ -6,12 +6,15 @@ import java.util.Locale;
 
 public class DateFormatter {
 
+    private static final Locale locale = new Locale("uk","UA");
+    private static final SimpleDateFormat paymentDateFormat = new SimpleDateFormat("dd MMM yyyy", locale);
+
     public static String getDayAndMonth(Date date) {
         if (date == null) {
             return "";
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM", locale);
 
         return simpleDateFormat.format(date);
     }
@@ -21,7 +24,7 @@ public class DateFormatter {
             return "";
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", locale);
 
         return simpleDateFormat.format(date);
     }
@@ -31,8 +34,17 @@ public class DateFormatter {
             return "";
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", locale);
 
         return simpleDateFormat.format(date);
     }
+
+    public static String getDatePayment(Date date) {
+        if (date == null) {
+            return "";
+        }
+
+        return paymentDateFormat.format(date);
+    }
+
 }

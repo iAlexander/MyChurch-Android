@@ -77,5 +77,14 @@ public class Constants {
 
     public static final String PAYMENT_COMPLETE = "http://pcu.com/success";
 
+    @StringDef({
+            PaymentStatus.PAYDONATE, PaymentStatus.REGULAR, PaymentStatus.REGULAR_ERROR
+    })
+    @Retention(RetentionPolicy.CLASS)
+    public @interface PaymentStatus {
+        String REGULAR="Regular";
+        String PAYDONATE = "Paydonate";
+        String REGULAR_ERROR = "RegularError";
+    }
 
 }

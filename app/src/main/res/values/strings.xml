@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="google_apis" translatable="false">AIzaSyCUmvMjpTGt_AIaWORUUUYMggbj8LRmOr0</string>
+<!--    <string name="google_apis" translatable="false">AIzaSyCUmvMjpTGt_AIaWORUUUYMggbj8LRmOr0</string>-->
+    <string name="google_apis" translatable="false">AIzaSyBC8OgqAgtK6Sqex8GCf7eIJRUPBDWeUB8</string>
+
     <!--    <string name="exo_download_notification_channel_name" translatable="false">AIzaSyCUmvMjOR</string>-->
 
     <string name="pcu_firebase_msg_channel_id" translatable="false">firebase_pcu_msg_id_01</string>
@@ -88,6 +90,26 @@
 <!--  Cabinet  -->
     <string name="change_email">Змінити e-mail</string>
     <string name="change_pass">Змінити пароль</string>
+    <string name="charge">Благодійний внесок</string>
+    <string name="charge_description">регулярні платежі</string>
+
+
+    <string name="finance_instance">Фінансова установа, що приймає платежі</string>
+    <string name="finance_instance_type">LiqPay</string>
+    <string name="finance_subscription_duration">Періодичність платежів складає 1 р/міс.</string>
+    <string name="finance_subscription_amount" translatable="false">Зазначте сумму (грн):</string>
+
+    <string name="contacts_dropdown"> Контакти юридичної особи</string>
+    <string name="finance_instance_name_holder">Назва установи</string>
+    <string name="finance_instance_name">Православна Церква України</string>
+    <string name="finance_instance_email" translatable="false">support@pomisna.info</string>
+    <string name="finance_instance_address" translatable="false">м. Київ, вул. Трьохсвятительська, 8</string>
+    <string name="finance_ask_about_payment" translatable="false">Робити благодійні внески щомісяця?</string>
+    <string name="finance_payment_amount" translatable="false">0.00</string>
+    <string name="btn_subscribe" translatable="false">Підписатись</string>
+    <string name="btn_unsubscribe" translatable="false">Відписатись</string>
+
+    <string name="finance_history">Історія платежів</string>
 
     <string name="old_email_title">Стара адреса</string>
     <string name="new_email_title">Нова адреса</string>
@@ -200,4 +222,5 @@
 
     <string name="txt_copyright">Додаток розроблено в D2</string>
     <string name="btn_logout">Вийти</string>
+    <string name="error_wrong_payment_value">Невірно введена сума платежу</string>
 </resources>

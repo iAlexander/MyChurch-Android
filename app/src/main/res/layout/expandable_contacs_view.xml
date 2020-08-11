@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/flExpandable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_blue">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginEnd="56dp"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:text="@string/contacts_dropdown"
+                android:textAppearance="@style/AppText" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivSelector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:padding="@dimen/default_padding"
+                app:srcCompat="@drawable/ic_arrow_down" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/llExpanded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryLight"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/default_padding"
+                android:paddingBottom="@dimen/small"
+                android:text="@string/finance_instance_name_holder" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_underline"
+                android:paddingBottom="@dimen/small"
+                android:text="@string/finance_instance_name"
+                android:textAppearance="@style/AppText.General" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/default_padding"
+                android:paddingBottom="@dimen/small"
+                android:text="@string/email" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:background="@drawable/bg_underline"
+                android:paddingBottom="@dimen/small"
+                android:text="@string/finance_instance_email"
+                android:textAppearance="@style/AppText.General" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/map_pin"
+                android:drawablePadding="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding"
+                android:text="@string/finance_instance_address"
+                android:textAppearance="@style/AppText.General" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

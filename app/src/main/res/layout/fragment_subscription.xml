@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="model"
+            type="com.d2.pcu.fragments.cabinet.user_profile.subscription.SubscriptionViewModel" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryLight"
+        tools:context=".LoginActivity">
+
+        <LinearLayout
+            style="@style/AppToolbar"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:onClick="@{model::onBackPressed}"
+                android:padding="@dimen/default_margin"
+                app:srcCompat="@drawable/ic_arrow_back_white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/change_entering_data_topbar_title_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="@string/charge"
+                android:textAppearance="@style/AppText.Big.White.Bold" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivNotificationBell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/small"
+                android:onClick="@{model::onNotificationClick}"
+                android:padding="@dimen/small"
+                android:visibility="@{model.shouldShowNotification ? View.VISIBLE : View.GONE}"
+                app:srcCompat="@drawable/ic_notifications_none" />
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMember"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F2F9FE"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:paddingBottom="@dimen/small"
+                    android:text="@string/finance_instance" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F2F9FE"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:paddingBottom="@dimen/default_padding"
+                    android:text="@string/finance_instance_type"
+                    android:textAppearance="@style/AppText.Title.Bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:paddingBottom="@dimen/small"
+                    android:text="@string/finance_subscription_duration" />
+
+                <com.d2.pcu.ui.view.ExpandableContactsView
+                    android:id="@+id/contactsExpandable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/small"
+                    android:layout_marginEnd="@dimen/default_margin" />
+
+                <FrameLayout
+                    android:id="@+id/flSubscribe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/llSubscribed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvHistoryLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/default_padding"
+                            android:paddingEnd="@dimen/default_padding"
+                            android:paddingBottom="@dimen/small"
+                            android:text="@string/finance_history" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvHistoryItems"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:itemCount="4"
+                            tools:listitem="@layout/payment_item_view"/>
+                    </LinearLayout>
+                </FrameLayout>
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/flUnSubscribe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/llUnSubscribed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_padding"
+                    android:paddingBottom="@dimen/small"
+                    android:text="@string/finance_ask_about_payment"
+                    android:textAppearance="@style/AppText.General" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/finance_subscription_amount" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiChargeAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etChargeAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:inputType="numberDecimal"
+                        android:text="@string/finance_payment_amount"
+                        android:textAppearance="@style/AppText.General" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSubscribe"
+            style="@style/AppButton.FullWidth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big"
+            android:text="@string/btn_subscribe"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUnSubscribe"
+            style="@style/AppButton.FullWidth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/big"
+            android:text="@string/btn_unsubscribe"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

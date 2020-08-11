@@ -12,7 +12,7 @@
 
     <color name="backgroundPlayer">#f4f4f4</color>
 
-<!--  Colors  -->
+    <!--  Colors  -->
     <color name="white">#FFFFFFFF</color>
     <color name="app_yellow">#D79F28</color>
     <color name="green">#219654</color>
@@ -20,5 +20,7 @@
     <color name="blue">#017AE5</color>
 
     <color name="colorDivider">#F2F2F2</color>
+    <color name="colorGrayAmount">#8792A1</color>
+
 
 </resources>

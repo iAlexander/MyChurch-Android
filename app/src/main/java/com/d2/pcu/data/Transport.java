@@ -13,8 +13,8 @@ import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.model.profile.UserState;
 import com.d2.pcu.data.responses.more.MoreResponse;
+import com.d2.pcu.data.model.profile.PaymentHistoryItem;
 import com.d2.pcu.utils.exo.PlayItem;
-import com.d2.pcu.utils.livedata_utils.SingleEvent;
 import com.d2.pcu.utils.livedata_utils.SingleLiveEvent;
 
 import java.util.List;
@@ -58,6 +58,8 @@ public class Transport {
 
     private MutableLiveData<NotificationHistoryItem> notificationCardChannel = new MutableLiveData<>();
 
+    private MutableLiveData<List<PaymentHistoryItem>> paymentsChannel = new MutableLiveData<>();
+
     private MutableLiveData<MoreResponse> moreChannel = new MutableLiveData<>();
 
     private MutableLiveData<List<Pray>> morningServerPraysChannel = new MutableLiveData<>();
@@ -100,6 +102,10 @@ public class Transport {
 
     public MutableLiveData<List<NotificationHistoryItem>> getNotificationChannel() {
         return notificationChannel;
+    }
+
+    public MutableLiveData<List<PaymentHistoryItem>> getPaymentsChannel() {
+        return paymentsChannel;
     }
 
     public MutableLiveData<NotificationHistoryItem> getNotificationCardChannel() {

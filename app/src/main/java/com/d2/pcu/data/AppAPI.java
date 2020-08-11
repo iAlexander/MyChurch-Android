@@ -13,7 +13,9 @@ import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
+import com.d2.pcu.data.responses.profile.History;
 import com.d2.pcu.data.responses.profile.NotificationHistory;
+import com.d2.pcu.data.model.profile.PaymentHistoryItem;
 import com.d2.pcu.data.responses.profile.PaymentUrl;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
@@ -137,6 +139,12 @@ public interface AppAPI {
     Call<BoolDataResponse<NotificationHistoryItem>> getNotificationCard(@Header("Authorization") String accessToken, @Path("id") int id);
 
     @GET("/api/pay/generate-liqpay-url")
-    Call<PaymentUrl> getPaymentUrl(@Query("actionType") String action, @Query("resultUrl") String resultUrl);
+    Call<PaymentUrl> getPaymentUrl(@Query("actionType") String action, @Query("resultUrl") String resultUrl, @Query("amount") float amount, @Header("Authorization") String accessToken);
+
+    @GET("/api/pay/unsubscribe-liqpay")
+    Call<BoolResponse> getUnsubscribe(@Header("Authorization") String accessToken);
+
+    @GET("/api/pay/history-liqpay?n=all")
+    Call<BoolDataResponse<History<PaymentHistoryItem>>> getPaymentHistory(@Header("Authorization") String accessToken);
 
 }

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
@@ -25,7 +26,9 @@ import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
+import com.d2.pcu.data.responses.profile.History;
 import com.d2.pcu.data.responses.profile.NotificationHistory;
+import com.d2.pcu.data.model.profile.PaymentHistoryItem;
 import com.d2.pcu.data.responses.profile.PaymentUrl;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
@@ -748,12 +751,12 @@ public class NetLoader implements DefaultLifecycleObserver {
         }));
     }
 
-    void getPayUrl(String action, String resultUrl, final OnHTTPMasterResult<PaymentUrl> result) {
+    void getPayUrl(String action, String resultUrl, float amount, @Nullable String authHeader, final OnHTTPMasterResult<PaymentUrl> result) {
         if (!isOnline()) {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> getApi().getPaymentUrl(action, resultUrl).enqueue(new Callback<PaymentUrl>() {
+        getHandler().post(() -> getApi().getPaymentUrl(action, resultUrl, amount, authHeader).enqueue(new Callback<PaymentUrl>() {
             @Override
             public void onResponse(@NonNull Call<PaymentUrl> call, @NonNull Response<PaymentUrl> response) {
                 int resCode = response.code();
@@ -771,6 +774,76 @@ public class NetLoader implements DefaultLifecycleObserver {
             }
         }));
     }
+
+    void getUnsubscribe(String authHeader, final OnHTTPResult result) {
+        if (!isOnline()) {
+            result.onFail(new NoInternetConnection("offline"));
+            return;
+        }
+        getHandler().post(() -> getApi().getUnsubscribe(authHeader).enqueue(new Callback<BoolResponse>() {
+            @Override
+            public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
+                int resCode = response.code();
+
+                if (resCode >= 200 && resCode < 300) {
+                    result.onSuccess(response.body());
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
+                    JsonObject errorBody = gson.fromJson(response.errorBody().charStream(), type);
+                    if (errorBody.getAsJsonObject().get("data").getAsJsonObject().get("accessToken") != null) {
+                        onFailure(null, new HTTPException(errorBody.toString()));
+                    } else {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        JsonArray errors = errorBody.getAsJsonArray("errors");
+                        for (JsonElement object : errors) {
+                            stringBuilder.append(object.getAsJsonObject().get("message")).append("\n");
+                        }
+                        onFailure(null, new HTTPException(stringBuilder.toString()));
+                    }
+                } else {
+                    onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BoolResponse> call, Throwable t) {
+                result.onFail(t);
+            }
+        }));
+    }
+
+    void getPaymentHistory(final String accessToken, final OnHTTPMasterResult<BoolDataResponse<History<PaymentHistoryItem>>> result) {
+        if (!isOnline()) {
+            result.onFail(new NoInternetConnection("offline"));
+            return;
+        }
+        getHandler().post(() -> getApi().getPaymentHistory("Bearer " + accessToken).enqueue(new Callback<BoolDataResponse<History<PaymentHistoryItem>>>() {
+            @Override
+            public void onResponse(@NonNull Call<BoolDataResponse<History<PaymentHistoryItem>>> call, Response<BoolDataResponse<History<PaymentHistoryItem>>> response) {
+                int resCode = response.code();
+
+                if (resCode >= 200 && resCode < 300) {
+                    result.onSuccess(response.body());
+                } else if (resCode == 400 && !response.errorBody().toString().isEmpty()) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<JsonObject>() {
+                    }.getType();
+                    JsonObject errorBody = gson.fromJson(response.errorBody().charStream(), type);
+                    onFailure(null, new HTTPException(errorBody.toString()));
+                } else {
+                    onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BoolDataResponse<History<PaymentHistoryItem>>> call, @NonNull Throwable t) {
+                result.onFail(t);
+            }
+        }));
+    }
+
 
     private String getProfileDateTimeFormat(Date date) {
         if (date != null) {

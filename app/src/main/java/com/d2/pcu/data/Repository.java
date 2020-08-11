@@ -21,6 +21,7 @@ import com.d2.pcu.data.model.news.NewsItem;
 import com.d2.pcu.data.model.news.NewsList;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
+import com.d2.pcu.data.model.profile.PaymentHistoryItem;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.model.profile.UserState;
 import com.d2.pcu.data.responses.BoolDataResponse;
@@ -33,10 +34,12 @@ import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
+import com.d2.pcu.data.responses.profile.History;
 import com.d2.pcu.data.responses.profile.NotificationHistory;
 import com.d2.pcu.data.responses.profile.PaymentUrl;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
+import com.d2.pcu.fragments.cabinet.user_profile.subscription.SubscriptionViewModel;
 import com.d2.pcu.login.OnLoginError;
 import com.d2.pcu.login.sign_up.UserProfileViewModel;
 import com.d2.pcu.login.user_type.UserType;
@@ -817,7 +820,7 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
     public void getCheckOut(String action, String resultUrl) {
 
-        netLoader.getPayUrl(action, resultUrl, new OnHTTPMasterResult<PaymentUrl>() {
+        netLoader.getPayUrl(action, resultUrl, 0, null, new OnHTTPMasterResult<PaymentUrl>() {
             @Override
             public void onSuccess(PaymentUrl response) {
                 channels.getPaymentChannel().postValue(response.getData().getUrl());
@@ -825,6 +828,104 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
 
             @Override
             public void onFail(Throwable ex) {
+                showError(ex);
+            }
+        });
+    }
+
+    public void getCheckOutSubscription(String action, String resultUrl, float amount, String accessToken) {
+        String authHeader = "Bearer " + accessToken;
+        netLoader.getPayUrl(action, resultUrl, amount, authHeader, new OnHTTPMasterResult<PaymentUrl>() {
+            @Override
+            public void onSuccess(PaymentUrl response) {
+                channels.getPaymentChannel().postValue(response.getData().getUrl());
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                try {
+                    Gson gson = new Gson();
+
+                    JsonObject errorBody = gson.fromJson(ex.getMessage(), JsonObject.class);
+
+                    String newToken = errorBody.getAsJsonObject().get("data").getAsJsonObject().get("accessToken").getAsString();
+
+                    if (newToken != null && !newToken.isEmpty()) {
+                        saveCredentials(newToken, Constants.ACCESS_TOKEN);
+                        getCheckOutSubscription(action, resultUrl, amount, accessToken);
+                        return;
+                    }
+
+                } catch (JsonSyntaxException ignore) {
+                }
+                showError(ex);
+            }
+        });
+    }
+
+    public void unsubscribe(String accessToken, SubscriptionViewModel.OnRequestResult onRequestResult) {
+        String authHeader = "Bearer " + accessToken;
+        netLoader.getUnsubscribe(authHeader, new OnHTTPResult() {
+            @Override
+            public void onSuccess(OnMasterResponse response) {
+                boolean ok = ((BoolResponse) response).isOk();
+
+                if (ok) {
+                    onRequestResult.onSuccess();
+                }
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                try {
+                    Gson gson = new Gson();
+
+                    JsonObject errorBody = gson.fromJson(ex.getMessage(), JsonObject.class);
+
+                    String newToken = errorBody.getAsJsonObject().get("data").getAsJsonObject().get("accessToken").getAsString();
+
+                    if (newToken != null && !newToken.isEmpty()) {
+                        saveCredentials(newToken, Constants.ACCESS_TOKEN);
+                        unsubscribe(newToken, onRequestResult);
+                        return;
+                    }
+
+                } catch (JsonSyntaxException ignore) {
+                }
+
+                showError(ex);
+            }
+        });
+    }
+
+    public void getPaymentHistory() {
+        netLoader.getPaymentHistory(getCredentials(Constants.ACCESS_TOKEN), new OnHTTPMasterResult<BoolDataResponse<History<PaymentHistoryItem>>>() {
+            @Override
+            public void onSuccess(BoolDataResponse<History<PaymentHistoryItem>> response) {
+                Timber.e("getPaymentHistory: %s",response);
+                List<PaymentHistoryItem> items = new ArrayList<>();
+                if (response.getData() != null) {
+                    items = response.getData().getList();
+                }
+                channels.getPaymentsChannel().postValue(items);
+            }
+
+            @Override
+            public void onFail(Throwable ex) {
+                try {
+                    Gson gson = new Gson();
+
+                    JsonObject errorBody = gson.fromJson(ex.getMessage(), JsonObject.class);
+                    String newToken = errorBody.getAsJsonObject().get("data").getAsJsonObject().get("accessToken").getAsString();
+
+                    if (newToken != null && !newToken.isEmpty()) {
+                        saveCredentials(newToken, Constants.ACCESS_TOKEN);
+                        getNotificationHistory();
+                        return;
+                    }
+
+                } catch (JsonSyntaxException | NullPointerException ignore) {
+                }
                 showError(ex);
             }
         });
