@@ -27,8 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/ic_done"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDate"

@@ -24,9 +24,9 @@ public class SubscriptionViewModel extends BaseViewModel {
 
     public SubscriptionViewModel() {
         repository = App.getInstance().getRepositoryInstance();
-        repository.getUserProfile(repository.getCredentials(Constants.ACCESS_TOKEN));
+
         userProfileLiveData = repository.getTransport().getUserProfileChannel();
-        repository.getPaymentHistory();
+
         paymentHistory = repository.getTransport().getPaymentsChannel();
     }
 
@@ -36,6 +36,11 @@ public class SubscriptionViewModel extends BaseViewModel {
 
     public LiveData<List<PaymentHistoryItem>> getPaymentHistory() {
         return paymentHistory;
+    }
+
+    public void refreshData(){
+        repository.getUserProfile(repository.getCredentials(Constants.ACCESS_TOKEN));
+        repository.getPaymentHistory();
     }
 
     public void subscribe(float value){

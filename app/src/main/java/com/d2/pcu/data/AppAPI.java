@@ -141,6 +141,10 @@ public interface AppAPI {
     @GET("/api/pay/generate-liqpay-url")
     Call<PaymentUrl> getPaymentUrl(@Query("actionType") String action, @Query("resultUrl") String resultUrl, @Query("amount") float amount, @Header("Authorization") String accessToken);
 
+    @GET("/api/pay/subscribe-liqpay-url")
+    Call<PaymentUrl> getPaymentUrlNew(@Query("actionType") String action, @Query("resultUrl") String resultUrl, @Query("amount") float amount, @Header("Authorization") String accessToken);
+
+
     @GET("/api/pay/unsubscribe-liqpay")
     Call<BoolResponse> getUnsubscribe(@Header("Authorization") String accessToken);
 

@@ -129,6 +129,12 @@ public class SubscriptionFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.refreshData();
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.listener = (OnDonatesClickListener) context;

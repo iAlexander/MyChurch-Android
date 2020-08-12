@@ -15,6 +15,7 @@ import com.d2.pcu.App;
 import com.d2.pcu.BuildConfig;
 import com.d2.pcu.data.model.UpdateResponse;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
+import com.d2.pcu.data.model.profile.PaymentHistoryItem;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolDataResponse;
 import com.d2.pcu.data.responses.BoolResponse;
@@ -28,7 +29,6 @@ import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
 import com.d2.pcu.data.responses.profile.History;
 import com.d2.pcu.data.responses.profile.NotificationHistory;
-import com.d2.pcu.data.model.profile.PaymentHistoryItem;
 import com.d2.pcu.data.responses.profile.PaymentUrl;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
@@ -756,23 +756,44 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> getApi().getPaymentUrl(action, resultUrl, amount, authHeader).enqueue(new Callback<PaymentUrl>() {
-            @Override
-            public void onResponse(@NonNull Call<PaymentUrl> call, @NonNull Response<PaymentUrl> response) {
-                int resCode = response.code();
+        if (authHeader == null) {
+            getHandler().post(() -> getApi().getPaymentUrl(action, resultUrl, amount, authHeader).enqueue(new Callback<PaymentUrl>() {
+                @Override
+                public void onResponse(@NonNull Call<PaymentUrl> call, @NonNull Response<PaymentUrl> response) {
+                    int resCode = response.code();
 
-                if (resCode >= 200 && resCode < 300) {
-                    result.onSuccess(response.body());
-                } else {
-                    onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                    if (resCode >= 200 && resCode < 300) {
+                        result.onSuccess(response.body());
+                    } else {
+                        onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<PaymentUrl> call, @NonNull Throwable t) {
-                result.onFail(t);
-            }
-        }));
+                @Override
+                public void onFailure(Call<PaymentUrl> call, @NonNull Throwable t) {
+                    result.onFail(t);
+                }
+            }));
+        } else {
+            getHandler().post(() -> getApi().getPaymentUrlNew(action, resultUrl, amount, authHeader).enqueue(new Callback<PaymentUrl>() {
+                @Override
+                public void onResponse(@NonNull Call<PaymentUrl> call, @NonNull Response<PaymentUrl> response) {
+                    int resCode = response.code();
+
+                    if (resCode >= 200 && resCode < 300) {
+                        result.onSuccess(response.body());
+                    } else {
+                        onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PaymentUrl> call, @NonNull Throwable t) {
+                    result.onFail(t);
+                }
+            }));
+        }
+
     }
 
     void getUnsubscribe(String authHeader, final OnHTTPResult result) {
