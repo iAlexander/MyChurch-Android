@@ -108,7 +108,7 @@ public interface AppAPI {
 
     @FormUrlEncoded
     @POST("/account/forgot-password")
-    Call<BoolResponse> forgotPass(@Field("login") String email);
+    Call<BoolResponse> forgotPass(@Field("login") String email, @Field("generateLink") boolean generateLink);
 
     @FormUrlEncoded
     @POST("/account/token-update")

@@ -515,7 +515,7 @@ public class NetLoader implements DefaultLifecycleObserver {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> getApi().forgotPass(email).enqueue(new Callback<BoolResponse>() {
+        getHandler().post(() -> getApi().forgotPass(email, true).enqueue(new Callback<BoolResponse>() {
             @Override
             public void onResponse(Call<BoolResponse> call, Response<BoolResponse> response) {
                 int resCode = response.code();
