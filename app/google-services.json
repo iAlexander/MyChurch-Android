@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "456109909237-qsia4crq9q37j19r99jll30f7842d0tg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.d2.pcu",
+            "certificate_hash": "82cceeba9c5167dddc096e2a0b0eb89a69553402"
+          }
+        },
+        {
           "client_id": "456109909237-l3jlkldnk7dd0n9jfic7dvlelt3a8u0a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -43,7 +51,8 @@
               "client_id": "456109909237-gvq3m0l1o2epetaf6uer9i8beb5dmv1g.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.alogozinsky.MyChurchD2"
+                "bundle_id": "com.alogozinsky.MyChurchD2",
+                "app_store_id": "1526288910"
               }
             }
           ]

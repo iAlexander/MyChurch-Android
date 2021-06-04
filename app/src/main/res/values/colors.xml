@@ -22,5 +22,9 @@
     <color name="colorDivider">#F2F2F2</color>
     <color name="colorGrayAmount">#8792A1</color>
 
+    <color name="colorDotBlack">#212721</color>
+    <color name="colorDotRed">#db0032</color>
+    <color name="colorDotPurple">#8331a7</color>
+
 
 </resources>

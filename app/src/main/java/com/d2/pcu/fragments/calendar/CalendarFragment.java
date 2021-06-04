@@ -114,8 +114,21 @@ public class CalendarFragment extends BaseFragment {
             DateUtils.setMidnight(calendar);
             calendar.setTime(item.getDateNewStyle());
 
-            if (item.getPriority() == 0) {
-                events.add(new EventDay(calendar, R.drawable.dot_red));
+            if(item.getGroup() != null) {
+                switch (item.getGroup().getId()){
+                    case 60: {
+                        events.add(new EventDay(calendar, R.drawable.dot_60));
+                        break;
+                    }
+                    case 61: {
+                        events.add(new EventDay(calendar, R.drawable.dot_61));
+                        break;
+                    }
+                    case 62: {
+                        events.add(new EventDay(calendar, R.drawable.dot_62));
+                        break;
+                    }
+                }
             }
         }
 

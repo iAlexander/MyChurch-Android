@@ -11,7 +11,7 @@
 
     <string name="app_name">Моя Церква</string>
     <string name="action_settings">Налаштування</string>
-    <string name="map">Мапа</string>
+    <string name="map">Карта</string>
     <string name="calendar">Календар</string>
     <string name="news">Новини</string>
     <string name="prayers">Молитви</string>
@@ -51,12 +51,12 @@
     <!--  Map  -->
     <string name="map_distance">Відстань</string>
     <string name="map_more">Більше</string>
-    <string name="map_search_hint">Пошук…</string>
+    <string name="map_search_hint">Знайти храм</string>
     <string name="map_my_location">Моя позиція</string>
 
     <!--  Temple  -->
     <string name="temple_contacts">Контакти</string>
-    <string name="temple_history_descr">Історія та опис</string>
+    <string name="temple_history_descr">Про храм</string>
     <string name="temple_open">Відчинено</string>
     <string name="temple_close">Зачинено</string>
     <string name="temple_close_schedule_time">з 9–00 до 19–00</string>
@@ -64,7 +64,7 @@
     <string name="temple_week_days">пн-пт</string>
     <string name="temple_weekend_days">сб-нд</string>
     <string name="temple_holidays">свята</string>
-    <string name="temple_get_directions">Прокласти маршрут</string>
+    <string name="temple_get_directions">Дорога до храму</string>
     <string name="temple_church_holiday">Храмове Свято:</string>
     <string name="temple_prior">Настоятель:</string>
     <string name="temple_charity">Благочинний:</string>
@@ -191,14 +191,14 @@
     <!--  Support chats  -->
     <string name="support_chats_title">Отримати підтримку</string>
     <string name="support_chat_body_text">Доброго дня! Це ваш віртуальний помічник з духовних питань. Оберіть, будь ласка, програму, де вам було б зручно задавати питання.</string>
-    <string name="support_chat_body_text_short">Доброго дня! Це ваш віртуальний помічник з духовних питань.</string>
+    <string name="support_chat_body_text_short">Вітаємо! Це Ваш віртуальний помічник. Оберіть будь-ласка, програму, де Вам було б зручно ставити запитання.</string>
 
     <string name="support_chats_viber" translatable="false">Viber</string>
     <string name="support_chats_telegram" translatable="false">Telegram</string>
     <string name="support_chats_fm" translatable="false">Facebook</string>
 
     <!--  Donates  -->
-    <string name="donates_title">Пожертвувати кошти через</string>
+    <string name="donates_title">Творімо добро разом: на благо людям і славу Божу!</string>
     <string name="donates_body_text">Не обов\'язково чекати свята Миколая, щоб зробити добру справу. Адже, тільки справжня добра справа йде від серця, і тільки вона може подарувати щастя.</string>
     <string name="donates_monobank">Monobank</string>
     <string name="donates_privat24">Privat24</string>
@@ -206,7 +206,7 @@
     <string name="donates_paypal">PayPal</string>
 
 <!--  Dialog messages  -->
-    <string name="pass_was_send">Пароль від кабінету відправили на пошту <b>%1$s</b></string>
+    <string name="pass_was_send">Ваш пароль відправлено на пошту <b>%1$s</b></string>
     <string name="pass_was_send_moderating">Пароль від кабінету відправили на пошту <b>%1$s</b>.\n\nПрофіль на верифікації.\nМи перевіремо ваші дані найближчим часом, це може зайняти декілька днів.</string>
     <string name="pass_was_change">Пароль успішно змінено</string>
     <string name="email_was_change">Електронна адреса успішно змінена</string>

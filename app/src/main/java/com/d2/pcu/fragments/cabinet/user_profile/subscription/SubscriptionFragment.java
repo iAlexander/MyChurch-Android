@@ -74,6 +74,9 @@ public class SubscriptionFragment extends BaseFragment {
         amountWatcher = new ClearErrorTextWatcher(binding.tiChargeAmount);
         binding.etChargeAmount.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
+                if(getString(R.string.finance_payment_amount).equals(binding.etChargeAmount.getEditableText().toString())){
+                    binding.etChargeAmount.setText("");
+                }
                 amountWatcher.startTrack();
             } else {
                 amountWatcher.stopTrack();
