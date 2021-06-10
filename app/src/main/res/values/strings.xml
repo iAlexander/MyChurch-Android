@@ -198,7 +198,7 @@
     <string name="support_chats_fm" translatable="false">Facebook</string>
 
     <!--  Donates  -->
-    <string name="donates_title">Творімо добро разом: на благо людям і славу Божу!</string>
+    <string name="donates_title">Творімо добро разом:\n на благо людям і славу Божу!</string>
     <string name="donates_body_text">Не обов\'язково чекати свята Миколая, щоб зробити добру справу. Адже, тільки справжня добра справа йде від серця, і тільки вона може подарувати щастя.</string>
     <string name="donates_monobank">Monobank</string>
     <string name="donates_privat24">Privat24</string>
@@ -218,7 +218,7 @@
     <string name="playback_channel_name">Playback</string>
     <string name="notifications">Повiдомлення</string>
     <string name="thanks_for_donate">Дякуємо за благодійний внесок!</string>
-    <string name="donates_liqpay">LiqPay</string>
+    <string name="donates_liqpay">Благодійний внесок</string>
 
     <string name="txt_copyright">Додаток розроблено в D2</string>
     <string name="btn_logout">Вийти</string>
