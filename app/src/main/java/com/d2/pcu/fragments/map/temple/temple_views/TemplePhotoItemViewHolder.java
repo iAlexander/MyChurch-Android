@@ -1,7 +1,5 @@
 package com.d2.pcu.fragments.map.temple.temple_views;
 
-import android.view.View;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.d2.pcu.databinding.ItemTemplePhotoBinding;

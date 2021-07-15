@@ -2,29 +2,27 @@ package com.d2.pcu.fragments.cabinet;
 
 import android.view.View;
 
-import com.d2.pcu.App;
-import com.d2.pcu.data.Repository;
+import com.d2.pcu.R;
 import com.d2.pcu.fragments.BaseViewModel;
+import com.d2.pcu.fragments.cabinet.donate.OnDonatesClickListener;
 
 public class CabinetViewModel extends BaseViewModel {
 
-    private Repository repository;
     private OnCabinetButtonsClickListener listener;
+    private OnDonatesClickListener donatesClickListener;
 
     public CabinetViewModel() {
-        repository = App.getInstance().getRepositoryInstance();
     }
 
     public void setListener(OnCabinetButtonsClickListener listener) {
         this.listener = listener;
     }
 
+    public void setDonatesClickListener(OnDonatesClickListener donatesClickListener) {
+        this.donatesClickListener = donatesClickListener;
+    }
+
     public void onProfileClick(View view) {
-//        if (repository.getAuthState()) {
-        // TODO: 2020-02-21
-//        } else {
-        // TODO: 2020-02-21
-//        }
 
         if (listener != null) {
             listener.onProfileClick();
@@ -38,8 +36,14 @@ public class CabinetViewModel extends BaseViewModel {
     }
 
     public void onDonateClick(View view) {
+        if (donatesClickListener != null) {
+            donatesClickListener.onDonateServiceClick(R.id.donates_liqpay_btn);
+        }
+    }
+
+    public void onTechSupportClick(View view) {
         if (listener != null) {
-            listener.onDonateClick();
+            listener.onTechSupportClick();
         }
     }
 }

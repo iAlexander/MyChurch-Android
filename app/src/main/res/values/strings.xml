@@ -132,6 +132,7 @@
     <string name="birthdate">Дата народження</string>
     <string name="namesake_date">День тезоіменитства</string>
     <string name="email">Ел. адреса</string>
+    <string name="email_full_txt">Електронна адреса</string>
     <string name="diocese">Єпархія</string>
     <string name="temple_name">Храм</string>
     <string name="status">Статус</string>
@@ -173,8 +174,8 @@
     <!--  Sign in  -->
     <string name="sign_in_title">Вхід до кабінету</string>
     <string name="password_title">Пароль</string>
-    <string name="password_reminder">&lt;u&gt;Нагадати пароль&lt;/u&gt;</string>
-    <string name="sign_in_create_profile">&lt;u&gt;Створити профіль&lt;/u&gt;</string>
+    <string name="password_reminder">&lt;u&gt;Забули пароль?&lt;/u&gt;</string>
+    <string name="sign_in_create_profile">&lt;u&gt;Зареєструватися&lt;/u&gt;</string>
     <string name="sign_in">Увійти</string>
 
     <!--  Sign up  -->
@@ -191,7 +192,7 @@
     <!--  Support chats  -->
     <string name="support_chats_title">Отримати підтримку</string>
     <string name="support_chat_body_text">Доброго дня! Це ваш віртуальний помічник з духовних питань. Оберіть, будь ласка, програму, де вам було б зручно задавати питання.</string>
-    <string name="support_chat_body_text_short">Вітаємо! Це Ваш віртуальний помічник. Оберіть будь-ласка, програму, де Вам було б зручно ставити запитання.</string>
+    <string name="support_chat_body_text_short">Вітаємо! Це Ваш віртуальний помічник. Будь-ласка, поставте нам запитання.</string>
 
     <string name="support_chats_viber" translatable="false">Viber</string>
     <string name="support_chats_telegram" translatable="false">Telegram</string>
@@ -223,4 +224,15 @@
     <string name="txt_copyright">Додаток розроблено в D2</string>
     <string name="btn_logout">Вийти</string>
     <string name="error_wrong_payment_value">Невірно введена сума платежу</string>
+
+    <string name="auth_authenticated">Налаштування</string>
+    <string name="auth_login">Вхід / Реєстрація</string>
+    <string name="my_profile">Мій профіль</string>
+    <string name="btn_tech_support">Технічна підтримка</string>
+
+    <string name="tech_title">"Ми будемо вдячні за ваш зворотній зв'язок щодо роботи застосунку\nМоя Церква"</string>
+    <string name="tech_mail">Якщо у вас є зауваження чи побажання з приводу наповнення, будь ласка, пишіть нам на info@pomisna.info</string>
+    <string name="tech_mail_d2">Якщо виникли технічні труднощі при користуванні, звертайтеся до support_cerkva@d2.digital</string>
+    <string name="tech_thanks">Дякуємо!</string>
+    <string name="tech_developer">Розробка застосунку - D2</string>
 </resources>

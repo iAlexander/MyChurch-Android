@@ -26,5 +26,5 @@
     <item android:id="@+id/profileFragment"
         android:icon="@drawable/selector_profile"
         android:orderInCategory="100"
-        android:title="@string/profile"/>
+        android:title="@string/my_profile"/>
 </menu>

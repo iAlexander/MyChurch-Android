@@ -7,4 +7,6 @@ public interface OnCabinetButtonsClickListener {
     void onSupportClick();
 
     void onDonateClick();
+
+    void onTechSupportClick();
 }

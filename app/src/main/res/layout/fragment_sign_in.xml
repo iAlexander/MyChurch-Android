@@ -41,7 +41,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="@string/profile"
+                android:text="@string/my_profile"
                 android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/big"
                     android:gravity="center_horizontal"
-                    android:text="@string/sign_in_title"
+                    android:text="@string/auth_login"
                     android:textAppearance="@style/AppText.Large.Bold" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/big"
-                    android:text="@string/email" />
+                    android:text="@string/email_full_txt" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/sign_in_email_input_l"

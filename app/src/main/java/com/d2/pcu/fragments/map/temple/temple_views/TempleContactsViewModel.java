@@ -2,37 +2,18 @@ package com.d2.pcu.fragments.map.temple.temple_views;
 
 import android.view.View;
 
-import androidx.arch.core.util.Function;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
-
-import com.d2.pcu.App;
-import com.d2.pcu.data.Repository;
 import com.d2.pcu.data.model.map.temple.Temple;
 import com.d2.pcu.fragments.BaseViewModel;
 import com.d2.pcu.listeners.OnAdditionalFuncMapListener;
-import com.d2.pcu.listeners.OnBackButtonClickListener;
-import com.d2.pcu.listeners.OnLoadingStateChangedListener;
 import com.google.android.gms.maps.model.LatLng;
-
-import java.util.Calendar;
 
 public class TempleContactsViewModel extends BaseViewModel {
 
     private OnAdditionalFuncMapListener onAdditionalFuncMapListener;
 
-    private Repository repository;
-
-    private MutableLiveData<Boolean> isOpen = new MutableLiveData<>();
-
     private Temple temple;
 
     public TempleContactsViewModel() {
-        repository = App.getInstance().getRepositoryInstance();
-
-        checkTime();
     }
 
     public void setTemple(Temple temple) {
@@ -51,15 +32,5 @@ public class TempleContactsViewModel extends BaseViewModel {
         if (onAdditionalFuncMapListener != null) {
             onAdditionalFuncMapListener.getDirectionsOnMap(new LatLng(temple.getLt(), temple.getLg()));
         }
-    }
-
-    private void checkTime() {
-        Calendar calendar = Calendar.getInstance();
-
-        isOpen.setValue(calendar.get(Calendar.HOUR_OF_DAY) < 19 && calendar.get(Calendar.HOUR_OF_DAY) >= 9);
-    }
-
-    public MutableLiveData<Boolean> getIsOpen() {
-        return isOpen;
     }
 }

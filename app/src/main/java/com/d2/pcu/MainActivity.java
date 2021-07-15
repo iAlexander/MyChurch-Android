@@ -246,6 +246,11 @@ public class MainActivity extends AppCompatActivity implements OnError,
     }
 
     @Override
+    public void onTechSupportClick() {
+        navController.navigate(R.id.techSupportFragment);
+    }
+
+    @Override
     public void onDonateServiceClick(int serviceId) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
 

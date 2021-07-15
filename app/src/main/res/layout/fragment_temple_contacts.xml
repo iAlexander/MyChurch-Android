@@ -81,6 +81,7 @@
                     android:paddingStart="@dimen/default_padding"
                     android:paddingEnd="@dimen/default_padding"
                     android:text="@{temple.name}"
+                    android:textStyle="bold"
                     android:textAppearance="@style/AppText.Big"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -100,39 +101,6 @@
                     app:layout_constraintTop_toBottomOf="@id/temple_contacts_title_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/temple_state_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_padding"
-                    android:layout_marginTop="@dimen/medium"
-                    android:text="@{model.isOpen ? @string/temple_open : @string/temple_close}"
-                    android:textAppearance="@style/AppText"
-                    android:textColor="@{model.isOpen ? @color/green : @color/red}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_diocese_tv" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/temple_contacts_dot_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/small"
-                    android:paddingEnd="@dimen/small"
-                    android:text="@string/dot"
-                    app:layout_constraintBottom_toBottomOf="@id/temple_state_tv"
-                    app:layout_constraintStart_toEndOf="@id/temple_state_tv"
-                    app:layout_constraintTop_toTopOf="@id/temple_state_tv" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/temple_contacts_schedule_close_time_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/temple_close_schedule_time"
-                    android:textAppearance="@style/AppText"
-                    app:layout_constraintBottom_toBottomOf="@id/temple_state_tv"
-                    app:layout_constraintStart_toEndOf="@id/temple_contacts_dot_tv"
-                    app:layout_constraintTop_toTopOf="@id/temple_state_tv" />
-
-                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contacts_serving_schedule_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -142,7 +110,7 @@
                     android:text="@string/temple_schedule_service"
                     android:textAppearance="@style/AppText"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_schedule_close_time_tv" />
+                    app:layout_constraintTop_toBottomOf="@id/temple_contacts_diocese_tv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/temple_contacts_week_days_tv"

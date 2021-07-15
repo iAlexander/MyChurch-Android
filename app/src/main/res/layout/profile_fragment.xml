@@ -75,6 +75,14 @@
             android:text="@string/profile_donate"
             android:visibility="@{Constants.DONATE_ENABLED?View.VISIBLE:View.GONE}" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/profile_tech_support"
+            style="@style/AppButton"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:onClick="@{model::onTechSupportClick}"
+            android:text="@string/btn_tech_support" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"

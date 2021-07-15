@@ -116,6 +116,7 @@
     <string name="birthdate">Birthday date</string>
     <string name="namesake_date">Day of the namesake</string>
     <string name="email">E-mail</string>
+    <string name="email_full_txt">Електронна адреса</string>
     <string name="diocese">Diocese</string>
     <string name="temple_name">Temple</string>
     <string name="status">Status</string>
@@ -175,7 +176,7 @@
     <!--  Support chats  -->
     <string name="support_chats_title">Get support</string>
     <string name="support_chat_body_text">Доброго дня! Це ваш віртуальний помічник з духовних питань. Оберіть, будь ласка, програму, де вам було б зручно задавати питання.</string>
-    <string name="support_chat_body_text_short">Доброго дня! Це ваш віртуальний помічник з духовних питань.</string>
+    <string name="support_chat_body_text_short">Вітаємо! Це Ваш віртуальний помічник. Будь-ласка, поставте нам запитання.</string>
 
 
     
@@ -207,4 +208,14 @@
     <string name="btn_logout">Logout</string>
     <string name="error_wrong_payment_value">Невірно введена сума платежу</string>
 
+    <string name="auth_authenticated">Налаштування</string>
+    <string name="auth_login">Вхід / Реєстрація</string>
+    <string name="my_profile">Мій профіль</string>
+    <string name="btn_tech_support">Технічна підтримка</string>
+
+    <string name="tech_title">"Ми будемо вдячні за ваш зворотній зв'язок щодо роботи застосунку\nМоя Церква"</string>
+    <string name="tech_mail">Якщо у вас є зауваження чи побажання з приводу наповнення, будь ласка, пишіть нам на info@pomisna.info</string>
+    <string name="tech_mail_d2">Якщо виникли технічні труднощі при користуванні, звертайтеся до support_cerkva@d2.digital</string>
+    <string name="tech_thanks">Дякуємо!</string>
+    <string name="tech_developer">Розробка застосунку - D2</string>
 </resources>

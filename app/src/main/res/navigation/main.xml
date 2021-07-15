@@ -71,6 +71,9 @@
         <action
             android:id="@+id/action_profileFragment_to_profileMenuFragment"
             app:destination="@id/profileMenuFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_techSupportFragment"
+            app:destination="@id/techSupportFragment" />
     </fragment>
     <fragment
         android:id="@+id/templeFragment"
@@ -192,5 +195,10 @@
             android:id="@+id/action_subscriptionFragment_to_liqWebFragment"
             app:destination="@id/liqWebFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/techSupportFragment"
+        android:name="com.d2.pcu.fragments.cabinet.support.tech.TechSupportFragment"
+        android:label="TechSupportFragment"
+        tools:layout="@layout/fragment_support_tech"/>
 
 </navigation>

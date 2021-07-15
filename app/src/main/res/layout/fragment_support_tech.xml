@@ -1,4 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,10 +10,10 @@
 
         <variable
             name="model"
-            type="com.d2.pcu.fragments.cabinet.support.SupportViewModel" />
+            type="com.d2.pcu.fragments.BaseViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.cabinet.CabinetFragment">
@@ -40,7 +41,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="@string/profile_support"
+                android:text="@string/btn_tech_support"
                 android:textAppearance="@style/AppText.Big.White.Bold" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -55,81 +56,98 @@
                 app:srcCompat="@drawable/ic_notifications_none" />
         </LinearLayout>
 
+        <Space
+            android:id="@+id/topSpace"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/support_chats_toolbar"
+            app:layout_constraintBottom_toTopOf="@id/tvSupportTitle"/>
+
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/support_body_tv"
+            android:id="@+id/tvSupportTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:gravity="center"
-            android:text="@string/support_chat_body_text_short"
+            android:text="@string/tech_title"
             android:textAppearance="@style/AppText"
-            app:layout_constraintBottom_toTopOf="@id/telegram_btn"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvSupportEmail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/support_chats_toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/topSpace" />
 
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/telegram_btn"
-            style="@style/AppButton"
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSupportEmail"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            android:background="@drawable/bg_button"
-            android:onClick="@{model::onChatClick}"
-            android:text="@string/support_chats_telegram"
-            android:textAllCaps="false"
-            android:visibility="@{Constants.MESSENGERS_ENABLED?View.VISIBLE:View.GONE}"
-            app:layout_constraintBottom_toTopOf="@id/viber_btn"
-
+            android:gravity="center"
+            android:autoLink="web|email"
+            android:text="@string/tech_mail"
+            android:textAppearance="@style/AppText"
+            app:layout_constraintBottom_toTopOf="@id/tvSupportD2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/support_chats_toolbar"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:visibility="gone" />
+            app:layout_constraintTop_toBottomOf="@id/tvSupportTitle" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/viber_btn"
-            style="@style/AppButton"
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSupportD2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            android:background="@drawable/bg_button"
-            android:onClick="@{model::onChatClick}"
-            android:text="@string/support_chats_viber"
-
-            android:textAllCaps="false"
-            android:visibility="@{Constants.MESSENGERS_ENABLED?View.VISIBLE:View.GONE}"
-            app:layout_constraintBottom_toTopOf="@id/btnFacebookWeb"
-
+            android:gravity="center"
+            android:autoLink="web|email"
+            android:text="@string/tech_mail_d2"
+            android:textAppearance="@style/AppText"
+            app:layout_constraintBottom_toTopOf="@id/tvSupportThanks"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/telegram_btn"
-            tools:visibility="gone" />
+            app:layout_constraintTop_toBottomOf="@id/tvSupportEmail" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnFacebookWeb"
-            style="@style/AppButton"
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSupportThanks"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            android:background="@drawable/bg_button"
-            android:onClick="@{model::onChatClick}"
-            android:text="@string/support_chats_fm"
-
-            android:textAllCaps="false"
-
+            android:gravity="center"
+            android:autoLink="web|email"
+            android:text="@string/tech_thanks"
+            android:textAppearance="@style/AppText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/viber_btn" />
+            app:layout_constraintTop_toBottomOf="@id/tvSupportEmail" />
+
+        <Space
+            android:id="@+id/bottomSpace"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSupportThanks"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDeveloper"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:gravity="end"
+            android:text="@string/tech_developer"
+            android:textStyle="bold"
+            android:textAppearance="@style/AppText.Small.Grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottomSpace" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

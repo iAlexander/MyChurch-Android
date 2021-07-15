@@ -38,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/medium"
                 android:text="@{temple.name}"
+                android:textStyle="bold"
                 android:textAppearance="@style/AppText.Big" />
 
             <androidx.appcompat.widget.AppCompatTextView
