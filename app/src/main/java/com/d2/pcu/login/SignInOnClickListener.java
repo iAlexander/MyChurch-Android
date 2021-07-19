@@ -2,7 +2,7 @@ package com.d2.pcu.login;
 
 public interface SignInOnClickListener {
 
-    void onForgotPassClick();
+    void onForgotPassClick(String email);
 
     void onEnterClick();
 

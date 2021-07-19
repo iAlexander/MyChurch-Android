@@ -123,8 +123,8 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onForgotPassClick() {
-        showInfoDialog(getString(R.string.forgot_pass_success_text), getString(R.string.next_btn_text));
+    public void onForgotPassClick(String email) {
+        showInfoDialog(getString(R.string.forgot_pass_success_text, email), getString(R.string.next_btn_text));
     }
 
     @Override

@@ -79,7 +79,23 @@ public class SignInViewModel extends BaseViewModel {
                 repository.forgotPass(email, new UserProfileViewModel.OnRequestResult() {
                     @Override
                     public void onSuccess() {
-                        signInOnClickListener.onForgotPassClick();
+                        StringBuilder maskedEmail = new StringBuilder();
+                        if (email != null) {
+                            int lastDot = email.lastIndexOf(".");
+                            if (lastDot <= 0) {
+                                maskedEmail.append(email);
+                            } else  {
+                                for (int i = 0; i < email.length(); i++) {
+                                    if(email.charAt(i) != '@' && i<lastDot ) {
+                                        maskedEmail.append('*');
+                                    } else {
+                                        maskedEmail.append(email.charAt(i));
+                                    }
+                                }
+                            }
+                        }
+
+                        signInOnClickListener.onForgotPassClick(maskedEmail.toString());
                     }
                 });
             }

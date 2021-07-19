@@ -144,7 +144,7 @@
     <string name="login_resend_sms_timer">Відправити повторно через %1$s сек</string>
     <string name="login_sms_title">Код було відправлено на\n%1$s</string>
 
-    <string name="forgot_pass_success_text">Ми відправили пароль на вказану адресу</string>
+    <string name="forgot_pass_success_text">Ваш пароль відправлено на пошту %s</string>
 
     <string-array name="priest_state">
         <item>Диякон</item>

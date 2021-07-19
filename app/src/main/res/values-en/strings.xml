@@ -128,7 +128,7 @@
     <string name="login_resend_sms_timer">Resend SMS %1$s sec</string>
     <string name="login_sms_title">code sent in SMS to\n%1$s</string>
 
-    <string name="forgot_pass_success_text">We sent pass on email</string>
+    <string name="forgot_pass_success_text">Ваш пароль відправлено на пошту %s</string>
 
     <string-array name="priest_state">
         <item>Диякон</item>
