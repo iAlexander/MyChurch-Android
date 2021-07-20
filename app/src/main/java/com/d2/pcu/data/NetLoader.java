@@ -299,12 +299,12 @@ public class NetLoader implements DefaultLifecycleObserver {
         }));
     }
 
-    void getNewsWp(final int length, final OnHTTPResult result) {
+    void getNewsWp(final int page, final OnHTTPResult result) {
         if (!isOnline()) {
             result.onFail(new NoInternetConnection("offline"));
             return;
         }
-        getHandler().post(() -> getApi().getNewsWP(10).enqueue(new Callback<List<NewsWpItem>>() {
+        getHandler().post(() -> getApi().getNewsWP(page).enqueue(new Callback<List<NewsWpItem>>() {
             @Override
             public void onResponse(@NonNull Call<List<NewsWpItem>> call, @NonNull Response<List<NewsWpItem>> response) {
                 int resCode = response.code();

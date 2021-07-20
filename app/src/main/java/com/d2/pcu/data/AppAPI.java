@@ -72,9 +72,9 @@ public interface AppAPI {
             @Query("sort") String sortType
     );
 
-    @GET(BuildConfig.API_BASE_URL_WP + "posts/")
+    @GET(BuildConfig.API_BASE_URL_WP + "posts/?per_page=10")
     Call<List<NewsWpItem>> getNewsWP(
-            @Query("per_page") int length
+            @Query("page") int page
     );
 
     @GET("church/list-geo")

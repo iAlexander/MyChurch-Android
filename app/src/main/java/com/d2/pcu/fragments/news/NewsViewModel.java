@@ -18,6 +18,10 @@ public class NewsViewModel extends BaseViewModel {
 
     private LiveData<List<NewsItem>> newsLiveData;
     private int selectedItem;
+    private final int MAX = 100;
+    private int page = 1;
+    private int perPage = 10;
+    private boolean isLoading = false;
 
     public NewsViewModel() {
         repository = App.getInstance().getRepositoryInstance();
@@ -29,6 +33,7 @@ public class NewsViewModel extends BaseViewModel {
                             input,
                             (o1, o2) -> Long.compare(o2.getDate().getTime(), o1.getDate().getTime())
                     );
+                    isLoading = false;
 
                     return new MutableLiveData<>(input);
                 }
@@ -40,8 +45,18 @@ public class NewsViewModel extends BaseViewModel {
         return newsLiveData;
     }
 
+    public void loadNewsForce() {
+        if (isLoading) return;
+        isLoading = true;
+        page = 1;
+        repository.getNews(page);
+    }
+
     public void loadNews() {
-        repository.getNews(100);
+        if(isLoading || page*perPage == MAX) return;
+        isLoading = true;
+        page++;
+        repository.getNews(page);
     }
 
     public void setSelectedItem(int selectedItem) {

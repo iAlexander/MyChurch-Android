@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.d2.pcu.R;
 import com.d2.pcu.databinding.FragmentNewsBinding;
 import com.d2.pcu.fragments.BaseFragment;
 import com.d2.pcu.fragments.news.NewsViewModel;
 import com.d2.pcu.listeners.OnAdditionalFuncNewsListener;
+
+import org.jetbrains.annotations.NotNull;
 
 public class NewsFragment extends BaseFragment {
 
@@ -60,7 +63,7 @@ public class NewsFragment extends BaseFragment {
 
         binding.list.setAdapter(adapter);
 
-        binding.switeRefreshL.setOnRefreshListener(viewModel::loadNews);
+        binding.switeRefreshL.setOnRefreshListener(viewModel::loadNewsForce);
 
         viewModel.getNewsLiveData().observe(getViewLifecycleOwner(), (news) -> {
             binding.switeRefreshL.setRefreshing(false);
@@ -68,6 +71,16 @@ public class NewsFragment extends BaseFragment {
             viewModel.disableLoading();
         });
 
+        binding.list.clearOnScrollListeners();
+        binding.list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(1)) {
+                    viewModel.loadNews();
+                }
+            }
+        });
         viewModel.loadNews();
     }
 

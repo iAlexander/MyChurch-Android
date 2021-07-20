@@ -376,8 +376,8 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
         });
     }
 
-    public void getNews(final int length) {
-        netLoader.getNewsWp(length, new OnHTTPResult() {
+    public void getNews(final int page) {
+        netLoader.getNewsWp(page, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
                 List<NewsWpItem> itemsWp = ((NewsWPResponse) response).getNews();
