@@ -14,6 +14,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.d2.pcu.App;
 import com.d2.pcu.BuildConfig;
 import com.d2.pcu.data.model.UpdateResponse;
+import com.d2.pcu.data.model.news.NewsWpItem;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.PaymentHistoryItem;
 import com.d2.pcu.data.model.profile.UserProfile;
@@ -25,6 +26,7 @@ import com.d2.pcu.data.responses.diocese.DioceseResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
+import com.d2.pcu.data.responses.news.NewsWPResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
 import com.d2.pcu.data.responses.profile.History;
@@ -48,6 +50,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -291,6 +294,32 @@ public class NetLoader implements DefaultLifecycleObserver {
 
             @Override
             public void onFailure(Call<NewsResponse> call, @NonNull Throwable t) {
+                result.onFail(t);
+            }
+        }));
+    }
+
+    void getNewsWp(final int length, final OnHTTPResult result) {
+        if (!isOnline()) {
+            result.onFail(new NoInternetConnection("offline"));
+            return;
+        }
+        getHandler().post(() -> getApi().getNewsWP(10).enqueue(new Callback<List<NewsWpItem>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<NewsWpItem>> call, @NonNull Response<List<NewsWpItem>> response) {
+                int resCode = response.code();
+
+                if (resCode >= 200 && resCode < 300) {
+                    NewsWPResponse newsWPResponse = new NewsWPResponse();
+                    newsWPResponse.setNews(response.body());
+                    result.onSuccess(newsWPResponse);
+                } else {
+                    onFailure(null, new HTTPException(HTTPCode.findByCode(resCode)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<NewsWpItem>> call, @NonNull Throwable t) {
                 result.onFail(t);
             }
         }));

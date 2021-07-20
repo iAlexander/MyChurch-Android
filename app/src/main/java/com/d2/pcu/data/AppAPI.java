@@ -1,5 +1,7 @@
 package com.d2.pcu.data;
 
+import com.d2.pcu.BuildConfig;
+import com.d2.pcu.data.model.news.NewsWpItem;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.UserProfile;
 import com.d2.pcu.data.responses.BoolDataResponse;
@@ -11,6 +13,7 @@ import com.d2.pcu.data.responses.diocese.DioceseResponse;
 import com.d2.pcu.data.responses.map.BaseTempleResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
+import com.d2.pcu.data.responses.news.NewsWPResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
 import com.d2.pcu.data.responses.profile.History;
@@ -19,6 +22,8 @@ import com.d2.pcu.data.model.profile.PaymentHistoryItem;
 import com.d2.pcu.data.responses.profile.PaymentUrl;
 import com.d2.pcu.data.responses.profile.ProfileSignUpResponse;
 import com.d2.pcu.data.responses.temples.ShortTemplesInfoResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -65,6 +70,11 @@ public interface AppAPI {
     Call<NewsResponse> getNews(
             @Query("n") int length,
             @Query("sort") String sortType
+    );
+
+    @GET(BuildConfig.API_BASE_URL_WP + "posts/")
+    Call<List<NewsWpItem>> getNewsWP(
+            @Query("per_page") int length
     );
 
     @GET("church/list-geo")

@@ -19,6 +19,7 @@ import com.d2.pcu.data.model.calendar.CalendarItem;
 import com.d2.pcu.data.model.map.temple.BaseTemple;
 import com.d2.pcu.data.model.news.NewsItem;
 import com.d2.pcu.data.model.news.NewsList;
+import com.d2.pcu.data.model.news.NewsWpItem;
 import com.d2.pcu.data.model.pray.Pray;
 import com.d2.pcu.data.model.profile.NotificationHistoryItem;
 import com.d2.pcu.data.model.profile.PaymentHistoryItem;
@@ -32,6 +33,7 @@ import com.d2.pcu.data.responses.calendar.EventResponse;
 import com.d2.pcu.data.responses.diocese.DioceseResponse;
 import com.d2.pcu.data.responses.map.TempleResponse;
 import com.d2.pcu.data.responses.news.NewsResponse;
+import com.d2.pcu.data.responses.news.NewsWPResponse;
 import com.d2.pcu.data.responses.pray.PrayResponse;
 import com.d2.pcu.data.responses.profile.GetUserProfileResponse;
 import com.d2.pcu.data.responses.profile.History;
@@ -375,10 +377,14 @@ public class Repository implements LifecycleObserver, LifecycleOwner {
     }
 
     public void getNews(final int length) {
-        netLoader.getNews(length, new OnHTTPResult() {
+        netLoader.getNewsWp(length, new OnHTTPResult() {
             @Override
             public void onSuccess(OnMasterResponse response) {
-                List<NewsItem> items = ((NewsResponse) response).getNews();
+                List<NewsWpItem> itemsWp = ((NewsWPResponse) response).getNews();
+                List<NewsItem> items = new ArrayList<>();
+                for (NewsWpItem nwp : itemsWp) {
+                    items.add(nwp.toNewsItem());
+                }
 
                 dbLoader.updateAndSaveNewsToDb(items, isSuccess -> {
                     if (isSuccess) {
