@@ -20,6 +20,9 @@ public class NewsHorizontalViewHolder extends RecyclerView.ViewHolder {
     public void bind(NewsItem newsItem) {
         binding.setNewsItem(newsItem);
 
+        binding.newsItemTitleTv.setText(TextToHtmlFormatter.getFormattedHtmlText(newsItem.getTitle()));
+        binding.newsItemTitleTv.setMovementMethod(LinkMovementMethod.getInstance());
+
         binding.newsItemMainTv.setText(TextToHtmlFormatter.getFormattedHtmlText(newsItem.getText()));
         binding.newsItemMainTv.setMovementMethod(LinkMovementMethod.getInstance());
 
