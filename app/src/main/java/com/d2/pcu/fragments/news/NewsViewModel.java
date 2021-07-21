@@ -55,8 +55,8 @@ public class NewsViewModel extends BaseViewModel {
     public void loadNews() {
         if(isLoading || page*perPage == MAX) return;
         isLoading = true;
-        page++;
         repository.getNews(page);
+        page++;
     }
 
     public void setSelectedItem(int selectedItem) {
