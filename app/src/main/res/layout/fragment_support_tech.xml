@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            android:gravity="center"
+            android:gravity="start"
             android:text="@string/tech_title"
             android:textAppearance="@style/AppText"
             android:textStyle="bold"
@@ -80,13 +80,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topSpace" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            app:layout_constraintEnd_toStartOf="@id/tvSupportEmail"
+            app:layout_constraintTop_toTopOf="@id/tvSupportEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:srcCompat="@drawable/dot_blue"/>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSupportEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginStart="@dimen/big"
             android:layout_marginEnd="@dimen/default_margin"
-            android:gravity="center"
+            android:gravity="start"
             android:autoLink="web|email"
             android:text="@string/tech_mail"
             android:textAppearance="@style/AppText"
@@ -95,13 +103,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvSupportTitle" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            app:layout_constraintEnd_toStartOf="@id/tvSupportD2"
+            app:layout_constraintTop_toTopOf="@id/tvSupportD2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:srcCompat="@drawable/dot_blue"/>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSupportD2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginStart="@dimen/big"
             android:layout_marginEnd="@dimen/default_margin"
-            android:gravity="center"
+            android:gravity="start"
             android:autoLink="web|email"
             android:text="@string/tech_mail_d2"
             android:textAppearance="@style/AppText"
@@ -142,8 +158,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:gravity="end"
             android:text="@string/tech_developer"
-            android:textStyle="bold"
-            android:textAppearance="@style/AppText.Small.Grey"
+            android:textAppearance="@style/AppText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

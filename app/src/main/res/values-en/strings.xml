@@ -211,11 +211,11 @@
     <string name="auth_authenticated">Налаштування</string>
     <string name="auth_login">Вхід / Реєстрація</string>
     <string name="my_profile">Мій профіль</string>
-    <string name="btn_tech_support">Технічна підтримка</string>
+    <string name="btn_tech_support">"Зворотний зв’язок"</string>
 
-    <string name="tech_title">"Ми будемо вдячні за ваш зворотній зв'язок щодо роботи застосунку\nМоя Церква"</string>
-    <string name="tech_mail">Якщо у вас є зауваження чи побажання з приводу наповнення, будь ласка, пишіть нам на info@pomisna.info</string>
-    <string name="tech_mail_d2">Якщо виникли технічні труднощі при користуванні, звертайтеся до support_cerkva@d2.digital</string>
+    <string name="tech_title">"Зробимо разом наш застосунок кращим:"</string>
+    <string name="tech_mail">якщо у вас є зауваження чи побажання до наповнення, будь ласка, пишіть нам:  support@pomisna.info</string>
+    <string name="tech_mail_d2">якщо виникли технічні труднощі під час користування, будь ласка, звертайтеся до support_cerkva@d2.digital</string>
     <string name="tech_thanks">Дякуємо!</string>
-    <string name="tech_developer">Розробка застосунку - D2</string>
+    <string name="tech_developer">Розробка застосунку: D2</string>
 </resources>
