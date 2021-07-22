@@ -56,7 +56,9 @@ public class CabinetFragment extends BaseFragment {
         if (App.getInstance().getRepositoryInstance().getAuthState() == UserState.AUTHENTICATED
                 || App.getInstance().getRepositoryInstance().getAuthState() == UserState.SIGNED_UP) {
             binding.profileBtn.setText(R.string.auth_authenticated);
+            binding.tvTitle.setText(R.string.profile);
         } else {
+            binding.tvTitle.setText(R.string.auth_signup);
             binding.profileBtn.setText(R.string.auth_login);
         }
     }

@@ -8,7 +8,7 @@
     <string name="calendar">Calendar</string>
     <string name="news">News</string>
     <string name="prayers">Prayers</string>
-    <string name="profile">Налаштування</string>
+    <string name="profile">Мій профіль</string>
 
     <string name="more">More</string>
 
@@ -210,6 +210,7 @@
 
     <string name="auth_authenticated">Налаштування</string>
     <string name="auth_login">Вхід / Реєстрація</string>
+    <string name="auth_signup">Реєстрація</string>
     <string name="my_profile">Мій профіль</string>
     <string name="btn_tech_support">"Зворотний зв’язок"</string>
 
