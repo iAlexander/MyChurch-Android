@@ -36,8 +36,8 @@ public class CabinetViewModel extends BaseViewModel {
     }
 
     public void onDonateClick(View view) {
-        if (donatesClickListener != null) {
-            donatesClickListener.onDonateServiceClick(R.id.donates_liqpay_btn);
+        if (listener != null) {
+            listener.onDonateClick();
         }
     }
 
