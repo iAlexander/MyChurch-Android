@@ -255,7 +255,7 @@
                     android:layout_marginTop="@dimen/small"
                     android:text="@string/temple_prior"
                     android:textAppearance="@style/AppText"
-                    android:visibility="@{temple.bishop == null || temple.bishop.name.empty ? View.INVISIBLE : View.VISIBLE}"
+                    android:visibility="@{temple.presiding == null || temple.presiding.name.empty ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="@+id/temple_contact_temple_holiday_tv"
                     app:layout_constraintTop_toBottomOf="@id/temple_contact_temple_holiday_date_tv"
 
@@ -265,7 +265,7 @@
                     android:id="@+id/temple_contacts_prior_setter_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{temple.bishop.name}"
+                    android:text="@{temple.presiding.name}"
                     android:textAppearance="@style/AppText"
                     app:layout_constraintEnd_toEndOf="@id/temple_contact_temple_holiday_date_tv"
                     app:layout_constraintStart_toStartOf="@id/temple_contact_temple_holiday_date_tv"
@@ -278,7 +278,7 @@
                     android:layout_marginTop="@dimen/small"
                     android:text="@string/temple_charity"
                     android:textAppearance="@style/AppText"
-                    android:visibility="@{temple.presiding == null || temple.presiding.name.empty ? View.INVISIBLE : View.VISIBLE}"
+                    android:visibility="@{temple.priest == null || temple.priest.name.empty ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="@id/temple_contact_temple_holiday_tv"
                     app:layout_constraintTop_toBottomOf="@id/temple_contacts_prior_setter_tv" />
 
@@ -286,7 +286,7 @@
                     android:id="@+id/temple_contacts_charity_setter_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{temple.presiding.name}"
+                    android:text="@{temple.priest.name}"
                     android:textAppearance="@style/AppText"
                     app:layout_constraintEnd_toEndOf="@id/temple_contact_temple_holiday_date_tv"
                     app:layout_constraintStart_toStartOf="@id/temple_contact_temple_holiday_date_tv"
