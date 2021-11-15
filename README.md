@@ -1,1 +1,0 @@
-# My Church (Android application)
